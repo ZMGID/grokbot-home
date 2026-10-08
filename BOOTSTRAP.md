@@ -152,11 +152,11 @@ Primary = `bots/index.json` → `"primary": "grok-bot"`. Read `bots/grok-bot/pro
 
 ## Step 6 — Recreate every other bot / 用 CreateAgent 重建其他 bot
 
-For **each** folder in `bots/` except the primary — driven by `bots/index.json`. Current set (2026-10-08): `xiaozhi`（小枳）, `仓库管家`, `代码工程师`, `搭建运维`, `邮件秘书`, `硬件工程师`. **Do not** recreate deleted `dr-eggbot`.
+For **each** folder in `bots/` except the primary — driven by `bots/index.json`. Current set (2026-10-08): `xiaozhi`（小枳）, `仓库管家`, `代码工程师`, `搭建运维`, `事务秘书`, `硬件工程师`. **Do not** recreate deleted `dr-eggbot`.
 
 1. Read `bots/<slug>/profile.md`.
 2. Call **CreateAgent** with:
-   - **name**: exactly as in profile.md (`小枳`, `仓库管家`, `代码工程师`, `搭建运维`, `邮件秘书`, `硬件工程师`)
+   - **name**: exactly as in profile.md (`小枳`, `仓库管家`, `代码工程师`, `搭建运维`, `事务秘书`, `硬件工程师`)
    - **title**: as in profile.md (currently empty)
    - **description / instructions**: the text block in profile.md (keep verbatim; xiaozhi's is reconstructed), **plus** this line appended:
      `On your first turn, read /workspace/grokbot-home/CONTEXT.md and /workspace/grokbot-home/bots/<slug>/CONTEXT.md, save the key facts to your memory, then recreate your routines from bots/<slug>/routines.md.`
@@ -177,7 +177,7 @@ Routines belong to the bot that creates them, so:
   - recreate your own weekday routines from `bots/grok-bot/routines.md` (morning plan ≈08:53 and evening summary ≈17:47 on weekdays; prompts may need user confirmation if marked 未知).
 - **Other bots**: each recreates its own from `bots/<slug>/routines.md` on its first turn (that's why Step 6 tells them to). Match that file:
   - `仓库管家`: daily sync — `CRON_TZ=Asia/Shanghai 14 3 * * *` (≈03:14). Details: `scripts/sync.md`.
-  - `xiaozhi` / `代码工程师` / `搭建运维` / `邮件秘书` / `硬件工程师`: none（暂无）.
+  - `xiaozhi` / `代码工程师` / `搭建运维` / `事务秘书` / `硬件工程师`: none（暂无）.
 - After a few minutes, check each bot did it (ReadTranscript, or ask the user). If a bot can't create routines, create them yourself only if the user agrees.
 
 ## Step 8 — Self-check / 自检
@@ -216,7 +216,7 @@ Send one short Chinese message: what's done, what failed, what the user still ne
 - [ ] Step 3: pstack (9717366) optional（可选，原为 dr eggbot 安装）; official GitHub/Origin/Finance/Composio-plugin **not** installed
 - [ ] Step 4: skills imported (currently none) 
 - [ ] Step 5: own profile = Grok Bot, primary, memory seeded from CONTEXT.md
-- [ ] Step 6: 小枳 / 仓库管家 / 代码工程师 / 搭建运维 / 邮件秘书 / 硬件工程师 created; `bots/agent-map.json` updated & pushed (no dr eggbot)
+- [ ] Step 6: 小枳 / 仓库管家 / 代码工程师 / 搭建运维 / 事务秘书 / 硬件工程师 created; `bots/agent-map.json` updated & pushed (no dr eggbot)
 - [ ] Step 7: daily sync on **仓库管家**; grok-bot weekday 08:53/17:47 routines; other bots none per their `routines.md`
 - [ ] Step 8: composio-pg GitHub (ZMGID) + Gmail active via COMPOSIO_MANAGE_CONNECTIONS; secret scan clean
 - [ ] Step 9: write-back rule saved in memory

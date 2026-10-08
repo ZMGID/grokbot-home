@@ -19,7 +19,7 @@
 3. 跑 `setup.sh` 装好工具环境（KiCad、PlatformIO、cadquery、Composio SDK 等）；
 4. 确认 `composio-pg` 已接通；pstack 插件可选（原为 dr eggbot 安装）；导入 `skills/` 里的技能（若有）；
 5. 按 `bots/grok-bot/` 设置自己的名字和说明，读 `CONTEXT.md`；
-6. 用 CreateAgent 把 `bots/` 下其他每个 bot（小枳、仓库管家、代码工程师、搭建运维、邮件秘书、硬件工程师……，以 `bots/index.json` 为准）重新建出来，并重建它们的定时任务；
+6. 用 CreateAgent 把 `bots/` 下其他每个 bot（小枳、仓库管家、代码工程师、搭建运维、事务秘书、硬件工程师……，以 `bots/index.json` 为准）重新建出来，并重建它们的定时任务；
 7. 自检，最后把新学到的东西写回仓库。
 
 我需要亲自做的只有：在密码框里填一次仓库口令（解密失败时才要 Composio key 本身；`gh` 设备码只在推送权限拿不到时备用）。
