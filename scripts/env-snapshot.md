@@ -1,6 +1,6 @@
-# 工具环境快照（自动生成，2026-10-08 12:13:51 CST）
+# 工具环境快照（自动生成，2026-10-08 13:50:30 CST）
 - kicad-cli: /usr/bin/kicad-cli
-- pio: MISSING
+- pio: /home/box/.local/bin/pio
 - node: /usr/bin/node
 - npm: /usr/bin/npm
 - npx: /usr/bin/npx
@@ -14,7 +14,7 @@
 - cargo: /home/box/.cargo/bin/cargo
 - go: /usr/bin/go
 - prusa-slicer: /usr/bin/prusa-slicer
-- gitleaks: MISSING
+- gitleaks: /home/box/.local/bin/gitleaks
 
 ## pip --user
 - aiohappyeyeballs==2.7.1
