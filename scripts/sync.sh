@@ -10,6 +10,7 @@ WORKFLOWS=/home/box/agent-data/workflows
 cd "$REPO" || exit 2
 
 echo "== git pull"
+gh auth setup-git >/dev/null 2>&1 || true
 git pull --rebase --autostash -q || { echo "!! git pull 失败"; exit 3; }
 
 # 1) 原始设定快照：profile.json / settings.json（不含密钥）。按 index.json 里的 slug ↔ 当前 agent id 映射。

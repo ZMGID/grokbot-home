@@ -1,0 +1,72 @@
+# 工具环境快照（自动生成，2026-10-08 12:13:51 CST）
+- kicad-cli: /usr/bin/kicad-cli
+- pio: MISSING
+- node: /usr/bin/node
+- npm: /usr/bin/npm
+- npx: /usr/bin/npx
+- pnpm: /usr/bin/pnpm
+- bun: /usr/local/bin/bun
+- gh: /usr/bin/gh
+- git: /usr/bin/git
+- git-lfs: MISSING
+- java: /usr/bin/java
+- uv: /usr/local/bin/uv
+- cargo: /home/box/.cargo/bin/cargo
+- go: /usr/bin/go
+- prusa-slicer: /usr/bin/prusa-slicer
+- gitleaks: MISSING
+
+## pip --user
+- aiohappyeyeballs==2.7.1
+- aiohttp==3.14.4
+- aiosignal==1.4.0
+- ajsonrpc==1.2.0
+- anyio==4.15.1
+- attrs==26.1.0
+- bottle==0.13.4
+- cadquery==2.8.0
+- cadquery-ocp==7.9.3.1.1
+- cadquery-ocp-proxy==7.9.3.1.1
+- casadi==3.8.1
+- colorama==0.4.6
+- contourpy==1.4.0
+- cycler==0.12.1
+- ezdxf==1.4.4
+- frozenlist==1.8.0
+- h11==0.16.0
+- kiwisolver==1.5.1
+- llvmlite==0.50.0
+- marshmallow==4.3.1
+- matplotlib==3.11.2
+- more-itertools==11.1.0
+- msgpack==1.2.3
+- multidict==6.9.1
+- multimethod==1.12
+- networkx==3.7
+- nlopt==2.11.0
+- numba==0.68.0
+- platformio==6.2.0
+- propcache==0.5.4
+- pyelftools==0.33
+- pyparsing==3.3.3
+- pyserial==3.5
+- PyYAML==6.0.3
+- runtype==0.5.3
+- scipy==1.18.1
+- semantic-version==2.10.0
+- shapely==2.2.0
+- starlette==1.7.0
+- tabulate==0.10.0
+- trame==4.0.0
+- trame-client==4.1.4
+- trame-common==1.2.7
+- trame-components==2.5.0
+- trame-server==4.0.0
+- trame-vtk==2.11.17
+- trame-vuetify==3.3.0
+- trimesh==5.1.1
+- uvicorn==0.54.0
+- vtk==9.6.2
+- wslink==2.5.7
+- wsproto==1.3.2
+- yarl==1.25.1
