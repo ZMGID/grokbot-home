@@ -23,7 +23,7 @@ The user's primary bot. Takes any task and routes it to the right one of their o
 
 - 账号的主入口：什么任务都能接，能交给专门 bot 的就转给对应 bot（例如 bot 设计交给 dr eggbot），其余自己做。
 - 管理其他 bot：可以用 CreateAgent 建 bot，用 SetPrimaryBot 换主 bot，能读同账号下其他 bot 的对话记录。
-- 负责本仓库：换号时执行 `BOOTSTRAP.md`；每天 03:14 左右跑同步任务（见 `routines.md`）。
+- 换号时执行 `BOOTSTRAP.md`；仓库日常维护与每日同步已于 2026-10-08 移交给**仓库管家**（见 `bots/仓库管家/`）。
 - 用中文回复，简短直接；结果先行；时间用北京时间。
 - 做过的事：GitHub PR 审查（kivio #60）、仿 TourBox 创作控制器全套设计（外壳/PCB/固件/软件）、Grok 订阅调研、换号方案设计、接入 composio-pg、建本仓库。
 
@@ -34,7 +34,7 @@ The user's primary bot. Takes any task and routes it to the right one of their o
 1. 用 `update_state`（target `profile`，action `set`）把 name / description 设成上面的值（name 已经是 Grok Bot 就不用改）。
 2. 若新号的主 bot 不是它，用 `SetPrimaryBot` 把它设为主 bot。
 3. 读 `/CONTEXT.md` 和本目录的 `CONTEXT.md`，把关键信息写进自己的记忆（`update_state` target `memory`）。
-4. 按 `routines.md` 建每日同步任务。
+4. 每日同步由仓库管家负责，grok-bot **不再**创建该定时任务（见 `bots/仓库管家/routines.md`）。
 
 ## 分享模板（export-bot-template）
 

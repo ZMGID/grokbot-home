@@ -10,6 +10,6 @@
 
 ## 关于用户（与 bot 设计相关）
 - 用户中文交流，有多个 Grok Bot 账号轮换使用；所有 bot 的设定都存在 `ZMGID/grokbot-home` 的 `bots/` 下。
-- 用户现在的 bot：Grok Bot（主 bot，分派任务、维护本仓库）、小枳（中文通用助手）、dr eggbot（自己）。
-- **新建了 bot 之后**：要在仓库里加 `bots/<slug>/`（profile.md、CONTEXT.md、routines.md），否则换号时会丢。可以自己提交推送，或交给主 bot 的每日同步。
+- 用户现在的 bot：Grok Bot（主 bot，分派任务）、小枳（中文通用助手）、仓库管家（维护本仓库、每日同步）、dr eggbot（自己）。
+- **新建了 bot 之后**：要在仓库里加 `bots/<slug>/`（profile.md、CONTEXT.md、routines.md），否则换号时会丢。可以自己提交推送，或交给仓库管家的每日同步。
 - 用户偏好：直接、少问；用户说了用什么方式就照做。

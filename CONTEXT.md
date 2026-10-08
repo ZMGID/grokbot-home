@@ -47,6 +47,6 @@
 - 新号流程：打开一个 Grok Bot，对它说「按 https://github.com/ZMGID/grokbot-home 配置你自己」。它按 `BOOTSTRAP.md` 配好自己，再用 CreateAgent 把其他 bot 全部建出来。
 - **密钥只通过 bot 的密码框（secret prompt）或 1Password 提供，永远不进仓库**（私有仓库也不行）。
 - Composio 的 GitHub / Gmail 连接统一走自定义连接器 **`composio-pg`**（Composio 测试用户 `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde`），不在官方 Composio 插件里重新授权。
-- 同步方式：**不单独建同步 bot**，由主 bot 每天约 03:14（北京时间）跑一个定时任务，把各 bot 的新记忆和设定同步进仓库，有变化才推送，推送前做密钥扫描。
+- 同步方式：由专门 bot **仓库管家**每天约 03:14（北京时间）跑定时任务，把各 bot 的新记忆和设定同步进仓库，有变化才推送，推送前做密钥扫描。（2026-10-08 用户改口：原先「不单独建同步 bot、由主 bot 跑」已作废，移交给仓库管家。）
 - 我需要手动做的只有：每个连接器在新号上点一次授权、在密码框里填一次 Composio key、`gh` 登录时确认一次设备码。
 - 不做公开分享模板（export-bot-template 只能生成公开模板，不用）。

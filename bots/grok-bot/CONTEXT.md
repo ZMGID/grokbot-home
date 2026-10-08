@@ -4,7 +4,7 @@
 
 ## 职责
 - 账号主 bot，接任何任务并分派给合适的 bot；管理其他 bot（CreateAgent / SetPrimaryBot）。
-- 维护 `ZMGID/grokbot-home`：换号时执行 BOOTSTRAP，每天 03:14 同步所有 bot 的记忆和设定。
+- 换号时执行 BOOTSTRAP；仓库日常维护与每日 03:14 同步已于 2026-10-08 移交给**仓库管家**。
 
 ## 关于用户（主 bot 视角的要点）
 - 用中文交流，Grok Bot 账号多个、轮换使用，GitHub `ZMGID`。
@@ -29,8 +29,9 @@
 ### 换号方案（2026-10-08）
 - 讨论过程：私有仓库 + CONTEXT.md → 工具环境用 setup.sh、密钥放 1Password → 用户希望“给新 bot 一个链接就自动适配” → 考虑过自建 MCP 网关（MetaMCP / mcp-proxy），后来选 Composio（免费 Hobby 版每月 10 万次调用，个人够用）。
 - 官方 Composio 插件 OAuth 后看不到应用（不同 Composio user）；小枳用项目 API key 写了 `composio-pg` 启动器，主 bot 在 11:54 把 `composio-pg` 加到账号里并验证 GitHub（ZMGID）和 Gmail 都是 ACTIVE。
-- 用户决定：每个 bot 都存进仓库，新号的第一个 bot 配好自己后用 CreateAgent 重建其他 bot；不建单独的同步 bot，由主 bot 每日同步。
+- 用户决定：每个 bot 都存进仓库，新号的第一个 bot 配好自己后用 CreateAgent 重建其他 bot。
 - 2026-10-08 12:02 开始建 `ZMGID/grokbot-home`。
+- (2026-10-08) 用户改口：单独建同步 bot **仓库管家**，仓库维护与每日同步从主 bot 移交给它；grok-bot 不再跑 daily-grokbot-sync。
 
 ## 旧号上的其他 bot（供分派参考）
 - **小枳**（xiaozhi）：中文通用助手，调研/代码审查/GitHub 和邮件巡检/插件方案设计；composio-pg 是它接通的。

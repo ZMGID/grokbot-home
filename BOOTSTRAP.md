@@ -109,11 +109,11 @@ Primary = `bots/index.json` → `"primary": "grok-bot"`. Read `bots/grok-bot/pro
 
 ## Step 6 — Recreate every other bot / 用 CreateAgent 重建其他 bot
 
-For **each** folder in `bots/` except the primary (today: `xiaozhi`, `dr-eggbot`; also any new folder listed in `bots/index.json`):
+For **each** folder in `bots/` except the primary (today: `xiaozhi`, `dr-eggbot`, `仓库管家`; also any new folder listed in `bots/index.json`):
 
 1. Read `bots/<slug>/profile.md`.
 2. Call **CreateAgent** with:
-   - **name**: exactly as in profile.md (`小枳`, `dr eggbot`)
+   - **name**: exactly as in profile.md (`小枳`, `dr eggbot`, `仓库管家`)
    - **title**: as in profile.md (currently empty)
    - **description / instructions**: the text block in profile.md (xiaozhi's is reconstructed; dr eggbot's is the original English text — keep it verbatim), **plus** this line appended:
      `On your first turn, read /workspace/grokbot-home/CONTEXT.md and /workspace/grokbot-home/bots/<slug>/CONTEXT.md, save the key facts to your memory, then recreate your routines from bots/<slug>/routines.md.`
@@ -129,9 +129,10 @@ Do not create the empty “New Bot” from the old account (it was never used).
 
 Routines belong to the bot that creates them, so:
 
-- **You (grok-bot)**: create the daily sync with UpdateRoutine using the prompt in `bots/grok-bot/routines.md`
-  — schedule `CRON_TZ=Asia/Shanghai 14 3 * * *` (≈03:14 Beijing time daily). Details: `scripts/sync.md`.
+- **You (grok-bot)**: do **not** create the daily sync. It belongs to **仓库管家** (handed over 2026-10-08).
 - **Other bots**: each recreates its own from `bots/<slug>/routines.md` on its first turn (that's why Step 6 tells them to).
+  - `仓库管家`: create the daily sync with UpdateRoutine using the prompt in `bots/仓库管家/routines.md`
+    — schedule `CRON_TZ=Asia/Shanghai 14 3 * * *` (≈03:14 Beijing time daily). Details: `scripts/sync.md`.
   - `xiaozhi`: none.
   - `dr-eggbot`: two routines — weekday 08:44 bot-friction scan, Monday 08:49 routine-waste audit — **create both, then pause both** (they were paused on the old account).
 - After a few minutes, check each bot did it (read their transcript with ReadTranscript, or ask the user to glance at the routines panel). If a bot can't create routines, create them yourself only if the user agrees.
@@ -145,7 +146,7 @@ Run and record each result:
 3. `user-composio-pg` → `COMPOSIO_MANAGE_CONNECTIONS` with `{"toolkits": ["github", "gmail"]}` (never `reinitiate_all`) → “All connections are active”, GitHub login ZMGID, Gmail ohulercxm8@gmail.com. Optionally confirm zhimeng63@gmail.com by fetching 1 recent email from each Gmail account.
 4. Skills: pstack skills listed; every `skills/<slug>` present in `/home/box/agent-data/workflows/`.
 5. Bots: every slug in `bots/index.json` exists with the right name; `bots/agent-map.json` updated.
-6. Routines: daily sync exists on you; dr eggbot's two exist and are paused.
+6. Routines: daily sync exists on **仓库管家**; dr eggbot's two exist and are paused; grok-bot has no daily sync.
 7. Tools: `tail -20 /tmp/setup.log` summary; spot-check `kicad-cli --version` (9.x), `~/.local/bin/pio --version`, `python3 -c "import cadquery"`, `gh auth status`, `gitleaks version`.
 8. Secret scan: `bash scripts/secret-scan.sh` → “干净”.
 
@@ -173,8 +174,8 @@ Send one short Chinese message: what's done, what failed, what the user still ne
 - [ ] Step 3: pstack (9717366) installed; Composio plugin (32661537) / Finance (63408931) optional
 - [ ] Step 4: skills imported (currently none) 
 - [ ] Step 5: own profile = Grok Bot, primary, memory seeded from CONTEXT.md
-- [ ] Step 6: 小枳 created; dr eggbot created; `bots/agent-map.json` updated & pushed
-- [ ] Step 7: daily sync routine (03:14 Asia/Shanghai) on grok-bot; dr eggbot's 2 routines created and paused
+- [ ] Step 6: 小枳 / dr eggbot / 仓库管家 created; `bots/agent-map.json` updated & pushed
+- [ ] Step 7: daily sync routine (03:14 Asia/Shanghai) on **仓库管家** (recreated by 仓库管家 from `bots/仓库管家/routines.md` on its first turn; grok-bot does not create it); dr eggbot's 2 routines created and paused
 - [ ] Step 8: Composio GitHub + Gmail active; `get_me` = ZMGID; secret scan clean
 - [ ] Step 9: write-back rule saved in memory
 - [ ] Step 10: user got the summary

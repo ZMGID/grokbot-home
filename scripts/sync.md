@@ -1,13 +1,13 @@
 # 每日同步任务说明（daily-grokbot-sync）
 
-- **谁跑**：主 bot（grok-bot）。不单独建同步 bot（2026-10-08 用户决定）。
-- **什么时候**：每天约 03:14（北京时间），cron `CRON_TZ=Asia/Shanghai 14 3 * * *`。提示词见 `bots/grok-bot/routines.md`。
+- **谁跑**：**仓库管家**（2026-10-08 用户改口：单独建同步 bot，由仓库管家跑每日同步；原先「不单独建同步 bot、由主 bot 跑」已作废）。
+- **什么时候**：每天约 03:14（北京时间），cron `CRON_TZ=Asia/Shanghai 14 3 * * *`。提示词见 `bots/仓库管家/routines.md`。
 - **原则**：有变化才提交推送，没变化不打扰用户；推送前必须通过密钥扫描；任何密钥、验证码、密码、一次性授权链接都不进仓库。
 
 ## 每次运行做什么
 
 1. **拉最新**：`cd /workspace/grokbot-home && git pull --rebase`（目录不存在就 `gh repo clone ZMGID/grokbot-home /workspace/grokbot-home`）。
-2. **收集每个 bot 的新记忆**（主 bot 自己做，需要“读懂”）：
+2. **收集每个 bot 的新记忆**（仓库管家自己做，需要“读懂”）：
    - 本账号所有 bot：`/home/box/agent-data/agents/<id>/`（id ↔ slug 见 `bots/agent-map.json`；出现新的 bot 就新建 `bots/<slug>/` 并加进 `agent-map.json`、`index.json`、`bots/README.md`）。
    - 读上次同步以后的对话：优先用 ReadTranscript（cursor 命名空间，`agent_id`，用 `before` 往前翻页）；没有这个工具时，只读地复制
      `/home/box/agent-data/search-index.db*` 到 `/tmp`，查 `messages` 表（`agent_id`、`timestamp_ms`、`body`）。
@@ -23,7 +23,7 @@
 4. **连接器清单**：用 GetMcpServerStatus 看当前连接器，和 `connectors/README.md` 对比；有新增/删除/状态变化就更新清单（只写名字、id、地址、步骤）。
 5. **汇报**：
    - 没有变化：不发消息。
-   - 有变化：在主 bot 的聊天里给用户发一行中文摘要（例如“已同步：小枳 CONTEXT +3 条，connectors 新增 Notion”）。
+   - 有变化：在**仓库管家**的聊天里给用户发一行中文摘要（例如“已同步：小枳 CONTEXT +3 条，connectors 新增 Notion”）。
    - 密钥扫描失败 / 推送失败：在聊天里说明原因（只说文件名和行号，不贴内容）。
 
 ## 手动跑

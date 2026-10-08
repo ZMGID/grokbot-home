@@ -8,9 +8,13 @@
       "name": "Grok Bot",
       "title": "",
       "primary": true,
-      "avatar": {"shape": "blob", "color": "black", "image": null},
+      "avatar": {
+        "shape": "blob",
+        "color": "black",
+        "image": null
+      },
       "old_agent_id": "a96070f7-cb92-4f15-bcd4-7b1e700cc676",
-      "routines": ["daily-grokbot-sync"],
+      "routines": [],
       "plugins_needed": []
     },
     {
@@ -18,7 +22,11 @@
       "name": "小枳",
       "title": "",
       "primary": false,
-      "avatar": {"shape": "cloud", "color": "black", "image": null},
+      "avatar": {
+        "shape": "cloud",
+        "color": "black",
+        "image": null
+      },
       "old_agent_id": "26593ece-aeae-442d-b633-7acda2b53ec2",
       "description_reconstructed": true,
       "routines": [],
@@ -29,10 +37,36 @@
       "name": "dr eggbot",
       "title": "",
       "primary": false,
-      "avatar": {"shape": "teardrop", "color": "red", "image": null},
+      "avatar": {
+        "shape": "teardrop",
+        "color": "red",
+        "image": null
+      },
       "old_agent_id": "27f98084-ae70-49fd-a792-8d6f27eddb1d",
-      "routines": ["bot-friction-scan (paused)", "routine-waste-audit (paused)"],
-      "plugins_needed": ["pstack (9717366)"]
+      "routines": [
+        "bot-friction-scan (paused)",
+        "routine-waste-audit (paused)"
+      ],
+      "plugins_needed": [
+        "pstack (9717366)"
+      ]
+    },
+    {
+      "slug": "仓库管家",
+      "name": "仓库管家",
+      "title": "",
+      "primary": false,
+      "avatar": {
+        "shape": "",
+        "color": "",
+        "image": null
+      },
+      "old_agent_id": "5eed9f49-92c0-49b7-8327-2128e99b910b",
+      "description_reconstructed": true,
+      "routines": [
+        "daily-grokbot-sync"
+      ],
+      "plugins_needed": []
     }
   ]
 }
