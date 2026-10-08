@@ -17,9 +17,9 @@
 1. （Step 0）匿名克隆本仓库 → 用密码框（secret-request）向我要口令 `GROKBOT_HOME_PASSPHRASE` → 解密 `secrets/COMPOSIO_API_KEY.enc` 到 `~/.composio_pg_key`（连不上就换 `.box-current.enc`）→ 从 `connectors/composio-pg/` 装好并添加 composio-pg；
 2. （Step 1）用 Composio 里 GitHub（ZMGID）的 token 登录 `gh`——只有往仓库推送（写回、每日同步）才需要；
 3. 跑 `setup.sh` 装好工具环境（KiCad、PlatformIO、cadquery、Composio SDK 等）；
-4. 确认 `composio-pg` 已接通；重装 pstack 插件（技能用，不是应用连接）；导入 `skills/` 里的技能（若有）；
+4. 确认 `composio-pg` 已接通；pstack 插件可选（原为 dr eggbot 安装）；导入 `skills/` 里的技能（若有）；
 5. 按 `bots/grok-bot/` 设置自己的名字和说明，读 `CONTEXT.md`；
-6. 用 CreateAgent 把 `bots/` 下其他每个 bot（小枳、dr eggbot、仓库管家……）重新建出来，并重建它们的定时任务；
+6. 用 CreateAgent 把 `bots/` 下其他每个 bot（小枳、仓库管家、代码工程师、搭建运维、邮件秘书、硬件工程师……，以 `bots/index.json` 为准）重新建出来，并重建它们的定时任务；
 7. 自检，最后把新学到的东西写回仓库。
 
 我需要亲自做的只有：在密码框里填一次仓库口令（解密失败时才要 Composio key 本身；`gh` 设备码只在推送权限拿不到时备用）。

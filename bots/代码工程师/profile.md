@@ -37,3 +37,4 @@
 - 盯 CI / 开着的 PR，修代码，推进 `ZMGID/Dsivio`（主）和 `ZMGID/kivio`。
 - GitHub 只走 `composio-pg`，不装官方 GitHub 连接器。
 - 2026-10-08 由用户创建。用中文、简短直接；先说结论再给 PR 链接。
+- 注：上方 description 原文仍写「新建 bot 归 dr eggbot」；该 bot 已删除，新建 bot 改由 Grok Bot 负责（以根目录 CONTEXT.md 分工为准）。

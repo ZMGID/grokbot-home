@@ -3,7 +3,7 @@
 > 先读根目录 `/CONTEXT.md`（关于用户的共享记忆），这里只记主 bot 自己的工作记录。导出：2026-10-08。
 
 ## 职责
-- 账号主 bot，接任何任务并分派给合适的 bot；管理其他 bot（CreateAgent / SetPrimaryBot）。
+- 账号主 bot / **经理**：接任何任务并分派给合适的 bot；用 CreateAgent 创建新 bot（dr eggbot 已于 2026-10-08 删除）；SetPrimaryBot。
 - 换号时执行 BOOTSTRAP；仓库日常维护与每日 03:14 同步已于 2026-10-08 移交给**仓库管家**。
 
 ## 关于用户（主 bot 视角的要点）
@@ -35,5 +35,5 @@
 
 ## 旧号上的其他 bot（供分派参考）
 - **小枳**（xiaozhi）：中文通用助手，调研/代码审查/GitHub 和邮件巡检/插件方案设计；composio-pg 是它接通的。
-- **dr eggbot**（dr-eggbot）：设计并创建高质量 Grok Bot；用户要新 bot 时交给它。
+- **dr eggbot**：已于 2026-10-08 删除；新建 bot 改由 Grok Bot 负责。
 - 另有一个空的 “New Bot”（id `1dbfda76-…`，2026-08 创建，无对话、无设定），不是真正在用的 bot，没有迁移。

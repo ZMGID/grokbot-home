@@ -16,7 +16,7 @@
 
 另外两样不是「应用连接器」但要记得：
 
-- **pstack 插件**（plugin id **`9717366`**，cursor-public）：写代码类 bot 用的工作流技能包（architect、tdd、swarm、arena……）。dr eggbot 需要它。这是技能插件，不是应用连接；新号上 `InstallPlugin 9717366` 即可。
+- **pstack 插件**（plugin id **`9717366`**，cursor-public）：写代码类 bot 用的工作流技能包（architect、tdd、swarm、arena……）。**可选**（原为 dr eggbot 安装；该 bot 已于 2026-10-08 删除）。这是技能插件，不是应用连接；需要时再 `InstallPlugin 9717366`。
 - **`x` 工具命名空间**（X/Twitter 搜索、新闻）：平台自带，不需要安装；新号若没有就忽略。
 - **`gh` 命令行**：不是连接器。仓库公开，克隆不需要登录；只有推送（写回、每日同步）才需要。新号上用 Composio 里 GitHub（ZMGID）的 access token 做 `gh auth login --with-token`（见 BOOTSTRAP Step 1）；失败再退回设备码登录。
 

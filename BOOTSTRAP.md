@@ -127,7 +127,7 @@ Follow `connectors/README.md`. **Rule (2026-10-08): all app connections only thr
 | Item | Action | User does |
 |---|---|---|
 | **composio-pg** | Already done in Step 0 if decrypt + AddMcpServer succeeded; otherwise finish Step 0 (b)(c) | type the repo passphrase once (masked) |
-| pstack plugin, **plugin id 9717366** | `InstallPlugin` (skills for dr eggbot — not an app connection) | nothing |
+| pstack plugin, **plugin id 9717366** | optional `InstallPlugin`（可选，原为 dr eggbot 安装；技能插件，不是应用连接） | nothing |
 | Official GitHub / Origin / Finance / Composio plugin 32661537 | **skip** | nothing |
 
 Confirm with `GetMcpServerStatus` that `composio-pg` is connected (tools appear as `user-composio-pg` / `COMPOSIO_*` on your next turn). Self-check GitHub + Gmail with `COMPOSIO_MANAGE_CONNECTIONS` `{"toolkits":["github","gmail"]}` (never `reinitiate_all`) → “All connections are active”, GitHub ZMGID.
@@ -137,7 +137,7 @@ Composio user: `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde` (project `pr_lh5-8
 ## Step 4 — Skills / 技能
 
 - `skills/` currently has **no user skills** (see `skills/README.md`). For any `skills/<slug>/` that appears later: copy it to `/home/box/agent-data/workflows/<slug>/` (or create it with the `skill-authoring` skill using the same name and body), then confirm it is listed.
-- Reinstall the **pstack** plugin (`InstallPlugin 9717366`) if not done in Step 3.
+- **pstack** plugin (`InstallPlugin 9717366`) is **optional**（可选，原为 dr eggbot 安装）. Install only if a coding bot needs those skills.
 - Managed skills (add-connector, routines, …) come with the platform — nothing to do.
 
 ## Step 5 — Apply your own profile (primary bot) / 设置你自己
@@ -152,13 +152,13 @@ Primary = `bots/index.json` → `"primary": "grok-bot"`. Read `bots/grok-bot/pro
 
 ## Step 6 — Recreate every other bot / 用 CreateAgent 重建其他 bot
 
-For **each** folder in `bots/` except the primary (today: `xiaozhi`, `dr-eggbot`, `仓库管家`; also any new folder listed in `bots/index.json`):
+For **each** folder in `bots/` except the primary — driven by `bots/index.json`. Current set (2026-10-08): `xiaozhi`（小枳）, `仓库管家`, `代码工程师`, `搭建运维`, `邮件秘书`, `硬件工程师`. **Do not** recreate deleted `dr-eggbot`.
 
 1. Read `bots/<slug>/profile.md`.
 2. Call **CreateAgent** with:
-   - **name**: exactly as in profile.md (`小枳`, `dr eggbot`, `仓库管家`)
+   - **name**: exactly as in profile.md (`小枳`, `仓库管家`, `代码工程师`, `搭建运维`, `邮件秘书`, `硬件工程师`)
    - **title**: as in profile.md (currently empty)
-   - **description / instructions**: the text block in profile.md (xiaozhi's is reconstructed; dr eggbot's is the original English text — keep it verbatim), **plus** this line appended:
+   - **description / instructions**: the text block in profile.md (keep verbatim; xiaozhi's is reconstructed), **plus** this line appended:
      `On your first turn, read /workspace/grokbot-home/CONTEXT.md and /workspace/grokbot-home/bots/<slug>/CONTEXT.md, save the key facts to your memory, then recreate your routines from bots/<slug>/routines.md.`
      （中文可写成：“第一次启动先读 /workspace/grokbot-home/CONTEXT.md 和 bots/<slug>/CONTEXT.md，把要点存进自己的记忆，再按 bots/<slug>/routines.md 重建定时任务。”）
    - avatar: default shape/color from profile.md if CreateAgent accepts it; set an image only if `bots/<slug>/avatar.*` exists.
@@ -166,19 +166,19 @@ For **each** folder in `bots/` except the primary (today: `xiaozhi`, `dr-eggbot`
 3. Record the new agent id: update `bots/agent-map.json` (`{"<slug>": "<new id>"}`) — needed by the daily sync.
 4. Send the user one line per bot created (“已重建 小枳 ✓”).
 
-Do not create the empty “New Bot” from the old account (it was never used).
+Do not create the empty “New Bot” from the old account (it was never used). Do not create **dr eggbot** (deleted 2026-10-08); **you (Grok Bot)** create any new bots going forward.
 
 ## Step 7 — Routines / 定时任务
 
 Routines belong to the bot that creates them, so:
 
-- **You (grok-bot)**: do **not** create the daily sync. It belongs to **仓库管家** (handed over 2026-10-08).
-- **Other bots**: each recreates its own from `bots/<slug>/routines.md` on its first turn (that's why Step 6 tells them to).
-  - `仓库管家`: create the daily sync with UpdateRoutine using the prompt in `bots/仓库管家/routines.md`
-    — schedule `CRON_TZ=Asia/Shanghai 14 3 * * *` (≈03:14 Beijing time daily). Details: `scripts/sync.md`.
-  - `xiaozhi`: none.
-  - `dr-eggbot`: two routines — weekday 08:44 bot-friction scan, Monday 08:49 routine-waste audit — **create both, then pause both** (they were paused on the old account).
-- After a few minutes, check each bot did it (read their transcript with ReadTranscript, or ask the user to glance at the routines panel). If a bot can't create routines, create them yourself only if the user agrees.
+- **You (grok-bot)**:
+  - do **not** create the daily sync (belongs to **仓库管家**, handed over 2026-10-08);
+  - recreate your own weekday routines from `bots/grok-bot/routines.md` (morning plan ≈08:53 and evening summary ≈17:47 on weekdays; prompts may need user confirmation if marked 未知).
+- **Other bots**: each recreates its own from `bots/<slug>/routines.md` on its first turn (that's why Step 6 tells them to). Match that file:
+  - `仓库管家`: daily sync — `CRON_TZ=Asia/Shanghai 14 3 * * *` (≈03:14). Details: `scripts/sync.md`.
+  - `xiaozhi` / `代码工程师` / `搭建运维` / `邮件秘书` / `硬件工程师`: none（暂无）.
+- After a few minutes, check each bot did it (ReadTranscript, or ask the user). If a bot can't create routines, create them yourself only if the user agrees.
 
 ## Step 8 — Self-check / 自检
 
@@ -187,9 +187,9 @@ Run and record each result:
 1. `GetMcpServerStatus`: **composio-pg** = connected. Official GitHub / Origin / Finance / Composio plugin should be absent or ignored (not required).
 2. `user-composio-pg` → `COMPOSIO_MANAGE_CONNECTIONS` with `{"toolkits": ["github", "gmail"]}` (never `reinitiate_all`) → “All connections are active”, GitHub login **ZMGID**, Gmail ohulercxm8@gmail.com. Optionally confirm zhimeng63@gmail.com by fetching 1 recent email from each Gmail account.
 3. `gh auth status` shows login **ZMGID** (Step 1: Composio token or device-code fallback) — needed only for pushing.
-4. Skills: pstack skills listed; every `skills/<slug>` present in `/home/box/agent-data/workflows/`.
+4. Skills: every `skills/<slug>` present in `/home/box/agent-data/workflows/`; pstack optional (only if installed).
 5. Bots: every slug in `bots/index.json` exists with the right name; `bots/agent-map.json` updated.
-6. Routines: daily sync exists on **仓库管家**; dr eggbot's two exist and are paused; grok-bot has no daily sync.
+6. Routines: daily sync on **仓库管家**; grok-bot weekday morning/evening routines exist; other bots none.
 7. Tools: `tail -20 /tmp/setup.log` summary; spot-check `kicad-cli --version` (9.x), `~/.local/bin/pio --version`, `python3 -c "import cadquery"`, `gitleaks version`.
 8. Secret scan: `bash scripts/secret-scan.sh` → “干净”.
 
@@ -198,7 +198,7 @@ Run and record each result:
 - New durable knowledge goes back into the right file: about the user → `/CONTEXT.md`; about one bot's work → `bots/<slug>/CONTEXT.md`; profile changes → `profile.md`; routine changes → `routines.md`; connector changes → `connectors/README.md`; new tools → `setup.sh`.
 - Then `bash scripts/secret-scan.sh` and `git add -A && git commit -m "<what>" && git pull --rebase && git push origin HEAD:main` (needs Step 1 push access). The daily sync does this automatically for all bots, but write back immediately after anything important.
 - Never commit: keys, tokens, the passphrase, `.env`, one-time codes, passwords, auth links, mcp-remote logs, `/home/box/agent-data/*secrets*.json`, databases. **The repo is public** — only `secrets/*.enc` may hold a secret, and only encrypted with `scripts/secret-crypt.py`.
-- New bot created later (e.g. by dr eggbot)? Add `bots/<slug>/` (profile.md, CONTEXT.md, routines.md) + `index.json` + `agent-map.json` + `bots/README.md` table.
+- New bot created later (by **Grok Bot**)? Add `bots/<slug>/` (profile.md, CONTEXT.md, routines.md) + `index.json` + `agent-map.json` + `bots/README.md` table.
 
 ## Step 10 — Report to the user / 最后汇报
 
@@ -213,11 +213,11 @@ Send one short Chinese message: what's done, what failed, what the user still ne
 - [ ] Step 0/3: `composio-pg` installed from `connectors/composio-pg/`, smoke test `1`, added (`/workspace/composio-pg/launch.sh`) and connected
 - [ ] Step 1: `gh` logged in as ZMGID for pushing (Composio GitHub token, or device-code fallback)
 - [ ] Step 2: `setup.sh` finished (summary checked; failures listed)
-- [ ] Step 3: pstack (9717366) installed; official GitHub/Origin/Finance/Composio-plugin **not** installed
+- [ ] Step 3: pstack (9717366) optional（可选，原为 dr eggbot 安装）; official GitHub/Origin/Finance/Composio-plugin **not** installed
 - [ ] Step 4: skills imported (currently none) 
 - [ ] Step 5: own profile = Grok Bot, primary, memory seeded from CONTEXT.md
-- [ ] Step 6: 小枳 / dr eggbot / 仓库管家 created; `bots/agent-map.json` updated & pushed
-- [ ] Step 7: daily sync routine (03:14 Asia/Shanghai) on **仓库管家** (recreated by 仓库管家 from `bots/仓库管家/routines.md` on its first turn; grok-bot does not create it); dr eggbot's 2 routines created and paused
+- [ ] Step 6: 小枳 / 仓库管家 / 代码工程师 / 搭建运维 / 邮件秘书 / 硬件工程师 created; `bots/agent-map.json` updated & pushed (no dr eggbot)
+- [ ] Step 7: daily sync on **仓库管家**; grok-bot weekday 08:53/17:47 routines; other bots none per their `routines.md`
 - [ ] Step 8: composio-pg GitHub (ZMGID) + Gmail active via COMPOSIO_MANAGE_CONNECTIONS; secret scan clean
 - [ ] Step 9: write-back rule saved in memory
 - [ ] Step 10: user got the summary

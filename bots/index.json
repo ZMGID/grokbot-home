@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exported_at": "2026-10-08T12:30:00+08:00",
+  "exported_at": "2026-10-08T16:00:00+08:00",
   "primary": "grok-bot",
   "bots": [
     {
@@ -36,25 +36,6 @@
       "plugins_needed": []
     },
     {
-      "slug": "dr-eggbot",
-      "name": "dr eggbot",
-      "title": "",
-      "primary": false,
-      "avatar": {
-        "shape": "teardrop",
-        "color": "red",
-        "image": null
-      },
-      "old_agent_id": "27f98084-ae70-49fd-a792-8d6f27eddb1d",
-      "routines": [
-        "bot-friction-scan (paused)",
-        "routine-waste-audit (paused)"
-      ],
-      "plugins_needed": [
-        "pstack (9717366)"
-      ]
-    },
-    {
       "slug": "仓库管家",
       "name": "仓库管家",
       "title": "",
@@ -82,6 +63,51 @@
         "image": null
       },
       "old_agent_id": "30f7829c-e287-44d7-bfdc-7c409b7da1c4",
+      "description_reconstructed": false,
+      "routines": [],
+      "plugins_needed": []
+    },
+    {
+      "slug": "搭建运维",
+      "name": "搭建运维",
+      "title": "",
+      "primary": false,
+      "avatar": {
+        "shape": "",
+        "color": "",
+        "image": null
+      },
+      "old_agent_id": "68e94ddd-1800-4ca4-9602-35e5952b2e44",
+      "description_reconstructed": false,
+      "routines": [],
+      "plugins_needed": []
+    },
+    {
+      "slug": "邮件秘书",
+      "name": "邮件秘书",
+      "title": "",
+      "primary": false,
+      "avatar": {
+        "shape": "",
+        "color": "",
+        "image": null
+      },
+      "old_agent_id": "0c8b0607-f701-499c-a08b-13a601874a68",
+      "description_reconstructed": false,
+      "routines": [],
+      "plugins_needed": []
+    },
+    {
+      "slug": "硬件工程师",
+      "name": "硬件工程师",
+      "title": "",
+      "primary": false,
+      "avatar": {
+        "shape": "",
+        "color": "",
+        "image": null
+      },
+      "old_agent_id": "69390646-03af-4efe-ad66-4d796b384c62",
       "description_reconstructed": false,
       "routines": [],
       "plugins_needed": []

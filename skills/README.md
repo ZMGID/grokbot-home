@@ -10,6 +10,6 @@
 
 | 名称 | 类型 | 怎么恢复 |
 |---|---|---|
-| pstack | 插件（plugin id `9717366`，cursor-public），含 architect、tdd、swarm、arena、interrogate、technical-writing 等约 40 个技能 | `InstallPlugin 9717366` |
+| pstack | 插件（plugin id `9717366`，cursor-public），含 architect、tdd、swarm、arena 等约 40 个技能 | **可选**（原为 dr eggbot 安装）；需要时 `InstallPlugin 9717366` |
 | Composio 插件技能（composio-mcp、composio-activity-summary） | 随官方 Composio 插件（`32661537`） | **不需要**（2026-10-08 起不装该插件；应用走 composio-pg） |
 | 托管技能（add-connector、routines、export-bot-template、sign-in……） | 平台自带 | 不用管 |
