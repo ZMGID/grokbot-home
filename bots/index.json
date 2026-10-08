@@ -48,7 +48,8 @@
       "old_agent_id": "5eed9f49-92c0-49b7-8327-2128e99b910b",
       "description_reconstructed": true,
       "routines": [
-        "daily-grokbot-sync"
+        "daily-grokbot-sync",
+        "weekly-bootstrap-drill (pending)"
       ],
       "plugins_needed": []
     },

@@ -14,6 +14,7 @@
    - 把新的**持久**信息合并进 `bots/<slug>/CONTEXT.md`：项目进展、决定、用户新偏好、待办状态变化。写成要点，带日期，不贴大段原文。
    - 关于用户本人、所有 bot 都需要知道的 → 根目录 `CONTEXT.md`。
    - 设定变化（名字、description、头像）→ `profile.md`；定时任务新增/修改/暂停 → `routines.md`。
+   - **Grok Bot 笔记**：把 `/workspace/assistant/big-picture.md` 复制到 `bots/grok-bot/notes/big-picture.md`；如有需要把 `/workspace/assistant/routines.md` 的定时任务内容同步进 `bots/grok-bot/routines.md`。**绝不**把 `/workspace/assistant/daily/` 拷进仓库。
 3. **运行 `bash scripts/sync.sh`**，它负责机械部分：
    - 按 `bots/agent-map.json` 把每个 bot 的 `profile.json`、`settings.json`（去掉 serverId）、`memory/`、自定义头像复制到 `bots/<slug>/raw/`；
    - 把 `/home/box/agent-data/workflows/` 下的用户技能复制到 `skills/`；

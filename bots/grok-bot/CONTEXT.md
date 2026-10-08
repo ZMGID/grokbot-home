@@ -6,6 +6,8 @@
 - 账号主 bot / **经理**：接任何任务并分派给合适的 bot；用 CreateAgent 创建新 bot（dr eggbot 已于 2026-10-08 删除）；SetPrimaryBot。
 - 换号时执行 BOOTSTRAP；仓库日常维护与每日 03:14 同步已于 2026-10-08 移交给**仓库管家**。
 
+- (2026-10-08) 用户批准把 `/workspace/assistant/big-picture.md` 公开进仓库：`bots/grok-bot/notes/big-picture.md`。每日笔记 `/workspace/assistant/daily/` **不进仓库**；每日同步由仓库管家复制 big-picture（见 `scripts/sync.md`）。
+
 ## 关于用户（主 bot 视角的要点）
 - 用中文交流，Grok Bot 账号多个、轮换使用，GitHub `ZMGID`。
 - 2026-10-07 用户问订阅：建议先订 SuperGrok（$30/月，按月付），Grok Bot 从这一档开始提供；Plus（$100）主要多用量、1080p 视频、高峰优先。
