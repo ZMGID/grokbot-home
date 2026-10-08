@@ -16,6 +16,7 @@
       "old_agent_id": "a96070f7-cb92-4f15-bcd4-7b1e700cc676",
       "routines": [
         "weekday-morning-plan (08:53)",
+        "weekday-bot-patrol (11:17,15:17)",
         "weekday-evening-summary (17:47)"
       ],
       "plugins_needed": []

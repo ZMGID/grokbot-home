@@ -7,6 +7,7 @@
 - 换号时执行 BOOTSTRAP；仓库日常维护与每日 03:14 同步已于 2026-10-08 移交给**仓库管家**。
 
 - (2026-10-08) 用户批准把 `/workspace/assistant/big-picture.md` 公开进仓库：`bots/grok-bot/notes/big-picture.md`。每日笔记 `/workspace/assistant/daily/` **不进仓库**；每日同步由仓库管家复制 big-picture（见 `scripts/sync.md`）。
+- (2026-10-08) 新增定时任务「巡检各 bot」，cron `17 11,15 * * 1-5`（工作日 11:17 / 15:17 北京时间）；提示词见 `routines.md`。
 
 ## 关于用户（主 bot 视角的要点）
 - 用中文交流，Grok Bot 账号多个、轮换使用，GitHub `ZMGID`。
