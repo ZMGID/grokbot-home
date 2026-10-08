@@ -55,3 +55,8 @@ _autosave-*
 Thumbs.db
 *.swp
 *~
+
+# plaintext secrets never committed (only *.enc)
+secrets/*
+!secrets/*.enc
+!secrets/README.md

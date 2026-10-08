@@ -25,6 +25,7 @@ Do **(a) → (b) → (c)** in order. Never print the key or any access token. Ne
 ### (a) Composio API key → `~/.composio_pg_key`
 
 1. If `test -s /home/box/.composio_pg_key` already succeeds, skip to (b).
+   - **Key stored in repo, encrypted (2026-10-08):** `secrets/COMPOSIO_API_KEY.enc` (the key the user gave) and `secrets/COMPOSIO_API_KEY.box-current.enc` (the key composio-pg was running on). Ask the user for the passphrase with a secret-request named `GROKBOT_HOME_PASSPHRASE` (never in chat), then `python3 scripts/secret-crypt.py dec secrets/COMPOSIO_API_KEY.enc /home/box/.composio_pg_key`; if composio-pg then fails to connect, decrypt the `.box-current.enc` one instead. The repo is public, so `git clone https://github.com/ZMGID/grokbot-home` works with no GitHub login. 密钥已加密放在 `secrets/`，向用户要口令（secret-request），解密后即可配置 Composio；仓库公开，克隆不需要登录。
 2. Otherwise send a **secret-request** (SendToUser type `secret-request`, masked) with a Chinese label, e.g.
    「Composio 项目 API key（控制台 → 项目设置 → API Keys），用于 composio-pg；写入 ~/.composio_pg_key」。
    The value must land in `/home/box/.composio_pg_key`, then `chmod 600 /home/box/.composio_pg_key`.
