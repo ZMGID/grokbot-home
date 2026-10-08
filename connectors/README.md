@@ -8,7 +8,7 @@
 
 | # | 连接器 | 类型 | 怎么装 | 需要用户做什么 | 必需？ |
 |---|---|---|---|---|---|
-| 1 | **composio-pg**（`user-composio-pg`） | 自定义 **stdio** MCP（跑在 box 上） | 见下文「composio-pg」；BOOTSTRAP Step 0 会先内联写出启动器 | 在密码框里填一次 Composio **项目 API key** | ✅ 必需（唯一的应用连接通道） |
+| 1 | **composio-pg**（`user-composio-pg`） | 自定义 **stdio** MCP（跑在 box 上） | 见下文「composio-pg」；BOOTSTRAP Step 0 从本目录安装启动器 | 在密码框里填一次仓库口令 `GROKBOT_HOME_PASSPHRASE`（用来解密 `secrets/*.enc` 里的 Composio key） | ✅ 必需（唯一的应用连接通道） |
 | 2 | **GitHub**（`cursor-github`） | 官方连接器 | — | — | ❌ 不需要（GitHub 走 composio-pg） |
 | 3 | **Origin**（`cursor-origin`） | 官方连接器 | — | — | ❌ 不需要 |
 | 4 | **Composio 插件**（`user-Composio`，plugin id `32661537`） | 插件市场 OAuth 版 | — | — | ❌ 不需要（它看到的是另一个 Composio user，看不到我们的应用） |
@@ -18,7 +18,7 @@
 
 - **pstack 插件**（plugin id **`9717366`**，cursor-public）：写代码类 bot 用的工作流技能包（architect、tdd、swarm、arena……）。dr eggbot 需要它。这是技能插件，不是应用连接；新号上 `InstallPlugin 9717366` 即可。
 - **`x` 工具命名空间**（X/Twitter 搜索、新闻）：平台自带，不需要安装；新号若没有就忽略。
-- **`gh` 命令行**：不是连接器。新号上用 Composio 里 GitHub（ZMGID）的 access token 做 `gh auth login --with-token`（见 BOOTSTRAP Step 0）；失败再退回设备码登录。
+- **`gh` 命令行**：不是连接器。仓库公开，克隆不需要登录；只有推送（写回、每日同步）才需要。新号上用 Composio 里 GitHub（ZMGID）的 access token 做 `gh auth login --with-token`（见 BOOTSTRAP Step 1）；失败再退回设备码登录。
 
 ## composio-pg（自定义 stdio MCP）——唯一必需的应用连接
 
@@ -35,18 +35,20 @@
 
 Composio 项目 ID：`pr_lh5-8poHU4QB`（只有这一个项目）。
 
-**文件**：`connectors/composio-pg/launch.py`、`launch.sh`（不含密钥）。仓库私有时 Step 0 会先按 BOOTSTRAP 里的内联片段写出这两份文件，不必先克隆仓库。
+**文件**：`connectors/composio-pg/launch.py`、`launch.sh`（不含密钥）。BOOTSTRAP Step 0 (c) 把它们装到 `/workspace/composio-pg/`；`launch.sh` 依赖 `/workspace/composio-pg/.venv`（装有 `composio==0.25.0`），以及 node/npx（`npx -y mcp-remote`）。
 
 **安装步骤**：
 
-1. 用 **secret-request（密码框，掩码输入）** 向用户要 Composio 项目 API key（Composio 控制台 → 项目设置 → API Keys）。
-   值写入 `/home/box/.composio_pg_key`，然后 `chmod 600`。**绝不能**让用户把 key 贴进聊天，也不要 `cat` 出来。
-   - 备选：请用户在 bot 桌面终端执行
+1. 用 **secret-request（密码框，掩码输入）** 向用户要仓库口令 `GROKBOT_HOME_PASSPHRASE`，然后解密 key：
+   `python3 scripts/secret-crypt.py dec secrets/COMPOSIO_API_KEY.enc /home/box/.composio_pg_key && chmod 600 /home/box/.composio_pg_key`
+   （冒烟测试不通过就改用 `secrets/COMPOSIO_API_KEY.box-current.enc`）。**绝不能**让用户把口令或 key 贴进聊天，也不要 `cat` 出来。
+   - 解密失败时的备选：用密码框直接要 Composio 项目 API key（Composio 控制台 → 项目设置 → API Keys），或请用户在 bot 桌面终端执行
      `read -rsp 'Composio key: ' K && umask 077 && printf %s "$K" > ~/.composio_pg_key && unset K`
-2. 写出启动器（若 `/workspace/composio-pg/launch.sh` 还不存在，用 BOOTSTRAP Step 0 的内联内容；仓库克隆后也可用 `setup.sh` / 复制 `connectors/composio-pg/`）：
+2. 装启动器（也可以直接跑 `setup.sh`，它做同样的事）：
    ```bash
    mkdir -p /workspace/composio-pg && cd /workspace/composio-pg
-   # launch.py / launch.sh 见 BOOTSTRAP Step 0（与 connectors/composio-pg/ 相同）
+   install -m 700 /workspace/grokbot-home/connectors/composio-pg/launch.sh .
+   install -m 600 /workspace/grokbot-home/connectors/composio-pg/launch.py .
    [ -x .venv/bin/python ] || uv venv -q .venv
    uv pip install -q --python .venv/bin/python "composio==0.25.0" || uv pip install -q --python .venv/bin/python composio
    npx -y mcp-remote --help >/dev/null 2>&1 || true
@@ -60,4 +62,4 @@ Composio 项目 ID：`pr_lh5-8poHU4QB`（只有这一个项目）。
 
 **新应用**：只在 Composio 控制台给测试用户 `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde` 授权新 toolkit，然后通过 composio-pg 使用。**不要**再装官方连接器。
 
-**换号/轮换 key**：重写 `~/.composio_pg_key` 并 `RestartMcpServers`，不用改仓库。
+**换号/轮换 key**：重写 `~/.composio_pg_key` 并 `RestartMcpServers`；然后重新加密写回仓库（`python3 scripts/secret-crypt.py enc /home/box/.composio_pg_key secrets/COMPOSIO_API_KEY.enc`，见 `secrets/README.md`），跑 `scripts/secret-scan.sh` 再推送。

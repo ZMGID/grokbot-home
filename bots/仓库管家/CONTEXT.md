@@ -3,7 +3,7 @@
 > 先读根目录 `/CONTEXT.md`。这里只记仓库管家自己的工作记录。
 
 ## 职责
-- 维护私有仓库 `ZMGID/grokbot-home`（本地 `/workspace/grokbot-home`）。
+- 维护仓库 `ZMGID/grokbot-home`（本地 `/workspace/grokbot-home`；2026-10-08 起公开，推送前必须过 `scripts/secret-scan.sh`）。
 - 跑每日同步定时任务，把本账号各 bot 的新记忆、设定、技能和连接器清单写回仓库。
 
 ## 记录

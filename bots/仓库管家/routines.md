@@ -8,8 +8,8 @@
 - **保存的提示词（重建时用 UpdateRoutine 创建）**：
 
 ```text
-每日同步 grokbot-home：把本账号所有 bot 的新记忆、设定、技能和连接器清单同步到私有仓库 ZMGID/grokbot-home（本地 /workspace/grokbot-home）。详细做法以仓库里的 scripts/sync.md 为准，先读它。
-1) 确保 /workspace/grokbot-home 是最新的（git pull --rebase；目录不存在就用 gh 克隆）。
+每日同步 grokbot-home：把本账号所有 bot 的新记忆、设定、技能和连接器清单同步到仓库 ZMGID/grokbot-home（公开仓库，本地 /workspace/grokbot-home）。详细做法以仓库里的 scripts/sync.md 为准，先读它。
+1) 确保 /workspace/grokbot-home 是最新的（git pull --rebase；目录不存在就 git clone https://github.com/ZMGID/grokbot-home /workspace/grokbot-home）。推送需要 gh 以 ZMGID 登录（gh auth status），没登录就在结果里说明。
 2) 对 bots/agent-map.json 里的每个 bot（包括我自己 仓库管家，以及本账号新出现、还没登记的 bot）：读它自上次同步以来的对话记录和 /home/box/agent-data/agents/<id>/ 下的 profile.json、settings.json、memory/，把新的持久事实、项目进展、决定、偏好写成带日期的要点合并进 bots/<slug>/CONTEXT.md；设定变化写进 profile.md，定时任务变化写进 routines.md；关于用户本人、所有 bot 都该知道的写进根目录 CONTEXT.md。新 bot 要建 bots/<slug>/ 并登记到 agent-map.json、index.json、bots/README.md。绝不抄录密钥、验证码、密码、一次性授权链接。
 3) 用当前连接器状态更新 connectors/README.md（只写名字、id、地址、步骤）；用户技能由 sync.sh 从 /home/box/agent-data/workflows/ 复制到 skills/。
 4) 运行 bash scripts/sync.sh：它先做密钥扫描，不干净就中止、不提交；扫描干净且有变化才 commit + push。

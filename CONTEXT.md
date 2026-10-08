@@ -43,11 +43,11 @@
   - 建议先做 2–5 块板，焊好后进自检模式（插电时按住顶部长键）逐键测试。
 
 ## 换号方案（2026-10-08 已确认）
-- 所有东西放进这个**私有** GitHub 仓库 `ZMGID/grokbot-home`：共享记忆（本文件）、每个 bot 的设定/记忆/定时任务（`bots/`）、连接器清单和启动脚本（`connectors/`）、技能（`skills/`）、工具环境脚本（`setup.sh`）、项目文件（`projects/`）。
+- 所有东西放进 GitHub 仓库 `ZMGID/grokbot-home`（2026-10-08 起改为**公开**，旧私有仓库改名为 `grokbot-home-private-old`）：共享记忆（本文件）、每个 bot 的设定/记忆/定时任务（`bots/`）、连接器清单和启动脚本（`connectors/`）、技能（`skills/`）、工具环境脚本（`setup.sh`）、项目文件（`projects/`）。
 - 新号流程：打开一个 Grok Bot，对它说「按 https://github.com/ZMGID/grokbot-home 配置你自己」。它按 `BOOTSTRAP.md` 配好自己，再用 CreateAgent 把其他 bot 全部建出来。
-- **密钥只通过 bot 的密码框（secret prompt）或 1Password 提供，永远不进仓库**（私有仓库也不行）。
+- **明文密钥永远不进仓库**。唯一例外：Composio key 用 `scripts/secret-crypt.py` 加密后放 `secrets/*.enc`；解密口令 `GROKBOT_HOME_PASSPHRASE` 只通过 bot 的密码框（secret prompt）提供。
 - Composio 的 GitHub / Gmail 连接统一走自定义连接器 **`composio-pg`**（Composio 测试用户 `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde`），不在官方 Composio 插件里重新授权。
 - (2026-10-08) **应用连接只走 Composio**：不要再装官方 GitHub（`cursor-github`）、Origin、Finance、Composio 插件（32661537）。新应用一律在 Composio 控制台给上述测试用户授权，经 `composio-pg` 使用。
 - 同步方式：由专门 bot **仓库管家**每天约 03:14（北京时间）跑定时任务，把各 bot 的新记忆和设定同步进仓库，有变化才推送，推送前做密钥扫描。（2026-10-08 用户改口：原先「不单独建同步 bot、由主 bot 跑」已作废，移交给仓库管家。）
-- 我需要手动做的只有：在密码框里填一次 Composio key（`gh` 设备码仅在 Composio token 登录失败时备用）。官方连接器授权不再需要。
+- 新号流程：匿名克隆（公开仓库不需要登录）→ 密码框填一次仓库口令 → bot 解密 Composio key、装 composio-pg → 重建各 bot。`gh` 登录只在推送时需要（优先用 Composio 的 GitHub token，设备码备用）。官方连接器授权不再需要。
 - 不做公开分享模板（export-bot-template 只能生成公开模板，不用）。

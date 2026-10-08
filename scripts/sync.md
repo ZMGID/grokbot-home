@@ -6,7 +6,7 @@
 
 ## 每次运行做什么
 
-1. **拉最新**：`cd /workspace/grokbot-home && git pull --rebase`（目录不存在就 `gh repo clone ZMGID/grokbot-home /workspace/grokbot-home`）。
+1. **拉最新**：`cd /workspace/grokbot-home && git pull --rebase`（目录不存在就 `git clone https://github.com/ZMGID/grokbot-home /workspace/grokbot-home`；仓库公开，克隆不需要登录，但**推送需要 `gh` 以 ZMGID 登录**，见 BOOTSTRAP Step 1）。
 2. **收集每个 bot 的新记忆**（仓库管家自己做，需要“读懂”）：
    - 本账号所有 bot：`/home/box/agent-data/agents/<id>/`（id ↔ slug 见 `bots/agent-map.json`；出现新的 bot 就新建 `bots/<slug>/` 并加进 `agent-map.json`、`index.json`、`bots/README.md`）。
    - 读上次同步以后的对话：优先用 ReadTranscript（cursor 命名空间，`agent_id`，用 `before` 往前翻页）；没有这个工具时，只读地复制
@@ -18,8 +18,8 @@
    - 按 `bots/agent-map.json` 把每个 bot 的 `profile.json`、`settings.json`（去掉 serverId）、`memory/`、自定义头像复制到 `bots/<slug>/raw/`；
    - 把 `/home/box/agent-data/workflows/` 下的用户技能复制到 `skills/`；
    - 生成 `scripts/env-snapshot.md`（工具环境快照，发现 setup.sh 漏装的东西就顺手补进 setup.sh）；
-   - 运行 `scripts/secret-scan.sh`（gitleaks 工作区 + 历史，rg 模式兜底，并确认 `~/.composio_pg_key` 的内容没出现在仓库里）——**不干净就中止，不提交**；
-   - `git add -A`，没有变化就退出；有变化就 `git commit -m "sync: <时间> Asia/Shanghai"` 并 `git push`。
+   - `git add -A` 后运行 `scripts/secret-scan.sh`（gitleaks 工作区 + 历史；rg 模式扫描所有将提交的文件，含隐藏文件；确认 `~/.composio_pg_key`、两份 `secrets/*.enc` 的明文、口令 `GROKBOT_HOME_PASSPHRASE` 都没出现在文件和未推送提交里；`secrets/` 下只能有 `GBH1` 加密文件）——**不干净就撤销暂存、中止，不提交**；
+   - 没有变化就退出；有变化就 `git commit -m "sync: <时间> Asia/Shanghai"` 并 `git push origin HEAD:main`（被拒会 pull --rebase 后重试一次）。脚本开头会确认 remote 是 `ZMGID/grokbot-home`、分支是 `main`。
 4. **连接器清单**：用 GetMcpServerStatus 看当前连接器，和 `connectors/README.md` 对比；有新增/删除/状态变化就更新清单（只写名字、id、地址、步骤）。
 5. **汇报**：
    - 没有变化：不发消息。
@@ -30,7 +30,7 @@
 
 ```bash
 cd /workspace/grokbot-home
-bash scripts/sync.sh --dry-run   # 只看会改什么，不提交
+bash scripts/sync.sh --dry-run   # 收集文件 + 扫描，显示会提交什么，不提交（收集到的文件留在工作区）
 bash scripts/sync.sh             # 正式同步
 bash scripts/secret-scan.sh      # 只做密钥扫描
 ```

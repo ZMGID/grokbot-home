@@ -39,4 +39,4 @@ The user's primary bot. Takes any task and routes it to the right one of their o
 ## 分享模板（export-bot-template）
 
 旧号上检查过托管技能 `export-bot-template`：它只能生成**公开**分享模板，需要 `CreateBotShareJson` 工具并且要用户在审核卡片上确认，
-导出时还会去掉私人信息。这和“私有、不公开”的要求冲突，所以**没有导出模板**，本目录的 profile.md + CONTEXT.md + routines.md 就是完整的设定来源。
+导出时还会去掉私人信息。这和当时“私有、不公开”的要求冲突，所以**没有导出模板**（2026-10-08 仓库改为公开后仍不做分享模板），本目录的 profile.md + CONTEXT.md + routines.md 就是完整的设定来源。

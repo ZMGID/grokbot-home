@@ -194,18 +194,18 @@ fi
 if [[ -s "$HOME/.composio_pg_key" ]]; then
   chmod 600 "$HOME/.composio_pg_key"; ok "~/.composio_pg_key 已存在（权限 600）"
 else
-  echo "    · ~/.composio_pg_key 还不存在：按 BOOTSTRAP.md 第 3 步用密码框向用户要 Composio API key"
+  echo "    · ~/.composio_pg_key 还不存在：按 BOOTSTRAP.md Step 0 (b) 用口令 GROKBOT_HOME_PASSPHRASE 解密 secrets/COMPOSIO_API_KEY.enc"
 fi
 
 # ---------------------------------------------------------------------------
-# 9. gh 登录状态（只检查，不登录；登录需要用户在浏览器里确认设备码）
+# 9. gh 登录状态（只检查，不登录）。仓库公开，克隆不需要登录；只有推送（写回/每日同步）需要，见 BOOTSTRAP Step 1
 # ---------------------------------------------------------------------------
 log "gh auth"
 if gh auth status >/dev/null 2>&1; then
   ok "gh 已登录"
   gh auth setup-git >/dev/null 2>&1 || true
 else
-  echo "    · gh 未登录：运行 'gh auth login --hostname github.com --git-protocol https --web'，把设备码交给用户确认"
+  echo "    · gh 未登录：只影响推送。按 BOOTSTRAP Step 1 用 Composio 的 GitHub token 登录（失败再用设备码）"
 fi
 
 # ---------------------------------------------------------------------------
