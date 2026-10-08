@@ -10,6 +10,7 @@
 - (2026-10-08) 用户创建本 bot（agent id `5eed9f49-92c0-49b7-8327-2128e99b910b`）。
 - (2026-10-08) 用户要求主 bot（Grok Bot）把本仓库的维护（含每日同步）移交给仓库管家；仓库管家已接手。
 - (2026-10-08) 在本账号创建定时任务「每日同步 grokbot-home」，cron `CRON_TZ=Asia/Shanghai 14 3 * * *`（每天 03:14 北京时间）。详细做法见 `scripts/sync.md`，脚本 `scripts/sync.sh`。
+- (2026-10-08) 每周「换号演练与安全审计」已创建，cron `CRON_TZ=Asia/Shanghai 12 15 * * 0`（周日 15:12）。
 
 ## 规矩
 - 公开仓库，密钥只以加密形式存在 `secrets/*.enc`（`scripts/secret-crypt.py`，口令在环境变量 `GROKBOT_HOME_PASSPHRASE`）。明文密钥、口令、验证码、密码、一次性授权链接绝不进仓库；推送前必须跑密钥扫描，不干净就中止。旧仓 `ZMGID/grokbot-home-private-old` 不要再往里推。
