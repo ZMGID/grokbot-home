@@ -1,0 +1,40 @@
+# 每日同步任务说明（daily-grokbot-sync）
+
+- **谁跑**：主 bot（grok-bot）。不单独建同步 bot（2026-10-08 用户决定）。
+- **什么时候**：每天约 03:17（北京时间），cron `CRON_TZ=Asia/Shanghai 17 3 * * *`。提示词见 `bots/grok-bot/routines.md`。
+- **原则**：有变化才提交推送，没变化不打扰用户；推送前必须通过密钥扫描；任何密钥、验证码、密码、一次性授权链接都不进仓库。
+
+## 每次运行做什么
+
+1. **拉最新**：`cd /workspace/grokbot-home && git pull --rebase`（目录不存在就 `gh repo clone ZMGID/grokbot-home /workspace/grokbot-home`）。
+2. **收集每个 bot 的新记忆**（主 bot 自己做，需要“读懂”）：
+   - 本账号所有 bot：`/home/box/agent-data/agents/<id>/`（id ↔ slug 见 `bots/agent-map.json`；出现新的 bot 就新建 `bots/<slug>/` 并加进 `agent-map.json`、`index.json`、`bots/README.md`）。
+   - 读上次同步以后的对话：优先用 ReadTranscript（cursor 命名空间，`agent_id`，用 `before` 往前翻页）；没有这个工具时，只读地复制
+     `/home/box/agent-data/search-index.db*` 到 `/tmp`，查 `messages` 表（`agent_id`、`timestamp_ms`、`body`）。
+   - 把新的**持久**信息合并进 `bots/<slug>/CONTEXT.md`：项目进展、决定、用户新偏好、待办状态变化。写成要点，带日期，不贴大段原文。
+   - 关于用户本人、所有 bot 都需要知道的 → 根目录 `CONTEXT.md`。
+   - 设定变化（名字、description、头像）→ `profile.md`；定时任务新增/修改/暂停 → `routines.md`。
+3. **运行 `bash scripts/sync.sh`**，它负责机械部分：
+   - 按 `bots/agent-map.json` 把每个 bot 的 `profile.json`、`settings.json`（去掉 serverId）、`memory/`、自定义头像复制到 `bots/<slug>/raw/`；
+   - 把 `/home/box/agent-data/workflows/` 下的用户技能复制到 `skills/`；
+   - 生成 `scripts/env-snapshot.md`（工具环境快照，发现 setup.sh 漏装的东西就顺手补进 setup.sh）；
+   - 运行 `scripts/secret-scan.sh`（gitleaks 工作区 + 历史，rg 模式兜底，并确认 `~/.composio_pg_key` 的内容没出现在仓库里）——**不干净就中止，不提交**；
+   - `git add -A`，没有变化就退出；有变化就 `git commit -m "sync: <时间> Asia/Shanghai"` 并 `git push`。
+4. **连接器清单**：用 GetMcpServerStatus 看当前连接器，和 `connectors/README.md` 对比；有新增/删除/状态变化就更新清单（只写名字、id、地址、步骤）。
+5. **汇报**：
+   - 没有变化：不发消息。
+   - 有变化：在主 bot 的聊天里给用户发一行中文摘要（例如“已同步：小枳 CONTEXT +3 条，connectors 新增 Notion”）。
+   - 密钥扫描失败 / 推送失败：在聊天里说明原因（只说文件名和行号，不贴内容）。
+
+## 手动跑
+
+```bash
+cd /workspace/grokbot-home
+bash scripts/sync.sh --dry-run   # 只看会改什么，不提交
+bash scripts/sync.sh             # 正式同步
+bash scripts/secret-scan.sh      # 只做密钥扫描
+```
+
+## 注意
+- 别的 bot 在新号上的 agent id 和旧号不同：BOOTSTRAP 第 6 步建完 bot 后要把新 id 写进 `bots/agent-map.json` 并提交，否则 raw 快照会跳过。
+- 不要把 `/home/box/agent-data/` 下的 `box-secrets.json`、`host-secrets.json`、`gateway.json`、`store.db`、`conversation-blobs.db` 复制进仓库。

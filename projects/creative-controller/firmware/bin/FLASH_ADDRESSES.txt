@@ -1,0 +1,6 @@
+Flash addresses (ESP32-S3, 16MB, DIO):
+0x0     bootloader.bin
+0x8000  partitions.bin
+0xe000  boot_app0.bin
+0x10000 firmware.bin
+or merged: 0x0 creativedial-esp32s3-merged.bin

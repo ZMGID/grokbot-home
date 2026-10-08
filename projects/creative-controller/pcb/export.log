@@ -1,0 +1,315 @@
+Plotted to 'fab/gerbers/creative-controller-F_Cu.gbr'.
+Plotted to 'fab/gerbers/creative-controller-B_Cu.gbr'.
+Plotted to 'fab/gerbers/creative-controller-F_Paste.gbr'.
+Plotted to 'fab/gerbers/creative-controller-B_Paste.gbr'.
+Plotted to 'fab/gerbers/creative-controller-F_Silkscreen.gbr'.
+Plotted to 'fab/gerbers/creative-controller-B_Silkscreen.gbr'.
+Plotted to 'fab/gerbers/creative-controller-F_Mask.gbr'.
+Plotted to 'fab/gerbers/creative-controller-B_Mask.gbr'.
+Plotted to 'fab/gerbers/creative-controller-Edge_Cuts.gbr'.
+Created file 'fab/gerbers/creative-controller-PTH.drl'
+Created file 'fab/gerbers/creative-controller-NPTH.drl'
+Created file 'fab/gerbers/creative-controller-PTH-drl_map.gbr'.
+Created file 'fab/gerbers/creative-controller-NPTH-drl_map.gbr'.
+Done.
+Plotted to 'fab/schematic.pdf'.
+Done.
+Wrote position data to 'fab/pos_raw.csv'.
+Plotted to 'fab/pcb_top_layers.pdf'.
+Done.
+Plotted to 'fab/pcb_bottom_layers.pdf'.
+Done.
+Determining PCB data
+Build STEP data
+Could not add 3D model to SW12.
+File not found: ${KICAD9_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SPDT_PCM12.step
+Could not add 3D model to ENC1.
+File not found: ${KICAD9_3DMODEL_DIR}/Rotary_Encoder.3dshapes/RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm.step
+Could not add 3D model to R4.
+File not found: ${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step
+Could not add 3D model to C7.
+File not found: ${KICAD9_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step
+Could not add 3D model to Q1.
+File not found: ${KICAD9_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23.step
+Could not add 3D model to C9.
+File not found: ${KICAD9_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0402_1005Metric.step
+Could not add 3D model to R16.
+File not found: ${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step
+Could not add 3D model to SW11.
+File not found: ${KICAD9_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SPST_TL3342.step
+Could not add 3D model to U3.
+File not found: ${KICAD9_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-5.step
+Could not add 3D model to C4.
+File not found: ${KICAD9_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step
+Could not add 3D model to R9.
+File not found: ${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step
+Could not add 3D model to R8.
+File not found: ${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step
+Could not add 3D model to R7.
+File not found: ${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step
+Could not add 3D model to J2.
+File not found: ${KICAD9_3DMODEL_DIR}/Connector_JST.3dshapes/JST_PH_S2B-PH-SM4-TB_1x02-1MP_P2.00mm_Horizontal.step
+Could not add 3D model to R13.
+File not found: ${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step
+Could not add 3D model to R14.
+File not found: ${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step
+Could not add 3D model to R10.
+File not found: ${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step
+Could not add 3D model to C2.
+File not found: ${KICAD9_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0402_1005Metric.step
+Could not add 3D model to SW9.
+File not found: ${KICAD9_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SPST_PTS645.step
+Could not add 3D model to SW6.
+File not found: ${KICAD9_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SPST_PTS645.step
+Could not add 3D model to U1.
+File not found: ${KICAD9_3DMODEL_DIR}/RF_Module.3dshapes/ESP32-S3-WROOM-1.step
+Could not add 3D model to SW8.
+File not found: ${KICAD9_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SPST_PTS645.step
+Could not add 3D model to R11.
+File not found: ${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step
+Could not add 3D model to C15.
+File not found: ${KICAD9_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0805_2012Metric.step
+Could not add 3D model to C11.
+File not found: ${KICAD9_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0402_1005Metric.step
+Could not add 3D model to U2.
+File not found: ${KICAD9_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-6.step
+Could not add 3D model to C1.
+File not found: ${KICAD9_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step
+Could not add 3D model to C12.
+File not found: ${KICAD9_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0402_1005Metric.step
+Could not add 3D model to U5.
+File not found: ${KICAD9_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-5.step
+Could not add 3D model to R3.
+File not found: ${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step
+Could not add 3D model to SW2.
+File not found: ${KICAD9_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SPST_PTS645.step
+Could not add 3D model to D2.
+File not found: ${KICAD9_3DMODEL_DIR}/LED_SMD.3dshapes/LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm.step
+Could not add 3D model to SW7.
+File not found: ${KICAD9_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SPST_PTS645.step
+Could not add 3D model to SW5.
+File not found: ${KICAD9_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SPST_PTS645.step
+Could not add 3D model to C13.
+File not found: ${KICAD9_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0402_1005Metric.step
+Could not add 3D model to R15.
+File not found: ${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step
+Could not add 3D model to R12.
+File not found: ${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step
+Could not add 3D model to C10.
+File not found: ${KICAD9_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0402_1005Metric.step
+Could not add 3D model to R5.
+File not found: ${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step
+Could not add 3D model to R6.
+File not found: ${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step
+Could not add 3D model to J1.
+File not found: ${KICAD9_3DMODEL_DIR}/Connector_USB.3dshapes/USB_C_Receptacle_HRO_TYPE-C-31-M-12.step
+Could not add 3D model to SW10.
+File not found: ${KICAD9_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SPST_TL3342.step
+Could not add 3D model to R1.
+File not found: ${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step
+Could not add 3D model to C6.
+File not found: ${KICAD9_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step
+Could not add 3D model to R2.
+File not found: ${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step
+Could not add 3D model to D1.
+File not found: ${KICAD9_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SOD-123.step
+Could not add 3D model to C14.
+File not found: ${KICAD9_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0402_1005Metric.step
+Could not add 3D model to C5.
+File not found: ${KICAD9_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step
+Could not add 3D model to C3.
+File not found: ${KICAD9_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0402_1005Metric.step
+Could not add 3D model to C8.
+File not found: ${KICAD9_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0402_1005Metric.step
+Could not add 3D model to SW1.
+File not found: ${KICAD9_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SPST_PTS645.step
+Could not add 3D model to U4.
+File not found: ${KICAD9_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-5.step
+Could not add 3D model to SW3.
+File not found: ${KICAD9_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SPST_PTS645.step
+Could not add 3D model to SW4.
+File not found: ${KICAD9_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SPST_PTS645.step
+Create PCB solid model
+Board outline: find 155 initial points
+Build board outlines (1 outlines) with 155 points.
+Build board cutouts and holes (305 hole(s)).
+Subtracting holes for shapes
+Subtracting holes for pads
+Subtracting holes for vias
+
+Generate board full shape.
+Writing STEP file
+STEP file 'fab/creative-controller-pcb.step' created.
+
+Export time 0.255 s
+Loading...
+Build board outline
+
+Create layers
+Create tracks and vias
+Create zones
+Build Tech layers
+Build Tech layer 11
+Build Tech layer 9
+Build Tech layer 15
+Build Tech layer 13
+Build Tech layer 7
+Build Tech layer 5
+Build Tech layer 3
+Build Tech layer 1
+Build Tech layer 17
+Build Tech layer 19
+Build Tech layer 21
+Build Tech layer 23
+Build Tech layer 39
+Build Tech layer 41
+Build Tech layer 43
+Build Tech layer 45
+Build Tech layer 47
+Build Tech layer 49
+Build Tech layer 51
+Build Tech layer 53
+Build Tech layer 55
+Build Tech layer 57
+Build Tech layer 59
+Build Tech layer 61
+Build Tech layer 63
+Build Tech layer 65
+Build Tech layer 67
+Build Tech layer 69
+Build Tech layer 71
+Build Tech layer 73
+Build Tech layer 75
+Build Tech layer 77
+Build Tech layer 79
+Build Tech layer 81
+Build Tech layer 83
+Build Tech layer 85
+Build Tech layer 87
+Build Tech layer 89
+Build Tech layer 91
+Build Tech layer 93
+Build Tech layer 95
+Build Tech layer 97
+Build Tech layer 99
+Build Tech layer 101
+Build Tech layer 103
+Build Tech layer 105
+Build Tech layer 107
+Build Tech layer 109
+Build Tech layer 111
+Build Tech layer 113
+Build Tech layer 115
+Build Tech layer 117
+Build Tech layer 119
+Build Tech layer 121
+Build Tech layer 123
+Build Tech layer 125
+Build Tech layer 127
+Simplifying copper layer polygons
+Calculating plated copper
+Simplify holes contours
+Build BVH for holes and vias
+Load Raytracing: board
+Load Raytracing: layers
+Loading 3D models...
+Reload time 0.229 s
+Rendering: 7 %
+Rendering: 12 %
+Rendering: 19 %
+Rendering: 24 %
+Rendering: 28 %
+Rendering: 33 %
+Rendering: 37 %
+Rendering: 41 %
+Rendering: 47 %
+Rendering: 52 %
+Rendering: 58 %
+Rendering: 64 %
+Rendering: 69 %
+Rendering: 76 %
+Rendering: 81 %
+Rendering: 88 %
+Rendering: 93 %
+Rendering: 100 %
+Rendering: 100 %
+Rendering: Post processing shader
+Rendering time 7.710 s
+Successfully created 3D render image
+Loading...
+Build board outline
+
+Create layers
+Create tracks and vias
+Create zones
+Build Tech layers
+Build Tech layer 11
+Build Tech layer 9
+Build Tech layer 15
+Build Tech layer 13
+Build Tech layer 7
+Build Tech layer 5
+Build Tech layer 3
+Build Tech layer 1
+Build Tech layer 17
+Build Tech layer 19
+Build Tech layer 21
+Build Tech layer 23
+Build Tech layer 39
+Build Tech layer 41
+Build Tech layer 43
+Build Tech layer 45
+Build Tech layer 47
+Build Tech layer 49
+Build Tech layer 51
+Build Tech layer 53
+Build Tech layer 55
+Build Tech layer 57
+Build Tech layer 59
+Build Tech layer 61
+Build Tech layer 63
+Build Tech layer 65
+Build Tech layer 67
+Build Tech layer 69
+Build Tech layer 71
+Build Tech layer 73
+Build Tech layer 75
+Build Tech layer 77
+Build Tech layer 79
+Build Tech layer 81
+Build Tech layer 83
+Build Tech layer 85
+Build Tech layer 87
+Build Tech layer 89
+Build Tech layer 91
+Build Tech layer 93
+Build Tech layer 95
+Build Tech layer 97
+Build Tech layer 99
+Build Tech layer 101
+Build Tech layer 103
+Build Tech layer 105
+Build Tech layer 107
+Build Tech layer 109
+Build Tech layer 111
+Build Tech layer 113
+Build Tech layer 115
+Build Tech layer 117
+Build Tech layer 119
+Build Tech layer 121
+Build Tech layer 123
+Build Tech layer 125
+Build Tech layer 127
+Simplifying copper layer polygons
+Calculating plated copper
+Simplify holes contours
+Build BVH for holes and vias
+Load Raytracing: board
+Load Raytracing: layers
+Loading 3D models...
+Reload time 0.163 s
+Rendering: 79 %
+Rendering: 100 %
+Rendering time 0.452 s
+Successfully created 3D render image
+BOM lines 27 parts total USD 12.34 extended types 11

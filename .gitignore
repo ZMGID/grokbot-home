@@ -1,0 +1,57 @@
+# --- secrets: never commit ---
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+*.secret
+*secret*.json
+*credentials*.json
+.composio_pg_key
+composio_pg_key
+*token*.txt
+box-secrets.json
+host-secrets.json
+gateway.json
+hosts.yml
+
+# --- python ---
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+
+# --- node ---
+node_modules/
+.npm/
+
+# --- build caches ---
+.pio/
+.platformio/
+build/
+dist/
+target/
+*.o
+*.elf
+!projects/creative-controller/firmware/bin/*.bin
+
+# --- KiCad local/backup files ---
+*-backups/
+*.kicad_prl.lck
+*.lck
+fp-info-cache
+_autosave-*
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+*.swp
+*~

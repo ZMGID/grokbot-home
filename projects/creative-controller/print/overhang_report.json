@@ -1,0 +1,189 @@
+{
+ "top_shell": {
+  "bridge_area_mm2": 684.6,
+  "overhang_steeper_than_45deg_mm2": 4137.7,
+  "bbox": [
+   94.3,
+   93.2,
+   22.0
+  ],
+  "volume_cm3": 24.1,
+  "watertight": true
+ },
+ "bottom_shell": {
+  "bridge_area_mm2": 697.3,
+  "overhang_steeper_than_45deg_mm2": 114.0,
+  "bbox": [
+   94.3,
+   93.2,
+   11.5
+  ],
+  "volume_cm3": 24.48,
+  "watertight": false
+ },
+ "cap_top": {
+  "bridge_area_mm2": 0.0,
+  "overhang_steeper_than_45deg_mm2": 0.0,
+  "bbox": [
+   36.0,
+   15.0,
+   13.2
+  ],
+  "volume_cm3": 4.33,
+  "watertight": true
+ },
+ "cap_tr1": {
+  "bridge_area_mm2": 0.0,
+  "overhang_steeper_than_45deg_mm2": 0.0,
+  "bbox": [
+   13.0,
+   13.0,
+   12.2
+  ],
+  "volume_cm3": 0.9,
+  "watertight": true
+ },
+ "cap_tr2": {
+  "bridge_area_mm2": 0.0,
+  "overhang_steeper_than_45deg_mm2": 0.0,
+  "bbox": [
+   13.0,
+   13.0,
+   10.8
+  ],
+  "volume_cm3": 0.88,
+  "watertight": true
+ },
+ "cap_br": {
+  "bridge_area_mm2": 0.0,
+  "overhang_steeper_than_45deg_mm2": 0.0,
+  "bbox": [
+   13.0,
+   13.0,
+   10.0
+  ],
+  "volume_cm3": 0.87,
+  "watertight": true
+ },
+ "cap_side": {
+  "bridge_area_mm2": 0.0,
+  "overhang_steeper_than_45deg_mm2": 0.0,
+  "bbox": [
+   20.0,
+   15.0,
+   8.8
+  ],
+  "volume_cm3": 1.77,
+  "watertight": true
+ },
+ "cap_tall1": {
+  "bridge_area_mm2": 0.0,
+  "overhang_steeper_than_45deg_mm2": 0.0,
+  "bbox": [
+   14.0,
+   24.0,
+   9.4
+  ],
+  "volume_cm3": 2.16,
+  "watertight": true
+ },
+ "cap_tall2": {
+  "bridge_area_mm2": 0.0,
+  "overhang_steeper_than_45deg_mm2": 0.0,
+  "bbox": [
+   14.0,
+   20.0,
+   7.9
+  ],
+  "volume_cm3": 1.51,
+  "watertight": true
+ },
+ "knob": {
+  "bridge_area_mm2": 52.3,
+  "overhang_steeper_than_45deg_mm2": 0.0,
+  "bbox": [
+   32.0,
+   32.0,
+   11.0
+  ],
+  "volume_cm3": 8.0,
+  "watertight": true
+ },
+ "knob_ring": {
+  "bridge_area_mm2": 0.0,
+  "overhang_steeper_than_45deg_mm2": 0.0,
+  "bbox": [
+   40.0,
+   40.0,
+   1.2
+  ],
+  "volume_cm3": 0.47,
+  "watertight": true
+ },
+ "scroll_wheel": {
+  "bridge_area_mm2": 6.6,
+  "overhang_steeper_than_45deg_mm2": 0.0,
+  "bbox": [
+   23.9,
+   23.9,
+   13.8
+  ],
+  "volume_cm3": 3.45,
+  "watertight": true
+ },
+ "light_pipe_clearPETG": {
+  "bridge_area_mm2": 12.6,
+  "overhang_steeper_than_45deg_mm2": 0.0,
+  "bbox": [
+   5.0,
+   5.0,
+   16.0
+  ],
+  "volume_cm3": 0.12,
+  "watertight": true
+ },
+ "pwr_slider_ext": {
+  "bridge_area_mm2": 2.4,
+  "overhang_steeper_than_45deg_mm2": 0.0,
+  "bbox": [
+   4.0,
+   3.0,
+   4.0
+  ],
+  "volume_cm3": 0.04,
+  "watertight": true
+ },
+ "wheel_pin_optional": {
+  "bridge_area_mm2": 0.0,
+  "overhang_steeper_than_45deg_mm2": 0.0,
+  "bbox": [
+   3.0,
+   3.0,
+   14.0
+  ],
+  "volume_cm3": 0.1,
+  "watertight": true
+ },
+ "tolerance_test_plate": {
+  "bridge_area_mm2": 0.0,
+  "overhang_steeper_than_45deg_mm2": 0.0,
+  "bbox": [
+   96.0,
+   34.0,
+   13.0
+  ],
+  "volume_cm3": 11.87,
+  "watertight": true
+ },
+ "tolerance_test_pegs": {
+  "bridge_area_mm2": 0.0,
+  "overhang_steeper_than_45deg_mm2": 0.0,
+  "bbox": [
+   60.0,
+   12.0,
+   8.0
+  ],
+  "volume_cm3": 3.7,
+  "watertight": true
+ }
+}

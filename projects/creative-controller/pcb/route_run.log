@@ -1,0 +1,213 @@
+symbols: 59 y-extent 243.32000000000002
+footprints 59 nets 32
+patched creative-controller.kicad_pro
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+./pcbnew/pcb_track.cpp(375): assert "false" failed in SetWidth(): Warning: PCB_VIA::SetWidth called without a layer argument
+SES import: True
+stitching vias: 184
+tracks+vias: 856
+patched creative-controller.kicad_pro
+Checking sheet names...
+Checking bus conflicts...
+Checking conflicts...
+Checking units...
+Checking footprints...
+Checking pins...
+Checking similar labels...
+Checking local and global labels...
+Checking for unresolved variables...
+Checking no connect pins for connections...
+Checking for library symbol issues...
+Checking for footprint link issues...
+Checking for off grid pins and wires...
+Checking for labels on more than one wire...
+Checking for undefined netclasses...
+Found 0 violations
+Saved ERC Report to erc.rpt
+Found 14 violations
+Found 0 unconnected items
+Found 0 schematic parity issues
+Saved DRC Report to drc.rpt
+DONE

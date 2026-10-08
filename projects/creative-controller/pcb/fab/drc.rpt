@@ -1,0 +1,60 @@
+** Drc report for creative-controller.kicad_pcb **
+** Created on 2026-10-08T02:07:48+0800 **
+
+** Found 14 DRC violations **
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(56.2000 mm, 99.9904 mm): Segment on Edge.Cuts
+    @(55.9500 mm, 94.0000 mm): Reference field of SW9
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(93.5006 mm, 54.9006 mm): Segment on Edge.Cuts
+    @(95.3000 mm, 56.4003 mm): Segment of J1 on F.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(93.5006 mm, 54.9006 mm): Segment on Edge.Cuts
+    @(104.7000 mm, 56.4003 mm): Segment of J1 on F.Silkscreen
+[lib_footprint_mismatch]: Footprint 'ESP32-S3-WROOM-1' does not match copy in library 'RF_Module'.
+    Local override; warning
+    @(100.0000 mm, 128.5000 mm): Footprint U1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(109.8400 mm, 128.0000 mm): Reference field of C2
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(109.3200 mm, 132.0000 mm): Reference field of C15
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(109.5700 mm, 124.0000 mm): Reference field of C1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(93.8400 mm, 78.5000 mm): Reference field of C10
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(76.3000 mm, 100.3000 mm): Rectangle of ENC2 on F.Silkscreen
+[silk_overlap]: Silkscreen overlap
+    Rule: board setup constraints silk; warning
+    @(92.8600 mm, 87.1078 mm): Segment of C13 on F.Silkscreen
+    @(93.3400 mm, 87.0000 mm): Reference field of C14
+[silk_overlap]: Silkscreen overlap
+    Rule: board setup constraints silk; warning
+    @(88.8300 mm, 87.0000 mm): Reference field of R16
+    @(88.3800 mm, 87.1536 mm): Segment of R15 on F.Silkscreen
+[silk_overlap]: Silkscreen overlap
+    Rule: board setup constraints silk; warning
+    @(108.3800 mm, 107.1536 mm): Segment of R13 on F.Silkscreen
+    @(108.8300 mm, 107.0000 mm): Reference field of R14
+[silk_overlap]: Silkscreen overlap
+    Rule: board setup constraints silk; warning
+    @(112.8600 mm, 107.1078 mm): Segment of C11 on F.Silkscreen
+    @(113.3400 mm, 107.0000 mm): Reference field of C12
+[silk_overlap]: Silkscreen overlap
+    Rule: board setup constraints silk; warning
+    @(87.5000 mm, 82.3000 mm): Segment of D2 on F.Silkscreen
+    @(87.8400 mm, 80.0000 mm): Reference field of C9
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** End of Report **
