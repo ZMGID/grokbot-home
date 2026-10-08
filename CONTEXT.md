@@ -42,6 +42,19 @@
   - PCB 是自动布线（Freerouting），下单前最好请硬件工程师看一遍。
   - 建议先做 2–5 块板，焊好后进自检模式（插电时按住顶部长键）逐键测试。
 
+
+## 分工（2026-10-08）
+
+- **Grok Bot**（主 bot / 经理）：分派任务给其他 bot，并负责用 CreateAgent **创建新 bot**；工作日早晨计划（含双 Gmail 未读摘要）与晚间总结。
+- **小枳**：中文通用助手，调研、查资料、方案与代码仓库审查辅助。
+- **仓库管家**：维护公开仓库 `ZMGID/grokbot-home`，每天 03:14（北京时间）跑同步。
+- **代码工程师**：盯 `ZMGID/Dsivio`（主）与 `ZMGID/kivio` 的 CI / 开着的 PR，修代码并开修复 PR；GitHub 只走 composio-pg。
+- **搭建运维**：公司官网、飞书及其他系统/工具的搭建与维护。
+- **邮件秘书**：经 composio-pg 处理两个 Gmail；查信、整理、起草回复与待办跟进。**只写草稿，从不发送。**
+- **硬件工程师**：创作控制器项目（`projects/creative-controller/`：外壳、PCB、固件、软件、BOM）。
+
+（2026-10-08 用户已删除 **dr eggbot**；原先「设计并创建 bot」改由 Grok Bot 自己做。）
+
 ## 换号方案（2026-10-08 已确认）
 - 所有东西放进 GitHub 仓库 `ZMGID/grokbot-home`（2026-10-08 起改为**公开**，旧私有仓库改名为 `grokbot-home-private-old`）：共享记忆（本文件）、每个 bot 的设定/记忆/定时任务（`bots/`）、连接器清单和启动脚本（`connectors/`）、技能（`skills/`）、工具环境脚本（`setup.sh`）、项目文件（`projects/`）。
 - 新号流程：打开一个 Grok Bot，对它说「按 https://github.com/ZMGID/grokbot-home 配置你自己」。它按 `BOOTSTRAP.md` 配好自己，再用 CreateAgent 把其他 bot 全部建出来。
