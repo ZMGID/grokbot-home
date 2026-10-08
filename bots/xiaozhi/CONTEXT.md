@@ -42,7 +42,11 @@
 - 用户在 Composio 控制台给测试用户 `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde` 授权了 GitHub 和两个 Gmail；官方 Composio 插件（OAuth）查的是登录账号自己的 user，所以看不到。
 - 用户通过密码框给了 Composio 项目 API key（存在 box 的 `/home/box/.composio_pg_key`，权限 600；**key 本身不在仓库**），小枳写了 `/workspace/composio-pg/launch.py` + `launch.sh`（现在在 `connectors/composio-pg/`），测试通过；后来主 bot 把它作为 `composio-pg` 加到账号里。
 - 用户要求：**看 GitHub 也通过 Composio（composio-pg）**。通过它看到：Dsivio main CI 从 9-27 起一直挂（Node 20 vs `Promise.withResolvers`）；kivio main 9-24 ~ 10-06 也有 CI 失败（未细查）；PR #60 最后一轮全过；9 月底 kivio 合并/关闭了 agent todo 工具重构、上下文压缩对齐 ZCode、标题大纲原地展开、外部 CLI 会话“回退到这里”等 PR。
-- 待用户回复：要不要查 kivio main 为什么一直挂；要不要给 Dsivio 提 Node 22 的 PR。
+- (2026-10-08) 后续：Dsivio **PR #1**（Node 22）已由代码工程师开出且 CI 全绿、未合并；kivio main 红灯原因仍未细查。
+
+### Dsivio IM Gateway 调研（2026-10-08 ~ 10-09）
+- 小萌派活：调研 Hermes IM 网关。确认对象是 Nous Research 的 [Hermes Agent](https://github.com/NousResearch/hermes-agent)（Python）；企业微信与飞书均已内置。桌面端无公网，两边都应走长连接。建议先做企业微信智能机器人（协议公开、可纯 Rust、原生流式），飞书第二；MVP 单平台单聊 + 流式/配对码/重连；IM 发起的对话默认拒绝需审批的工具。报告：`/workspace/dsivio-im/hermes-gateway.md`（不进本仓库）。
+- (2026-10-09) 用户问有无现成 SDK：飞书官方 `@larksuiteoapi/node-sdk`（含 `createLarkChannel` 长连接等）、企微官方 `@wecom/aibot-node-sdk`（长连接/流式），均为 Node；Rust 仅有不成熟社区实现。用户决定自己写 Rust，要求整理协议实现手册，明早使用（`/workspace/dsivio-im/rust-impl-guide.md`）。
 
 ## 教训
 - 用户正在按某个方式配置时，不要提供另一套方案（例如重新生成授权链接）。先问清楚、照用户的路子走。

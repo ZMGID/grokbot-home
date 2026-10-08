@@ -19,15 +19,17 @@
 
 ### kivio（ZMGID/kivio）
 - Tauri 2 + React/Vite/TS 前端 + Rust 后端的桌面 AI 助手，约 585 star。另有仓库 `Dsivio`、`dsivio-plugins`、`dsvideo-plugin`、`fkmem`（Pi 的运行时记忆）。
-- **PR #60「feat: Kivio Study 材料学习工作台」**（分支 `feat/kivio-study-cloud`，草稿状态）：2026-10-07 20:48 的提交 `be06640` 修好了 Study browser regression；之后（10-07 20:49 那一轮）CI 和 Study browser regression **全部通过**，没有冲突，还没人 review。
+- **PR #60「feat: Kivio Study 材料学习工作台」**（分支 `feat/kivio-study-cloud`，草稿状态）：2026-10-07 20:48 的提交 `be06640` 修好了 Study browser regression；之后（10-07 20:49 那一轮）CI 和 Study browser regression **全部通过**，没有冲突，还没人 review；live check-mode 验收未过，10/7 后无进展。
 - PR #60 的 review 意见：PR 太大（102 个文件、8000+ 行），建议把共用 Chat 的重构拆成单独 PR；迁移旧数据时判断冲突是直接比较两段 JSON 文本，字段顺序一变就可能误判；浏览器测试运行时联网下载真实 PDF，可能随机失败，建议缓存；Rust 测试 `antigravity.rs:497` 有一个不稳定的 OAuth 回调端口检测；工作流里 Node 20 的 actions 已弃用；ChatPanel 测试少一个 mock。
 - kivio `main` 9-24 到 10-06 也有 CI 失败（最近一次 10-06 14:05），原因还没细查。
 - 其他老 PR：#15「修复 external-agent 会话恢复」（7 月停着）、#8「Linux AppImage 适配基线」（6 月草稿）。
 
 ### Dsivio（ZMGID/Dsivio）
-- `main` 分支 CI 从 9 月底起每次推送都失败（最近：10-07 22:50 推送「add built-in Ziniao daily report plugin」）。
-- 原因：CI 配置 `node-version: 20`，而测试（`ProductArchivePage.test.tsx`、`CopyUploadField.test.tsx`）用了 `Promise.withResolvers`（Node 22 才有）。3231 个前端测试只挂这 2 个，但导致后面的 Rust 测试被跳过。
-- 修法：CI 改成 Node 22，或者那两个测试别用 `Promise.withResolvers`。已提议提 PR，我还没回复。
+- (2026-10-08) 发布 **v1.1.0**（内置 Shopee 调研插件、图片搜 SKU 插件）；发版提交带 `[skip ci]`，release 流水线仍用 Node 20；未经完整 CI。
+- `main` CI 自 9 月起一直红：CI 用 Node 20，测试用 `Promise.withResolvers`（Node 22）。**PR #1**（CI/release 升 Node 22）CI 全绿未合并，合并前需 Update branch 重跑完整 CI。
+- (2026-10-08) 环境配置优化（同事装环境太慢）：**PR #2**（内嵌 WebView2）、**PR #3**（自带 Python/Node + npmmirror）、**PR #4**（自带工具转接与文档改用 dsivio python）均开出、CI 绿、均未合并。合并顺序建议 #3 → #4，#2 独立；用户计划 10/9 手工继续打磨（当天最重要）。
+- (2026-10-08) 新方向 **IM Gateway**（接入企业微信/飞书等消息平台），参考 Hermes Agent；调研报告在共享电脑 `/workspace/dsivio-im/`（不进本仓库）。
+- 官网产品页：`https://eastforceglobal.com/dsivio/`（自有服务器 nginx 静态站），10/8 已上线 v1.1.0 页面与安装包（由搭建运维负责；飞书仍未接入）。
 
 ### 仿 TourBox 创作控制器（原创设计，不是照抄）——文件在 `projects/creative-controller/`
 - ESP32-S3 主控，USB-C 有线 + 蓝牙，1000 mAh 电池；**按 FDM 3D 打印设计**的左手人体工学外壳（约 95×94 mm，软圆方形、前低后高）；KiCad 9 PCB（嘉立创打样）；固件 **v1.1.0**；电脑端配置软件（Python）；BOM、打印说明、审查报告。

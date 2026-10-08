@@ -12,7 +12,7 @@
 | 2 | **GitHub**（`cursor-github`） | 官方连接器 | — | — | ❌ 不需要（GitHub 走 composio-pg） |
 | 3 | **Origin**（`cursor-origin`） | 官方连接器 | — | — | ❌ 不需要 |
 | 4 | **Composio 插件**（`user-Composio`，plugin id `32661537`） | 插件市场 OAuth 版 | — | — | ❌ 不需要（它看到的是另一个 Composio user，看不到我们的应用） |
-| 5 | **Finance**（plugin id `63408931`） | 插件市场 | — | — | ❌ 不需要 |
+| 5 | **Finance**（`user-Finance-xai`，plugin id `63408931`） | 插件市场 | — | — | ❌ 不需要 |
 
 另外两样不是「应用连接器」但要记得：
 

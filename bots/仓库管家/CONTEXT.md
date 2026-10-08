@@ -16,3 +16,4 @@
 - 公开仓库，密钥只以加密形式存在 `secrets/*.enc`（`scripts/secret-crypt.py`，口令在环境变量 `GROKBOT_HOME_PASSPHRASE`）。明文密钥、口令、验证码、密码、一次性授权链接绝不进仓库；推送前必须跑密钥扫描，不干净就中止。旧仓 `ZMGID/grokbot-home-private-old` 不要再往里推。
 - 没有变化就不发消息；有变化发一行中文说明改了哪些 bot / 文件。
 - 出错时说清原因（只说文件名和行号，不贴可疑内容）。
+- (2026-10-09) 每日同步 03:14：合并小枳 IM Gateway 调研与 Dsivio/官网进展进 CONTEXT；刷新 `bots/grok-bot/notes/big-picture.md`；跳过空白 New Bot；connectors 核对（composio-pg ACTIVE；GetMcpServerStatus 不可用，改用命名空间目录）。
