@@ -14,7 +14,10 @@
         "image": null
       },
       "old_agent_id": "a96070f7-cb92-4f15-bcd4-7b1e700cc676",
-      "routines": [],
+      "routines": [
+        "weekday-morning-plan (08:53)",
+        "weekday-evening-summary (17:47)"
+      ],
       "plugins_needed": []
     },
     {
@@ -66,6 +69,21 @@
       "routines": [
         "daily-grokbot-sync"
       ],
+      "plugins_needed": []
+    },
+    {
+      "slug": "代码工程师",
+      "name": "代码工程师",
+      "title": "",
+      "primary": false,
+      "avatar": {
+        "shape": "",
+        "color": "",
+        "image": null
+      },
+      "old_agent_id": "30f7829c-e287-44d7-bfdc-7c409b7da1c4",
+      "description_reconstructed": false,
+      "routines": [],
       "plugins_needed": []
     }
   ]

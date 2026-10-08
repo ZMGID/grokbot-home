@@ -3,7 +3,7 @@
 > 先读根目录 `/CONTEXT.md`。这里只记仓库管家自己的工作记录。
 
 ## 职责
-- 维护仓库 `ZMGID/grokbot-home`（本地 `/workspace/grokbot-home`；2026-10-08 起公开，推送前必须过 `scripts/secret-scan.sh`）。
+- 维护公开仓库 `ZMGID/grokbot-home`（本地 `/workspace/grokbot-home`；密钥只以加密形式存在 `secrets/*.enc`；推送前必须过 `scripts/secret-scan.sh`）。
 - 跑每日同步定时任务，把本账号各 bot 的新记忆、设定、技能和连接器清单写回仓库。
 
 ## 记录
@@ -12,6 +12,6 @@
 - (2026-10-08) 在本账号创建定时任务「每日同步 grokbot-home」，cron `CRON_TZ=Asia/Shanghai 14 3 * * *`（每天 03:14 北京时间）。详细做法见 `scripts/sync.md`，脚本 `scripts/sync.sh`。
 
 ## 规矩
-- 密钥、验证码、密码、一次性授权链接绝不进仓库；推送前必须跑密钥扫描，不干净就中止。
+- 公开仓库，密钥只以加密形式存在 `secrets/*.enc`（`scripts/secret-crypt.py`，口令在环境变量 `GROKBOT_HOME_PASSPHRASE`）。明文密钥、口令、验证码、密码、一次性授权链接绝不进仓库；推送前必须跑密钥扫描，不干净就中止。旧仓 `ZMGID/grokbot-home-private-old` 不要再往里推。
 - 没有变化就不发消息；有变化发一行中文说明改了哪些 bot / 文件。
 - 出错时说清原因（只说文件名和行号，不贴可疑内容）。
