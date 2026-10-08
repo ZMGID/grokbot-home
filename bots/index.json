@@ -49,7 +49,7 @@
       "description_reconstructed": true,
       "routines": [
         "daily-grokbot-sync",
-        "weekly-bootstrap-drill (pending)"
+        "weekly-bootstrap-drill (Sun 15:12)"
       ],
       "plugins_needed": []
     },

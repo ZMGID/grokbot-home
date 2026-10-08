@@ -21,7 +21,15 @@
 
 ## 2. 换号演练与安全审计
 
-- **触发**：每周日下午（具体 cron 待用户确认）。建议形态：`CRON_TZ=Asia/Shanghai … * * 0`（周日）。
-- **状态**：**待建**（2026-10-08；等用户确认后再用 UpdateRoutine 创建，尚未在本账号建好）。
-- **内容概要**（见 profile 职责 3–4）：在 `/tmp` 匿名重克隆公开仓库，按 BOOTSTRAP 走一遍演练（不真建 bot）；解密 `secrets/*.enc` 确认可用；核对各 bot 的 profile/CONTEXT/routines 完整；并对公开仓库历史做密钥扫描。发现断点就修或告诉用户；遗留风险只提醒，不替用户删旧私有仓或改口令。
-- **保存的提示词**：待用户确认创建时再写入。
+- **触发**：每周日 15:12（北京时间）。cron：`CRON_TZ=Asia/Shanghai 12 15 * * 0`
+- **状态**：**已创建**（2026-10-08，由仓库管家在本账号创建）。
+- **内容概要**（见 profile 职责 3–4）：匿名重克隆公开仓库空跑 BOOTSTRAP；解密校验 `secrets/*.enc`；核对各 bot 文档完整；全历史密钥扫描；遗留风险只提醒。
+- **保存的提示词（重建时用 UpdateRoutine 创建）**：
+
+```text
+每周换号演练与安全审计（公开仓库 ZMGID/grokbot-home，本地副本 /workspace/grokbot-home）。按我 profile 第 3、4 条做，只演练，不真建任何东西：
+1) 换号演练：在 /tmp 下新建临时目录，不带任何登录凭证匿名克隆公开仓库，假装自己是新号上的 bot，按 BOOTSTRAP.md 从头空跑一遍，逐步检查每一步引用的文件、脚本、命令和参数是否存在、是否和现状一致（不新建 bot、不建定时任务、不装连接器）。用环境变量 GROKBOT_HOME_PASSPHRASE 和 scripts/secret-crypt.py 解密 secrets/*.enc，只校验能解开、格式看起来对；解出的明文只放内存或权限 600 的临时文件，用完立刻删除，绝不打印、记录，也绝不写进任何文件或消息。检查 bots/agent-map.json 和 bots/index.json 里的每个 bot 都有完整的 profile.md、CONTEXT.md、routines.md，每条定时任务都有 cron 和提示词原文；setup.sh 能通过 bash -n 语法检查；连接器步骤（composio-pg 启动脚本等）引用的文件都在。
+2) 安全审计：对公开仓库的全部 git 历史和工作区跑 scripts/secret-scan.sh 和 gitleaks 全历史扫描，确认没有明文密钥、口令、验证码、一次性链接、邮件正文、/workspace/assistant/daily/ 的内容或其他不该公开的东西。顺便检查遗留风险是否还在：旧私有仓库 ZMGID/grokbot-home-private-old 是否仍存在（里面有明文密钥），口令是否仍然偏短。只提醒，不替用户删仓库或改口令。
+3) 发现断点就在 /workspace/grokbot-home 里修好，推送前运行 bash scripts/sync.sh（密钥扫描不干净就中止，绝不放宽扫描或加白名单）；修不了的记下来。演练结束删除 /tmp 下的临时目录。
+4) 结果发给这个聊天里的用户：全部正常就只发一句「本周演练通过」，遗留风险仍在时可在同一句后面简短提醒；发现问题或出错时，用简短中文说清是什么问题、已经修了什么、需要用户做什么（只说文件名和行号，不贴可疑内容），并把同样的内容在 Grok Bot 应用里发消息抄送给 Grok Bot（经理 bot，id a96070f7-cb92-4f15-bcd4-7b1e700cc676）。
+```
