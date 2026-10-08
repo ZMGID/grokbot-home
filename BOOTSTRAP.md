@@ -9,22 +9,97 @@
 
 - Talk to the user in **Chinese**, short and direct. Times in **Asia/Shanghai (UTC+8)**. 用中文、简短、北京时间。
 - **Never put a secret in the repo, in chat, or in a log.** Secrets come only from a masked secret prompt (or 1Password). Never `cat` a key file. 密钥绝不进仓库/聊天/日志。
-- Things that need the user: connector auth clicks, the Composio API key, the `gh` device code. Batch these so the user is interrupted as little as possible. 需要用户的只有：点授权、填密钥、确认 gh 设备码。尽量一次问完。
+- Things that need the user: the Composio API key (masked), and only if Step 0 (b) fails the `gh` device code. No official connector auth clicks. Batch these. 需要用户的主要是填一次 Composio key；设备码仅作备用。尽量一次问完。
 - Do the steps in order; if a step fails, note it, continue with the rest, and report it in the final checklist. 某步失败就记下来继续，最后汇报。
 - The box (`/workspace`, `/home/box`) is shared by all bots on this account, so files you set up are visible to the bots you create.
 - Send the user a one-line progress update after each major step (connectors, bots, self-check), not a wall of text.
 
 ---
 
-## Step 0 — Get access to this private repo / 先拿到仓库访问权
+## Step 0 — Composio key + private-repo access / 先拿 Composio key，再进私有仓库
 
-This repo is **private**, so WebFetch cannot read it.
+This repo is **private**. Official GitHub / Origin connectors are **not** used (2026-10-08 rule: all apps only via Composio `composio-pg`). You must get the Composio API key **before** you can read BOOTSTRAP from the repo. The `composio-pg` launcher files live *inside* this private repo — so Step 0 bootstraps them **inline** (same content as `connectors/composio-pg/`), then uses Composio's GitHub (ZMGID) to authenticate `gh` and clone.
 
-1. `gh auth status` — if logged in as `ZMGID`, go to Step 1.
-2. Otherwise start the device login yourself in the background:
-   `gh auth login --hostname github.com --git-protocol https --web`
-   It prints a one-time code. Send the user: the code + link `https://github.com/login/device` (中文：“请打开这个链接输入验证码，授权 ZMGID”). This is a handoff, not a secret; then wait for it to finish.
-3. Also install the official **GitHub connector** now (Step 3, row 1) — it only needs one auth click, and lets you read files via `cursor-github` → `get_file_contents` (owner `ZMGID`, repo `grokbot-home`) if `gh` is slow.
+Do **(a) → (b) → (c)** in order. Never print the key or any access token. Never `cat` key files.
+
+### (a) Composio API key → `~/.composio_pg_key`
+
+1. If `test -s /home/box/.composio_pg_key` already succeeds, skip to (b).
+2. Otherwise send a **secret-request** (SendToUser type `secret-request`, masked) with a Chinese label, e.g.
+   「Composio 项目 API key（控制台 → 项目设置 → API Keys），用于 composio-pg；写入 ~/.composio_pg_key」。
+   The value must land in `/home/box/.composio_pg_key`, then `chmod 600 /home/box/.composio_pg_key`.
+3. Fallback if the secret prompt cannot write a file: ask the user to open **your desktop terminal** and type
+   `read -rsp 'Composio key: ' K && umask 077 && printf %s "$K" > ~/.composio_pg_key && unset K`
+   (they type it; you never see it). Never ask them to paste the key in chat.
+
+### (b) Bootstrap composio-pg inline + clone via Composio GitHub
+
+The launcher is tiny; write it without cloning the repo:
+
+```bash
+# uv if missing
+command -v uv >/dev/null || curl -LsSf https://astral.sh/uv/install.sh | sh
+export PATH="$HOME/.local/bin:$PATH"
+
+mkdir -p /workspace/composio-pg
+cat > /workspace/composio-pg/launch.py << 'PY'
+import os, sys
+from composio import Composio
+key = open("/home/box/.composio_pg_key").read().strip()
+s = Composio(api_key=key).create(user_id="pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde")
+os.execvp("npx", ["npx", "-y", "mcp-remote", s.mcp.url, "--transport", "http-only", "--header", "x-api-key:" + key])
+PY
+cat > /workspace/composio-pg/launch.sh << 'SH'
+#!/bin/bash
+exec /workspace/composio-pg/.venv/bin/python /workspace/composio-pg/launch.py
+SH
+chmod 700 /workspace/composio-pg/launch.sh
+chmod 600 /workspace/composio-pg/launch.py
+
+cd /workspace/composio-pg
+[ -x .venv/bin/python ] || uv venv -q .venv
+uv pip install -q --python .venv/bin/python "composio==0.25.0" || uv pip install -q --python .venv/bin/python composio
+npx -y mcp-remote --help >/dev/null 2>&1 || true
+```
+
+Smoke-test (never print stderr — mcp-remote logs `x-api-key` in clear text):
+
+```bash
+timeout 40 /workspace/composio-pg/launch.sh </dev/null >/dev/null 2>/tmp/cpg.err
+grep -c "Proxy established successfully" /tmp/cpg.err
+rm -f /tmp/cpg.err
+```
+
+`1` = OK. Then `AddMcpServer` name **`composio-pg`**, command **`/workspace/composio-pg/launch.sh`** (no args, no env).
+
+Authenticate `gh` with the GitHub OAuth token already held by Composio (user `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde`, toolkit `github` = ZMGID). Pipe the token — do not echo or write it to a tracked file:
+
+```bash
+# logs in gh as ZMGID using Composio's stored GitHub token; token never printed
+/workspace/composio-pg/.venv/bin/python - <<'PY' | gh auth login --with-token
+from composio import Composio
+key = open("/home/box/.composio_pg_key").read().strip()
+client = Composio(api_key=key)
+for acc in client.connected_accounts.list(user_ids=["pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde"]).items:
+    d = acc.model_dump() if hasattr(acc, "model_dump") else acc
+    toolkit = (d.get("toolkit") or {}).get("slug") if isinstance(d, dict) else None
+    if toolkit == "github" and d.get("status") == "ACTIVE":
+        tok = (d.get("data") or {}).get("access_token")
+        if tok:
+            print(tok, end="")
+            break
+else:
+    raise SystemExit("no ACTIVE github connected account")
+PY
+gh auth setup-git
+gh auth status   # should show ZMGID; OK to show login name, never the token
+```
+
+Then go to Step 1 to clone.
+
+### (c) Fallback — `gh auth login` device code
+
+Only if (b)'s token login fails: run `gh auth login --hostname github.com --git-protocol https --web` in the background, send the user the one-time code + `https://github.com/login/device`（中文：「请打开这个链接输入验证码，授权 ZMGID」）, wait until it finishes, then Step 1. This is a handoff, not a secret. Do **not** install the official GitHub connector as a substitute.
 
 ## Step 1 — Clone / 克隆
 
@@ -47,7 +122,7 @@ nohup bash setup.sh > /tmp/setup.log 2>&1 &
 
 - Idempotent; heavy installs (KiCad 9, LibreOffice, PrusaSlicer, cadquery, PlatformIO ESP32 toolchain) can take 10–20 min — run in background, keep going with Step 3, check `/tmp/setup.log` later (the summary at the end lists anything that failed).
 - `bash setup.sh --light` skips the heavy CAD/EDA packages if the user only needs the basics.
-- It also places the `composio-pg` launcher in `/workspace/composio-pg/` and builds its venv (`uv venv` + `uv pip install composio`). The Composio part is needed by Step 3; if you reach Step 3 before setup finishes, run just that block:
+- It also refreshes the `composio-pg` launcher from the repo into `/workspace/composio-pg/` and rebuilds its venv. Step 0 already bootstrapped it inline; this keeps files in sync with `connectors/composio-pg/`. If the inline copy is missing for any reason, run:
   ```bash
   mkdir -p /workspace/composio-pg && cd /workspace/composio-pg
   install -m 700 /workspace/grokbot-home/connectors/composio-pg/launch.sh .
@@ -60,36 +135,17 @@ nohup bash setup.sh > /tmp/setup.log 2>&1 &
 
 ## Step 3 — Connectors / 连接器
 
-Follow `connectors/README.md` (it is the manifest; use the `add-connector` skill flow: SearchPlugins → GetPlugin → InstallPlugin → GetMcpServerStatus / AuthenticateMcpServer). The user already approved recreating these connectors by sending you this repo, but if a tool requires a confirmation widget, show it.
+Follow `connectors/README.md`. **Rule (2026-10-08): all app connections only through Composio (`composio-pg`).** Do **not** install or authenticate official GitHub (`cursor-github`), Origin, Finance (63408931), or the Composio OAuth plugin (32661537). New apps are added inside Composio for user `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde`, never as separate connectors.
 
-| Connector | Action | User does |
+| Item | Action | User does |
 |---|---|---|
-| GitHub (`cursor-github`) | install / authenticate | one auth click (account ZMGID) |
-| Origin (`cursor-origin`) | usually built-in; authenticate if needsAuth | maybe one click |
-| Composio plugin, **plugin id 32661537** | `InstallPlugin` (optional) | OAuth login once. Note: it sees a *different* Composio user and shows **no apps** — that's expected. Do **not** generate new auth links there. |
-| **composio-pg** (custom stdio) | see below | type the Composio API key once in a masked prompt |
-| Finance, plugin id 63408931 | optional; may stay needsAuth | nothing |
-| pstack plugin, **plugin id 9717366** | `InstallPlugin` (needed by dr eggbot) | nothing |
+| **composio-pg** | Already done in Step 0 if key + AddMcpServer succeeded; otherwise finish Step 0 (a)(b) | type Composio API key once (masked) |
+| pstack plugin, **plugin id 9717366** | `InstallPlugin` (skills for dr eggbot — not an app connection) | nothing |
+| Official GitHub / Origin / Finance / Composio plugin 32661537 | **skip** | nothing |
 
-### composio-pg (required — GitHub + both Gmails go through it)
+Confirm with `GetMcpServerStatus` that `composio-pg` is connected (tools appear as `user-composio-pg` / `COMPOSIO_*` on your next turn). Self-check GitHub + Gmail with `COMPOSIO_MANAGE_CONNECTIONS` `{"toolkits":["github","gmail"]}` (never `reinitiate_all`) → “All connections are active”, GitHub ZMGID.
 
-1. Launcher present? `test -x /workspace/composio-pg/launch.sh && test -x /workspace/composio-pg/.venv/bin/python` (else run the Step 2 Composio block).
-2. Key present? `test -s /home/box/.composio_pg_key` (do **not** print it). If missing:
-   - Send a **secret-request** (SendToUser type `secret-request`, masked input) with a clear Chinese label, e.g.
-     “Composio 项目 API key（控制台 → 项目设置 → API Keys），用于 composio-pg 连接器”.
-     The value must end up in `/home/box/.composio_pg_key`, then `chmod 600 /home/box/.composio_pg_key`.
-   - If the secret prompt can't write a file on the box, fall back: ask the user to open **your desktop's terminal** and type
-     `read -rsp 'Composio key: ' K && umask 077 && printf %s "$K" > ~/.composio_pg_key && unset K`
-     (the user types it; you never see it). Never ask them to paste the key in chat.
-3. Smoke test — **never print the launcher's stderr**, because `mcp-remote` logs the `x-api-key` header in clear text:
-   ```bash
-   timeout 40 /workspace/composio-pg/launch.sh </dev/null >/dev/null 2>/tmp/cpg.err; grep -c "Proxy established successfully" /tmp/cpg.err; rm -f /tmp/cpg.err
-   ```
-   `1` = OK (timeout exit is normal).
-4. `AddMcpServer` with name **`composio-pg`**, command **`/workspace/composio-pg/launch.sh`** (no args, no env, no headers — the key never goes into MCP config).
-5. Confirm with `GetMcpServerStatus` that `composio-pg` is connected (tools appear as `user-composio-pg` / `COMPOSIO_*` on your next turn).
-
-Composio user: `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde` (project `pr_lh5-8poHU4QB`), holding GitHub (ZMGID), Gmail ohulercxm8@gmail.com, Gmail zhimeng63@gmail.com. Nothing to re-authorize.
+Composio user: `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde` (project `pr_lh5-8poHU4QB`), holding GitHub (ZMGID), Gmail ohulercxm8@gmail.com, Gmail zhimeng63@gmail.com. Nothing to re-authorize unless a new app is needed (add it in Composio console).
 
 ## Step 4 — Skills / 技能
 
@@ -141,13 +197,13 @@ Routines belong to the bot that creates them, so:
 
 Run and record each result:
 
-1. `GetMcpServerStatus`: GitHub = connected, composio-pg = connected (Origin/Composio plugin/Finance: note status, not required).
-2. `cursor-github` → `get_me` returns login `ZMGID`.
-3. `user-composio-pg` → `COMPOSIO_MANAGE_CONNECTIONS` with `{"toolkits": ["github", "gmail"]}` (never `reinitiate_all`) → “All connections are active”, GitHub login ZMGID, Gmail ohulercxm8@gmail.com. Optionally confirm zhimeng63@gmail.com by fetching 1 recent email from each Gmail account.
+1. `GetMcpServerStatus`: **composio-pg** = connected. Official GitHub / Origin / Finance / Composio plugin should be absent or ignored (not required).
+2. `user-composio-pg` → `COMPOSIO_MANAGE_CONNECTIONS` with `{"toolkits": ["github", "gmail"]}` (never `reinitiate_all`) → “All connections are active”, GitHub login **ZMGID**, Gmail ohulercxm8@gmail.com. Optionally confirm zhimeng63@gmail.com by fetching 1 recent email from each Gmail account.
+3. `gh auth status` shows login **ZMGID** (from Step 0 Composio token or device-code fallback).
 4. Skills: pstack skills listed; every `skills/<slug>` present in `/home/box/agent-data/workflows/`.
 5. Bots: every slug in `bots/index.json` exists with the right name; `bots/agent-map.json` updated.
 6. Routines: daily sync exists on **仓库管家**; dr eggbot's two exist and are paused; grok-bot has no daily sync.
-7. Tools: `tail -20 /tmp/setup.log` summary; spot-check `kicad-cli --version` (9.x), `~/.local/bin/pio --version`, `python3 -c "import cadquery"`, `gh auth status`, `gitleaks version`.
+7. Tools: `tail -20 /tmp/setup.log` summary; spot-check `kicad-cli --version` (9.x), `~/.local/bin/pio --version`, `python3 -c "import cadquery"`, `gitleaks version`.
 8. Secret scan: `bash scripts/secret-scan.sh` → “干净”.
 
 ## Step 9 — Write-back rule / 写回规则（永久）
@@ -165,17 +221,16 @@ Send one short Chinese message: what's done, what failed, what the user still ne
 
 ## Final checklist / 最终清单
 
-- [ ] Step 0: `gh` logged in as ZMGID
+- [ ] Step 0: `/home/box/.composio_pg_key` exists, mode 600 (value never shown)
+- [ ] Step 0/3: `composio-pg` added (`/workspace/composio-pg/launch.sh`) and connected
+- [ ] Step 0: `gh` logged in as ZMGID (via Composio GitHub token, or device-code fallback)
 - [ ] Step 1: repo cloned at `/workspace/grokbot-home`, git identity set
 - [ ] Step 2: `setup.sh` finished (summary checked; failures listed)
-- [ ] Step 3: GitHub connector connected
-- [ ] Step 3: `/home/box/.composio_pg_key` exists, mode 600 (value never shown)
-- [ ] Step 3: `composio-pg` added (`/workspace/composio-pg/launch.sh`) and connected
-- [ ] Step 3: pstack (9717366) installed; Composio plugin (32661537) / Finance (63408931) optional
+- [ ] Step 3: pstack (9717366) installed; official GitHub/Origin/Finance/Composio-plugin **not** installed
 - [ ] Step 4: skills imported (currently none) 
 - [ ] Step 5: own profile = Grok Bot, primary, memory seeded from CONTEXT.md
 - [ ] Step 6: 小枳 / dr eggbot / 仓库管家 created; `bots/agent-map.json` updated & pushed
 - [ ] Step 7: daily sync routine (03:14 Asia/Shanghai) on **仓库管家** (recreated by 仓库管家 from `bots/仓库管家/routines.md` on its first turn; grok-bot does not create it); dr eggbot's 2 routines created and paused
-- [ ] Step 8: Composio GitHub + Gmail active; `get_me` = ZMGID; secret scan clean
+- [ ] Step 8: composio-pg GitHub (ZMGID) + Gmail active via COMPOSIO_MANAGE_CONNECTIONS; secret scan clean
 - [ ] Step 9: write-back rule saved in memory
 - [ ] Step 10: user got the summary
