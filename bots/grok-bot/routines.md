@@ -2,8 +2,8 @@
 
 ## 1. 每日同步到 grokbot-home（daily-grokbot-sync）
 
-- **触发**：每天约 03:17（北京时间）。cron：`CRON_TZ=Asia/Shanghai 17 3 * * *`
-- **状态**：旧号上由主 bot 在建库后添加（2026-10-08）。新号上按下面的提示词重建。
+- **触发**：每天约 03:14（北京时间）。cron：`CRON_TZ=Asia/Shanghai 14 3 * * *`
+- **状态**：旧号上已于 2026-10-08 由主 bot 创建。新号上按下面的提示词重建。
 - **详细步骤**：见 `scripts/sync.md`，脚本 `scripts/sync.sh`。
 - **保存的提示词（重建时用 UpdateRoutine 创建）**：
 

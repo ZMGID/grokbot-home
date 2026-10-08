@@ -1,7 +1,7 @@
 # 每日同步任务说明（daily-grokbot-sync）
 
 - **谁跑**：主 bot（grok-bot）。不单独建同步 bot（2026-10-08 用户决定）。
-- **什么时候**：每天约 03:17（北京时间），cron `CRON_TZ=Asia/Shanghai 17 3 * * *`。提示词见 `bots/grok-bot/routines.md`。
+- **什么时候**：每天约 03:14（北京时间），cron `CRON_TZ=Asia/Shanghai 14 3 * * *`。提示词见 `bots/grok-bot/routines.md`。
 - **原则**：有变化才提交推送，没变化不打扰用户；推送前必须通过密钥扫描；任何密钥、验证码、密码、一次性授权链接都不进仓库。
 
 ## 每次运行做什么

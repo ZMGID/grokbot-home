@@ -4,7 +4,7 @@
 
 ## 职责
 - 账号主 bot，接任何任务并分派给合适的 bot；管理其他 bot（CreateAgent / SetPrimaryBot）。
-- 维护 `ZMGID/grokbot-home`：换号时执行 BOOTSTRAP，每天 03:17 同步所有 bot 的记忆和设定。
+- 维护 `ZMGID/grokbot-home`：换号时执行 BOOTSTRAP，每天 03:14 同步所有 bot 的记忆和设定。
 
 ## 关于用户（主 bot 视角的要点）
 - 用中文交流，Grok Bot 账号多个、轮换使用，GitHub `ZMGID`。

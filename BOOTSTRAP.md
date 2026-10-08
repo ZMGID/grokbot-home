@@ -130,7 +130,7 @@ Do not create the empty “New Bot” from the old account (it was never used).
 Routines belong to the bot that creates them, so:
 
 - **You (grok-bot)**: create the daily sync with UpdateRoutine using the prompt in `bots/grok-bot/routines.md`
-  — schedule `CRON_TZ=Asia/Shanghai 17 3 * * *` (≈03:17 Beijing time daily). Details: `scripts/sync.md`.
+  — schedule `CRON_TZ=Asia/Shanghai 14 3 * * *` (≈03:14 Beijing time daily). Details: `scripts/sync.md`.
 - **Other bots**: each recreates its own from `bots/<slug>/routines.md` on its first turn (that's why Step 6 tells them to).
   - `xiaozhi`: none.
   - `dr-eggbot`: two routines — weekday 08:44 bot-friction scan, Monday 08:49 routine-waste audit — **create both, then pause both** (they were paused on the old account).
@@ -174,7 +174,7 @@ Send one short Chinese message: what's done, what failed, what the user still ne
 - [ ] Step 4: skills imported (currently none) 
 - [ ] Step 5: own profile = Grok Bot, primary, memory seeded from CONTEXT.md
 - [ ] Step 6: 小枳 created; dr eggbot created; `bots/agent-map.json` updated & pushed
-- [ ] Step 7: daily sync routine (03:17 Asia/Shanghai) on grok-bot; dr eggbot's 2 routines created and paused
+- [ ] Step 7: daily sync routine (03:14 Asia/Shanghai) on grok-bot; dr eggbot's 2 routines created and paused
 - [ ] Step 8: Composio GitHub + Gmail active; `get_me` = ZMGID; secret scan clean
 - [ ] Step 9: write-back rule saved in memory
 - [ ] Step 10: user got the summary
