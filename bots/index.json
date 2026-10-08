@@ -5,7 +5,7 @@
   "bots": [
     {
       "slug": "grok-bot",
-      "name": "Grok Bot",
+      "name": "小萌",
       "title": "",
       "primary": true,
       "avatar": {
@@ -15,9 +15,7 @@
       },
       "old_agent_id": "a96070f7-cb92-4f15-bcd4-7b1e700cc676",
       "routines": [
-        "weekday-morning-plan (08:53)",
-        "weekday-bot-patrol (11:17,15:17)",
-        "weekday-evening-summary (17:47)"
+        "weekday-bot-patrol (11:17,15:17)"
       ],
       "plugins_needed": []
     },
@@ -96,7 +94,10 @@
       },
       "old_agent_id": "0c8b0607-f701-499c-a08b-13a601874a68",
       "description_reconstructed": false,
-      "routines": [],
+      "routines": [
+        "weekday-morning-plan (08:53)",
+        "weekday-evening-summary (17:47)"
+      ],
       "plugins_needed": []
     },
     {

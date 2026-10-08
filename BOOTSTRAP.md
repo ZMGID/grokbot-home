@@ -144,11 +144,11 @@ Composio user: `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde` (project `pr_lh5-8
 
 Primary = `bots/index.json` → `"primary": "grok-bot"`. Read `bots/grok-bot/profile.md`, `bots/grok-bot/CONTEXT.md`.
 
-1. `update_state` target `profile`, action `set`: **name** `Grok Bot`, **description** = the exact English text in `bots/grok-bot/profile.md`, title empty.
+1. `update_state` target `profile`, action `set`: **name** `小萌` (formerly `Grok Bot`, renamed 2026-10-08; slug stays `grok-bot`), **description** = the exact English text in `bots/grok-bot/profile.md`, title empty.
 2. Avatar: no custom image (default shape `blob`, color `black`). If a `bots/grok-bot/avatar.*` file ever exists, set it with `update_state` target `avatar`.
 3. If you are not the primary bot, ask the user once whether to make you primary, then `SetPrimaryBot`.
 4. Save the important facts from `/CONTEXT.md` + `bots/grok-bot/CONTEXT.md` into your memory (`update_state` target `memory`): user writes Chinese, rotates accounts, GitHub ZMGID, repo `ZMGID/grokbot-home` (public) is the source of truth, no plaintext secrets in the repo (only `secrets/*.enc`), Composio via `composio-pg`.
-5. If the bot the user opened is **not** the Grok Bot primary (e.g. they opened a bot with another name), still act as the bootstrapper: apply `grok-bot`'s profile only if the user agrees; otherwise create `grok-bot` in Step 6 like the others.
+5. If the bot the user opened is **not** the primary (`小萌` / slug `grok-bot`), still act as the bootstrapper: apply `grok-bot`'s profile only if the user agrees; otherwise create `grok-bot` in Step 6 like the others.
 
 ## Step 6 — Recreate every other bot / 用 CreateAgent 重建其他 bot
 
@@ -166,18 +166,20 @@ For **each** folder in `bots/` except the primary — driven by `bots/index.json
 3. Record the new agent id: update `bots/agent-map.json` (`{"<slug>": "<new id>"}`) — needed by the daily sync.
 4. Send the user one line per bot created (“已重建 小枳 ✓”).
 
-Do not create the empty “New Bot” from the old account (it was never used). Do not create **dr eggbot** (deleted 2026-10-08); **you (Grok Bot)** create any new bots going forward.
+Do not create the empty “New Bot” from the old account (it was never used). Do not create **dr eggbot** (deleted 2026-10-08); **you (小萌 / primary)** create any new bots going forward.
 
 ## Step 7 — Routines / 定时任务
 
 Routines belong to the bot that creates them, so:
 
-- **You (grok-bot)**:
-  - do **not** create the daily sync (belongs to **仓库管家**, handed over 2026-10-08);
-  - recreate your own weekday routines from `bots/grok-bot/routines.md` (morning plan ≈08:53 and evening summary ≈17:47 on weekdays; prompts may need user confirmation if marked 未知).
-- **Other bots**: each recreates its own from `bots/<slug>/routines.md` on its first turn (that's why Step 6 tells them to). Match that file:
-  - `仓库管家`: daily sync — `CRON_TZ=Asia/Shanghai 14 3 * * *` (≈03:14). Details: `scripts/sync.md`.
-  - `xiaozhi` / `代码工程师` / `搭建运维` / `事务秘书` / `硬件工程师`: none（暂无）.
+- **You (grok-bot / 小萌)**:
+  - do **not** create the daily sync (belongs to **仓库管家**);
+  - do **not** create morning plan / evening summary (belong to **事务秘书**, handed over 2026-10-08);
+  - recreate only「巡检各 bot」from `bots/grok-bot/routines.md` — cron `17 11,15 * * 1-5` (weekdays 11:17 & 15:17 Beijing time).
+- **Other bots**: each recreates its own from `bots/<slug>/routines.md` on its first turn. Match that file:
+  - `仓库管家`: daily sync `CRON_TZ=Asia/Shanghai 14 3 * * *`; weekly drill `CRON_TZ=Asia/Shanghai 12 15 * * 0`.
+  - `事务秘书`: morning plan `CRON_TZ=Asia/Shanghai 53 8 * * 1-5`; evening summary `CRON_TZ=Asia/Shanghai 47 17 * * 1-5`.
+  - `xiaozhi` / `代码工程师` / `搭建运维` / `硬件工程师`: none（暂无）.
 - After a few minutes, check each bot did it (ReadTranscript, or ask the user). If a bot can't create routines, create them yourself only if the user agrees.
 
 ## Step 8 — Self-check / 自检
@@ -189,7 +191,7 @@ Run and record each result:
 3. `gh auth status` shows login **ZMGID** (Step 1: Composio token or device-code fallback) — needed only for pushing.
 4. Skills: every `skills/<slug>` present in `/home/box/agent-data/workflows/`; pstack optional (only if installed).
 5. Bots: every slug in `bots/index.json` exists with the right name; `bots/agent-map.json` updated.
-6. Routines: daily sync on **仓库管家**; grok-bot weekday morning/evening routines exist; other bots none.
+6. Routines: daily sync on **仓库管家**; 事务秘书 morning/evening plans; 小萌「巡检各 bot」only.
 7. Tools: `tail -20 /tmp/setup.log` summary; spot-check `kicad-cli --version` (9.x), `~/.local/bin/pio --version`, `python3 -c "import cadquery"`, `gitleaks version`.
 8. Secret scan: `bash scripts/secret-scan.sh` → “干净”.
 
@@ -198,7 +200,7 @@ Run and record each result:
 - New durable knowledge goes back into the right file: about the user → `/CONTEXT.md`; about one bot's work → `bots/<slug>/CONTEXT.md`; profile changes → `profile.md`; routine changes → `routines.md`; connector changes → `connectors/README.md`; new tools → `setup.sh`.
 - Then `bash scripts/secret-scan.sh` and `git add -A && git commit -m "<what>" && git pull --rebase && git push origin HEAD:main` (needs Step 1 push access). The daily sync does this automatically for all bots, but write back immediately after anything important.
 - Never commit: keys, tokens, the passphrase, `.env`, one-time codes, passwords, auth links, mcp-remote logs, `/home/box/agent-data/*secrets*.json`, databases. **The repo is public** — only `secrets/*.enc` may hold a secret, and only encrypted with `scripts/secret-crypt.py`.
-- New bot created later (by **Grok Bot**)? Add `bots/<slug>/` (profile.md, CONTEXT.md, routines.md) + `index.json` + `agent-map.json` + `bots/README.md` table.
+- New bot created later (by **小萌** / primary)? Add `bots/<slug>/` (profile.md, CONTEXT.md, routines.md) + `index.json` + `agent-map.json` + `bots/README.md` table.
 
 ## Step 10 — Report to the user / 最后汇报
 
@@ -215,9 +217,9 @@ Send one short Chinese message: what's done, what failed, what the user still ne
 - [ ] Step 2: `setup.sh` finished (summary checked; failures listed)
 - [ ] Step 3: pstack (9717366) optional（可选，原为 dr eggbot 安装）; official GitHub/Origin/Finance/Composio-plugin **not** installed
 - [ ] Step 4: skills imported (currently none) 
-- [ ] Step 5: own profile = Grok Bot, primary, memory seeded from CONTEXT.md
+- [ ] Step 5: own profile = **小萌** (slug `grok-bot`), primary, memory seeded from CONTEXT.md
 - [ ] Step 6: 小枳 / 仓库管家 / 代码工程师 / 搭建运维 / 事务秘书 / 硬件工程师 created; `bots/agent-map.json` updated & pushed (no dr eggbot)
-- [ ] Step 7: daily sync on **仓库管家**; grok-bot weekday 08:53/17:47 routines; other bots none per their `routines.md`
+- [ ] Step 7: daily sync on **仓库管家**; 事务秘书 08:53/17:47; 小萌 巡检 11:17/15:17; others per `routines.md`
 - [ ] Step 8: composio-pg GitHub (ZMGID) + Gmail active via COMPOSIO_MANAGE_CONNECTIONS; secret scan clean
 - [ ] Step 9: write-back rule saved in memory
 - [ ] Step 10: user got the summary
