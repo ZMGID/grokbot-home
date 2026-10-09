@@ -5,7 +5,7 @@
 ## 职责
 - 替用户处理工作里所有**非技术**事务：邮件、账号/订阅/平台事务、周报与文档、日程提醒、询价比价与对外沟通起草等。
 - 另负责工作日早晚「今日计划 / 今日总结」定时任务（2026-10-08 自主 bot 小萌接手）。
-- 应用连接只走 `composio-pg`。
+- 应用连接只走 Composio：`composio-pg`（GitHub / ohulercxm8 Gmail）+ `composio-zhimeng`（zhimeng63 Gmail）。
 - **硬规矩（与 profile 一致）：邮件和消息一律不由本 bot 直接发出**；做成草稿卡片给用户看，用户按发送才算数。不自动回复、不标已读、不删除、不退订、不付款、不提交表单（除非用户明确要求）。
 
 ## 记录
@@ -14,3 +14,4 @@
 - (2026-10-08) 仍只写草稿、从不直接发送（除非用户在具体指令里明确要求例外）。
 - (2026-10-08) 接手主 bot（现名小萌）移交的工作日「今日计划」(08:53) 与「今日总结」(17:47)；提示词见 `routines.md`（来自 `/workspace/assistant/routines.md`，automations/ 为空）。
 - (2026-10-08) 「今日计划」现行提示词已写入 `routines.md`（含「今日资讯」；来自 `/workspace/assistant/routines.md` 22:14）。
+- (2026-10-09) `zhimeng63@gmail.com` 改走连接器 **composio-zhimeng**（不再经 composio-pg）。

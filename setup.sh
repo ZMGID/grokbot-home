@@ -197,6 +197,25 @@ else
   echo "    · ~/.composio_pg_key 还不存在：按 BOOTSTRAP.md Step 0 (b) 用口令 GROKBOT_HOME_PASSPHRASE 解密 secrets/COMPOSIO_API_KEY.enc"
 fi
 
+
+# ---------------------------------------------------------------------------
+# 8b. composio-zhimeng：zhimeng63 Gmail 专用启动器（共用 ~/.composio_pg_key 与 composio-pg 的 venv）
+# ---------------------------------------------------------------------------
+log "composio-zhimeng launcher"
+CZM=/workspace/composio-zhimeng
+mkdir -p "$CZM"
+install -m 700 "$REPO_DIR/connectors/composio-zhimeng/launch.sh" "$CZM/launch.sh"
+install -m 600 "$REPO_DIR/connectors/composio-zhimeng/launch.py" "$CZM/launch.py"
+ok "launch.sh / launch.py 已放到 $CZM（python 用 composio-pg/.venv；密钥同 ~/.composio_pg_key）"
+if [[ -x "$CPG/.venv/bin/python" ]]; then
+  ok "复用 $CPG/.venv"
+else
+  warn "composio-pg venv 尚未就绪；先完成上一节再 AddMcpServer composio-zhimeng"
+fi
+if [[ -s "$HOME/.composio_pg_key" ]]; then
+  chmod 600 "$HOME/.composio_pg_key"; ok "~/.composio_pg_key 供 composio-pg 与 composio-zhimeng 共用"
+fi
+
 # ---------------------------------------------------------------------------
 # 9. gh 登录状态（只检查，不登录）。仓库公开，克隆不需要登录；只有推送（写回/每日同步）需要，见 BOOTSTRAP Step 1
 # ---------------------------------------------------------------------------

@@ -40,6 +40,8 @@
 开工前先读 /workspace/grokbot-home/CONTEXT.md。
 ```
 
+> **连接器（2026-10-09）**：读/理 `zhimeng63@gmail.com` 走 **`composio-zhimeng`**；`ohulercxm8@gmail.com` 与 GitHub 仍走 **`composio-pg`**。上方 description 若仍写「只走 composio-pg」，以本注为准（待小萌改线上 profile）。
+
 ## 角色
 
 - 非技术事务 + 工作日早晚「今日计划 / 今日总结」（含今日资讯）。

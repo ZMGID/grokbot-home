@@ -9,7 +9,7 @@
 - 时区 Asia/Shanghai（UTC+8）。
 - 有好几个 Grok Bot 账号，轮换着用，希望换号的成本尽量低（这个仓库就是为此建的）。
 - GitHub 账号：`ZMGID`（显示名 ZhiMeng）。个人仓库约 16 公开 + 5 私有，主项目 kivio；还是组织 `dsh-external` 的成员（约 184 个 DSH 相关私有仓库）。
-- 邮箱：`ohulercxm8@gmail.com`、`zhimeng63@gmail.com`（都通过 Composio `composio-pg` 接入）。
+- 邮箱：`ohulercxm8@gmail.com`（Composio **`composio-pg`**）、`zhimeng63@gmail.com`（Composio **`composio-zhimeng`**，用户 `zhimeng63`）。
 - 常用本地 CLI：Claude Code、Codex、Pi、OpenCode、DSH。
 - 评估别人的仓库时更看重 git 时间线和 AI 痕迹，不看功能清单。
 - 在做虾皮（Shopee）巴西站选品调研，打算用 agent + Playwright + Shopdora（虾多拉）插件做自动化，而不是紫鸟浏览器（详见 `bots/xiaozhi/CONTEXT.md`）。
@@ -62,8 +62,10 @@
 - 所有东西放进 GitHub 仓库 `ZMGID/grokbot-home`（2026-10-08 起改为**公开**，旧私有仓库改名为 `grokbot-home-private-old`）：共享记忆（本文件）、每个 bot 的设定/记忆/定时任务（`bots/`）、连接器清单和启动脚本（`connectors/`）、技能（`skills/`）、工具环境脚本（`setup.sh`）、项目文件（`projects/`）。
 - 新号流程：打开一个 Grok Bot，对它说「按 https://github.com/ZMGID/grokbot-home 配置你自己」。它按 `BOOTSTRAP.md` 配好自己，再用 CreateAgent 把其他 bot 全部建出来。
 - **明文密钥永远不进仓库**。唯一例外：Composio key 用 `scripts/secret-crypt.py` 加密后放 `secrets/*.enc`；解密口令 `GROKBOT_HOME_PASSPHRASE` 只通过 bot 的密码框（secret prompt）提供。
-- Composio 的 GitHub / Gmail 连接统一走自定义连接器 **`composio-pg`**（Composio 测试用户 `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde`），不在官方 Composio 插件里重新授权。
-- (2026-10-08) **应用连接只走 Composio**：不要再装官方 GitHub（`cursor-github`）、Origin、Finance、Composio 插件（32661537）。新应用一律在 Composio 控制台给上述测试用户授权，经 `composio-pg` 使用。
+- Composio 连接走两个自定义 stdio MCP（共用 `~/.composio_pg_key`）：
+  - **`composio-pg`**：用户 `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde` → GitHub（ZMGID）+ Gmail `ohulercxm8@gmail.com`
+  - **`composio-zhimeng`**（2026-10-09）：用户 `zhimeng63` → Gmail `zhimeng63@gmail.com` only
+- (2026-10-08) **应用连接只走 Composio**：不要再装官方 GitHub（`cursor-github`）、Origin、Finance、Composio 插件（32661537）。
 - 同步方式：由专门 bot **仓库管家**每天约 03:14（北京时间）跑定时任务，把各 bot 的新记忆和设定同步进仓库，有变化才推送，推送前做密钥扫描。（2026-10-08 用户改口：原先「不单独建同步 bot、由主 bot 跑」已作废，移交给仓库管家。）
-- 新号流程：匿名克隆（公开仓库不需要登录）→ 密码框填一次仓库口令 → bot 解密 Composio key、装 composio-pg → 重建各 bot。`gh` 登录只在推送时需要（优先用 Composio 的 GitHub token，设备码备用）。官方连接器授权不再需要。
+- 新号流程：匿名克隆 → 密码框填一次仓库口令 → 解密 Composio key、装 `composio-pg` + `composio-zhimeng` → 重建各 bot。`gh` 登录只在推送时需要。
 - 不做公开分享模板（export-bot-template 只能生成公开模板，不用）。

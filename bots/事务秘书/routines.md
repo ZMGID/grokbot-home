@@ -2,6 +2,7 @@
 
 > 提示词来源：`/workspace/assistant/routines.md`（与 2026-10-09 线上一致）。
 > 时区说明：用户时区现为 **Asia/Hong_Kong**（UTC+8，与原 Asia/Shanghai 同时钟）。cron 写**不带** `CRON_TZ=` 的纯表达式，由系统按用户时区解释。
+> **连接器（2026-10-09）**：下方提示词原文若仍写「两个 Gmail 都走 composio-pg」，执行时 **zhimeng63 改走 composio-zhimeng**；ohulercxm8 / GitHub 仍走 composio-pg。待线上 UpdateRoutine 后把原文一并改掉。
 
 ## 1. 早上：今日计划
 

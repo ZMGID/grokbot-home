@@ -5,7 +5,7 @@
 ## 职责（与线上 description 一致）
 - 调研：AI / 工具 / 技术规范 / 产品方案，写成可开工要点或文档。
 - 虾皮（Shopee）选品：品类、竞品、价格和素材相关调研与整理。
-- 需要时用 composio-pg 只读查 GitHub / Gmail；做完简短汇报用户并抄送小萌。
+- 需要时用 composio-pg（GitHub / ohulercxm8）与 composio-zhimeng（zhimeng63 Gmail）只读查询；做完简短汇报用户并抄送小萌。
 - 不做：分派/新建 bot、Dsivio/kivio 代码与 CI、官网/飞书搭建、事务与早晚报、硬件、grokbot-home。
 
 ## 关于用户（小枳记住的）
@@ -53,6 +53,8 @@
 ### Dsivio IM Gateway 调研（2026-10-08 ~ 10-09）
 - 小萌派活：调研 Hermes IM 网关。确认对象是 Nous Research 的 [Hermes Agent](https://github.com/NousResearch/hermes-agent)（Python）；企业微信与飞书均已内置。桌面端无公网，两边都应走长连接。建议先做企业微信智能机器人（协议公开、可纯 Rust、原生流式），飞书第二；MVP 单平台单聊 + 流式/配对码/重连；IM 发起的对话默认拒绝需审批的工具。报告：`/workspace/dsivio-im/hermes-gateway.md`（不进本仓库）。
 - (2026-10-09) 用户问有无现成 SDK：飞书官方 `@larksuiteoapi/node-sdk`（含 `createLarkChannel` 长连接等）、企微官方 `@wecom/aibot-node-sdk`（长连接/流式），均为 Node；Rust 仅有不成熟社区实现。用户决定自己写 Rust，要求整理协议实现手册，明早使用（`/workspace/dsivio-im/rust-impl-guide.md`）。
+
+- (2026-10-09) Gmail `zhimeng63@gmail.com` 改走 **composio-zhimeng**；GitHub 与 ohulercxm8 仍走 composio-pg。
 
 ## 教训
 - 用户正在按某个方式配置时，不要提供另一套方案（例如重新生成授权链接）。先问清楚、照用户的路子走。

@@ -16,9 +16,9 @@
 
 ---
 
-## Step 0 — Clone, passphrase, Composio key, composio-pg / 克隆 → 口令 → 解密 key → 装 composio-pg
+## Step 0 — Clone, passphrase, Composio key, composio-pg + composio-zhimeng / 克隆 → 口令 → 解密 key → 装两个 Composio MCP
 
-This repo is **public**: clone it anonymously, no GitHub login needed. The Composio API key is in the repo **only encrypted** (`secrets/*.enc`); the user gives you the passphrase through a masked secret-request. Official GitHub / Origin connectors are **not** used (2026-10-08 rule: all apps only via Composio `composio-pg`). Never print the key, the passphrase, or any token. Never `cat` key files.
+This repo is **public**: clone it anonymously, no GitHub login needed. The Composio API key is in the repo **only encrypted** (`secrets/*.enc`); the user gives you the passphrase through a masked secret-request. Official GitHub / Origin connectors are **not** used (all apps via Composio stdio MCPs: `composio-pg` + `composio-zhimeng`). Never print the key, the passphrase, or any token. Never `cat` key files.
 仓库是公开的，匿名克隆即可；Composio key 只以加密形式放在 `secrets/`，口令用密码框向用户要。
 
 ### (a) Anonymous clone / 匿名克隆
@@ -72,6 +72,21 @@ rm -f /tmp/cpg.err
 
 `1` = OK (`0` → try the `.box-current.enc` key from (b)3, then the (b)4 fallback). Then `AddMcpServer` name **`composio-pg`**, command **`/workspace/composio-pg/launch.sh`** (no args, no env).
 
+### (d) Install composio-zhimeng (zhimeng63 Gmail) + AddMcpServer
+
+Reuses the same `~/.composio_pg_key` and `/workspace/composio-pg/.venv` (no second key file).
+
+```bash
+mkdir -p /workspace/composio-zhimeng
+install -m 700 /workspace/grokbot-home/connectors/composio-zhimeng/launch.sh /workspace/composio-zhimeng/
+install -m 600 /workspace/grokbot-home/connectors/composio-zhimeng/launch.py /workspace/composio-zhimeng/
+timeout 40 /workspace/composio-zhimeng/launch.sh </dev/null >/dev/null 2>/tmp/czm.err
+grep -c "Proxy established successfully" /tmp/czm.err
+rm -f /tmp/czm.err
+```
+
+`1` = OK. Then `AddMcpServer` name **`composio-zhimeng`**, command **`/workspace/composio-zhimeng/launch.sh`** (no args, no env) — **after** composio-pg. Verify Gmail read via `user-composio-zhimeng`. If the zhimeng63 Gmail connection is missing on a new account, re-auth with `COMPOSIO_MANAGE_CONNECTIONS` for Composio user **`zhimeng63`** (toolkit gmail), not the pg-test user.
+
 ## Step 1 — Push access (only for write-back / daily sync) / 推送权限（只有写回和每日同步需要）
 
 Setup itself needs **no** GitHub login. `gh` must be logged in as ZMGID only to **push** (Step 6 `agent-map.json`, Step 9 write-back, 仓库管家's daily sync). Do this after composio-pg works; if it fails, keep going and list it in the report.
@@ -109,30 +124,23 @@ nohup bash setup.sh > /tmp/setup.log 2>&1 &
 
 - Idempotent; heavy installs (KiCad 9, LibreOffice, PrusaSlicer, cadquery, PlatformIO ESP32 toolchain) can take 10–20 min — run in background, keep going with Step 3, check `/tmp/setup.log` later (the summary at the end lists anything that failed).
 - `bash setup.sh --light` skips the heavy CAD/EDA packages if the user only needs the basics.
-- It also refreshes the `composio-pg` launcher from the repo into `/workspace/composio-pg/` and rebuilds its venv if needed (same as Step 0 (c)). If `/workspace/composio-pg` is missing for any reason, run:
-  ```bash
-  mkdir -p /workspace/composio-pg && cd /workspace/composio-pg
-  install -m 700 /workspace/grokbot-home/connectors/composio-pg/launch.sh .
-  install -m 600 /workspace/grokbot-home/connectors/composio-pg/launch.py .
-  [ -x .venv/bin/python ] || uv venv -q .venv
-  uv pip install -q --python .venv/bin/python "composio==0.25.0" || uv pip install -q --python .venv/bin/python composio
-  npx -y mcp-remote --help >/dev/null 2>&1 || true
-  ```
-  (No `uv`? `curl -LsSf https://astral.sh/uv/install.sh | sh`.)
+- It also refreshes `composio-pg` and `composio-zhimeng` launchers from the repo (same as Step 0 (c)(d)); rebuilds composio-pg venv if needed. zhimeng launcher reuses that venv and `~/.composio_pg_key`.
 
 ## Step 3 — Connectors / 连接器
 
-Follow `connectors/README.md`. **Rule (2026-10-08): all app connections only through Composio (`composio-pg`).** Do **not** install or authenticate official GitHub (`cursor-github`), Origin, Finance (63408931), or the Composio OAuth plugin (32661537). New apps are added inside Composio for user `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde`, never as separate connectors.
+Follow `connectors/README.md`. **Rule: all app connections only through Composio stdio MCPs (`composio-pg` + `composio-zhimeng`).** Do **not** install official GitHub (`cursor-github`), Origin, Finance (63408931), or the Composio OAuth plugin (32661537).
 
 | Item | Action | User does |
 |---|---|---|
-| **composio-pg** | Already done in Step 0 if decrypt + AddMcpServer succeeded; otherwise finish Step 0 (b)(c) | type the repo passphrase once (masked) |
-| pstack plugin, **plugin id 9717366** | optional `InstallPlugin`（可选，原为 dr eggbot 安装；技能插件，不是应用连接） | nothing |
+| **composio-pg** | Step 0 (b)(c); AddMcpServer `/workspace/composio-pg/launch.sh` | type the repo passphrase once (masked) |
+| **composio-zhimeng** | Step 0 (d) after composio-pg; AddMcpServer `/workspace/composio-zhimeng/launch.sh` | nothing if zhimeng63 Gmail already ACTIVE; else re-auth for user `zhimeng63` |
+| pstack plugin, **plugin id 9717366** | optional `InstallPlugin` | nothing |
 | Official GitHub / Origin / Finance / Composio plugin 32661537 | **skip** | nothing |
 
-Confirm with `GetMcpServerStatus` that `composio-pg` is connected (tools appear as `user-composio-pg` / `COMPOSIO_*` on your next turn). Self-check GitHub + Gmail with `COMPOSIO_MANAGE_CONNECTIONS` `{"toolkits":["github","gmail"]}` (never `reinitiate_all`) → “All connections are active”, GitHub ZMGID.
-
-Composio user: `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde` (project `pr_lh5-8poHU4QB`), holding GitHub (ZMGID), Gmail ohulercxm8@gmail.com, Gmail zhimeng63@gmail.com. Nothing to re-authorize unless a new app is needed (add it in Composio console).
+Confirm `GetMcpServerStatus`: both `composio-pg` and `composio-zhimeng` connected.
+- `user-composio-pg` → `COMPOSIO_MANAGE_CONNECTIONS` `{"toolkits":["github","gmail"]}` (never `reinitiate_all`) → GitHub ZMGID + Gmail ohulercxm8@gmail.com.
+- `user-composio-zhimeng` → `COMPOSIO_MANAGE_CONNECTIONS` `{"toolkits":["gmail"]}` → Gmail zhimeng63@gmail.com; fetch 1 recent mail to verify.
+If zhimeng63 Gmail is missing: re-auth via `COMPOSIO_MANAGE_CONNECTIONS` for Composio user **`zhimeng63`**.
 
 ## Step 4 — Skills / 技能
 
@@ -147,7 +155,7 @@ Primary = `bots/index.json` → `"primary": "grok-bot"`. Read `bots/grok-bot/pro
 1. `update_state` target `profile`, action `set`: **name** `小萌` (formerly `Grok Bot`, renamed 2026-10-08; slug stays `grok-bot`), **description** = the exact English text in `bots/grok-bot/profile.md`, title empty.
 2. Avatar: no custom image (default shape `blob`, color `black`). If a `bots/grok-bot/avatar.*` file ever exists, set it with `update_state` target `avatar`.
 3. If you are not the primary bot, ask the user once whether to make you primary, then `SetPrimaryBot`.
-4. Save the important facts from `/CONTEXT.md` + `bots/grok-bot/CONTEXT.md` into your memory (`update_state` target `memory`): user writes Chinese, rotates accounts, GitHub ZMGID, repo `ZMGID/grokbot-home` (public) is the source of truth, no plaintext secrets in the repo (only `secrets/*.enc`), Composio via `composio-pg`.
+4. Save the important facts from `/CONTEXT.md` + `bots/grok-bot/CONTEXT.md` into your memory (`update_state` target `memory`): user writes Chinese, rotates accounts, GitHub ZMGID, repo `ZMGID/grokbot-home` (public) is the source of truth, no plaintext secrets in the repo (only `secrets/*.enc`), Composio via `composio-pg` + `composio-zhimeng`.
 5. If the bot the user opened is **not** the primary (`小萌` / slug `grok-bot`), still act as the bootstrapper: apply `grok-bot`'s profile only if the user agrees; otherwise create `grok-bot` in Step 6 like the others.
 
 ## Step 6 — Recreate every other bot / 用 CreateAgent 重建其他 bot
@@ -186,14 +194,15 @@ Routines belong to the bot that creates them, so:
 
 Run and record each result:
 
-1. `GetMcpServerStatus`: **composio-pg** = connected. Official GitHub / Origin / Finance / Composio plugin should be absent or ignored (not required).
-2. `user-composio-pg` → `COMPOSIO_MANAGE_CONNECTIONS` with `{"toolkits": ["github", "gmail"]}` (never `reinitiate_all`) → “All connections are active”, GitHub login **ZMGID**, Gmail ohulercxm8@gmail.com. Optionally confirm zhimeng63@gmail.com by fetching 1 recent email from each Gmail account.
-3. `gh auth status` shows login **ZMGID** (Step 1: Composio token or device-code fallback) — needed only for pushing.
-4. Skills: every `skills/<slug>` present in `/home/box/agent-data/workflows/`; pstack optional (only if installed).
-5. Bots: every slug in `bots/index.json` exists with the right name; `bots/agent-map.json` updated.
-6. Routines: daily sync on **仓库管家**; 事务秘书 morning/evening; 小萌「巡检各 bot」only。
-7. Tools: `tail -20 /tmp/setup.log` summary; spot-check `kicad-cli --version` (9.x), `~/.local/bin/pio --version`, `python3 -c "import cadquery"`, `gitleaks version`.
-8. Secret scan: `bash scripts/secret-scan.sh` → “干净”.
+1. `GetMcpServerStatus`: **composio-pg** and **composio-zhimeng** = connected. Official GitHub / Origin / Finance / Composio plugin should be absent or ignored.
+2. `user-composio-pg` → `COMPOSIO_MANAGE_CONNECTIONS` `{"toolkits": ["github", "gmail"]}` (never `reinitiate_all`) → GitHub **ZMGID**, Gmail ohulercxm8@gmail.com.
+3. `user-composio-zhimeng` → `COMPOSIO_MANAGE_CONNECTIONS` `{"toolkits": ["gmail"]}` → zhimeng63@gmail.com; fetch 1 recent email to verify.
+4. `gh auth status` shows login **ZMGID** (Step 1: Composio token or device-code fallback) — needed only for pushing.
+5. Skills: every `skills/<slug>` present in `/home/box/agent-data/workflows/`; pstack optional (only if installed).
+6. Bots: every slug in `bots/index.json` exists with the right name; `bots/agent-map.json` updated.
+7. Routines: daily sync on **仓库管家**; 事务秘书 morning/evening; 小萌「巡检各 bot」only。
+8. Tools: `tail -20 /tmp/setup.log` summary; spot-check `kicad-cli --version` (9.x), `~/.local/bin/pio --version`, `python3 -c "import cadquery"`, `gitleaks version`.
+9. Secret scan: `bash scripts/secret-scan.sh` → “干净”.
 
 ## Step 9 — Write-back rule / 写回规则（永久）
 
@@ -213,7 +222,7 @@ Send one short Chinese message: what's done, what failed, what the user still ne
 
 - [ ] Step 0: repo cloned anonymously at `/workspace/grokbot-home`, git identity set
 - [ ] Step 0: passphrase received via secret-request; `/home/box/.composio_pg_key` decrypted from `.enc` (or `.box-current.enc`), mode 600 (values never shown)
-- [ ] Step 0/3: `composio-pg` installed from `connectors/composio-pg/`, smoke test `1`, added (`/workspace/composio-pg/launch.sh`) and connected
+- [ ] Step 0/3: `composio-pg` + `composio-zhimeng` installed, smoke tests `1`, both AddMcpServer’d and connected
 - [ ] Step 1: `gh` logged in as ZMGID for pushing (Composio GitHub token, or device-code fallback)
 - [ ] Step 2: `setup.sh` finished (summary checked; failures listed)
 - [ ] Step 3: pstack (9717366) optional（可选，原为 dr eggbot 安装）; official GitHub/Origin/Finance/Composio-plugin **not** installed
@@ -221,6 +230,6 @@ Send one short Chinese message: what's done, what failed, what the user still ne
 - [ ] Step 5: own profile = **小萌** (slug `grok-bot`), primary, memory seeded from CONTEXT.md
 - [ ] Step 6: 小枳 / 仓库管家 / 代码工程师 / 搭建运维 / 事务秘书 / 硬件工程师 / 财务管家 created; `bots/agent-map.json` updated & pushed (no dr eggbot)
 - [ ] Step 7: daily sync on **仓库管家**; 事务秘书 08:53/17:47; 小萌 巡检 11:17/15:17 only; others per `routines.md`
-- [ ] Step 8: composio-pg GitHub (ZMGID) + Gmail active via COMPOSIO_MANAGE_CONNECTIONS; secret scan clean
+- [ ] Step 8: composio-pg GitHub+ohulercxm8 + composio-zhimeng zhimeng63 Gmail active; secret scan clean
 - [ ] Step 9: write-back rule saved in memory
 - [ ] Step 10: user got the summary

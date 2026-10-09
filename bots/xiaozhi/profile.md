@@ -44,3 +44,5 @@
 ## 已知的“说明/指令”
 
 系统里只有 name/description/title；以上 description 为线上保存原文。
+
+> **连接器（2026-10-09）**：`zhimeng63@gmail.com` → **composio-zhimeng**；GitHub / ohulercxm8 → **composio-pg**。
