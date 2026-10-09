@@ -15,8 +15,7 @@
       },
       "old_agent_id": "a96070f7-cb92-4f15-bcd4-7b1e700cc676",
       "routines": [
-        "weekday-bot-patrol (11:17,15:17)",
-        "weekday-digest-fallback (09:13,18:13)"
+        "weekday-bot-patrol (11:17,15:17)"
       ],
       "plugins_needed": []
     },
