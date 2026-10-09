@@ -30,9 +30,9 @@
         "image": null
       },
       "old_agent_id": "26593ece-aeae-442d-b633-7acda2b53ec2",
-      "description_reconstructed": true,
       "routines": [],
-      "plugins_needed": []
+      "plugins_needed": [],
+      "role": "调研 + 虾皮（Shopee）选品"
     },
     {
       "slug": "仓库管家",

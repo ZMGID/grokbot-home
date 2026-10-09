@@ -1,6 +1,12 @@
 # 小枳自己的记忆与项目状态
 
-> 先读根目录 `/CONTEXT.md`。这里是小枳的记忆（旧号 memory/profile.md、memory/log/ 和对话记录整理，2026-10-08 导出）。
+> 先读根目录 `/CONTEXT.md`。这里是小枳的记忆（旧号 memory/profile.md、memory/log/ 和对话记录整理，2026-10-08 导出；description 于 2026-10-09 由小萌写入线上）。
+
+## 职责（与线上 description 一致）
+- 调研：AI / 工具 / 技术规范 / 产品方案，写成可开工要点或文档。
+- 虾皮（Shopee）选品：品类、竞品、价格和素材相关调研与整理。
+- 需要时用 composio-pg 只读查 GitHub / Gmail；做完简短汇报用户并抄送小萌。
+- 不做：分派/新建 bot、Dsivio/kivio 代码与 CI、官网/飞书搭建、事务与早晚报、硬件、grokbot-home。
 
 ## 关于用户（小枳记住的）
 - (2026-08-21) 用户在共用电脑上拉了 Kivio Desktop（github.com/ZMGID/kivio），本地路径 `/workspace/kivio`，main 分支，当时在做 Linux 适配（ONNX Runtime linux 包、非 macOS overlay 窗口销毁、区域截图 `exclude_self_pid` 参数）。
