@@ -5,8 +5,9 @@
 > 本文件只记名字、ID、地址和步骤，**不含任何密钥**。
 >
 > **规矩**：所有应用连接只走 Composio 自定义 stdio MCP。**不要**再装官方 GitHub / Origin / Finance / Composio 插件。
-> - **`composio-pg`**：Composio 用户 `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde` → GitHub（ZMGID）+ Gmail `ohulercxm8@gmail.com`
-> - **`composio-zhimeng`**：Composio 用户 `zhimeng63` → Gmail `zhimeng63@gmail.com` only（共用 `/home/box/.composio_pg_key`）
+> - **`composio-pg`**：用户 `pg-test-…` → GitHub ZMGID（`ca_1g4u93YydZsp`）+ Gmail ohulercxm8（`ca_ZnzYtlTeic0s`）——**一个连接器一个 Gmail**
+> - **`composio-zhimeng`**：用户 `zhimeng63` → Gmail zhimeng63（`ca_5jGHEthCoWuD`）only（共用 `/home/box/.composio_pg_key`）
+> - 旧 composio-pg 上的 zhimeng63 连接 **`ca_2rJjmKh8j1q0` 已删除**（2026-10-09，用户同意）；新号勿在 pg-test 下重建 zhimeng63
 
 | # | 连接器 | 类型 | 怎么装 | 需要用户做什么 | 必需？ |
 |---|---|---|---|---|---|
@@ -28,12 +29,14 @@
 **它是什么**：box 上的一个小启动器。读取 `~/.composio_pg_key`（Composio 项目 API key），用 Composio SDK 给用户
 `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde` 创建一个会话，再用 `npx mcp-remote` 把会话的 MCP 地址桥接成 stdio。
 
-**这个 Composio 用户下现有的连接**（2026-10-09：GitHub + ohulercxm8；zhimeng63 已拆到 composio-zhimeng）：
+**这个 Composio 用户下现有的连接**（2026-10-09 核对；**勿**再挂 zhimeng63）：
 
-| 应用 | 账号 |
-|---|---|
-| GitHub | ZMGID（ZhiMeng） |
-| Gmail | ohulercxm8@gmail.com |
+| 应用 | 账号 | connected account |
+|---|---|---|
+| GitHub | ZMGID（ZhiMeng） | `ca_1g4u93YydZsp` |
+| Gmail | ohulercxm8@gmail.com | `ca_ZnzYtlTeic0s` |
+
+~~旧~~：曾有 Gmail zhimeng63@gmail.com / `ca_2rJjmKh8j1q0`，已于 2026-10-09 经用户同意从 composio-pg 删除。新号重建时**不要**在 pg-test 用户下再授权 zhimeng63——只走 composio-zhimeng。
 
 Composio 项目 ID：`pr_lh5-8poHU4QB`（只有这一个项目）。
 
@@ -89,4 +92,4 @@ Composio 项目 ID：`pr_lh5-8poHU4QB`（只有这一个项目）。
    `timeout 40 /workspace/composio-zhimeng/launch.sh </dev/null >/dev/null 2>/tmp/czm.err; grep -c "Proxy established successfully" /tmp/czm.err; rm -f /tmp/czm.err`
 3. `AddMcpServer`：name **`composio-zhimeng`**，command **`/workspace/composio-zhimeng/launch.sh`**，无 args、无 env（在 composio-pg 之后添加）。
 4. 自检：`user-composio-zhimeng` → `COMPOSIO_MANAGE_CONNECTIONS` `{"toolkits":["gmail"]}`（**不要** `reinitiate_all`）→ active；再读一封 zhimeng63 邮件确认。
-5. 若新号上缺少 zhimeng63 的 Gmail 连接：用 `COMPOSIO_MANAGE_CONNECTIONS` 给 Composio 用户 **`zhimeng63`** 重新授权 Gmail（不要用 pg-test 用户）。
+5. 若新号上缺少 zhimeng63 的 Gmail 连接：用 `COMPOSIO_MANAGE_CONNECTIONS` 给 Composio 用户 **`zhimeng63`** 重新授权 Gmail（**不要**用 pg-test / composio-pg；旧 `ca_2rJjmKh8j1q0` 已删，勿重建到 composio-pg）。
