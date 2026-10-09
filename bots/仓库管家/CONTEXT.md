@@ -17,3 +17,5 @@
 - 没有变化就不发消息；有变化发一行中文说明改了哪些 bot / 文件。
 - 出错时说清原因（只说文件名和行号，不贴可疑内容）。
 - (2026-10-09) 每日同步 03:14：合并小枳 IM Gateway 调研与 Dsivio/官网进展进 CONTEXT；刷新 `bots/grok-bot/notes/big-picture.md`；跳过空白 New Bot；connectors 核对（composio-pg ACTIVE；GetMcpServerStatus 不可用，改用命名空间目录）。
+
+- (2026-10-10) 每日同步 03:14：记录小萌领取的 Grok Bot 邮箱 cloudpotato（不可转移）及其来信提醒任务、新仓库 ZMGID/brake-game；合并各 bot 10-09 午后以来进展；第二个空白 New Bot（`52d1b935-…`）暂不登记。

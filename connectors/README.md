@@ -93,3 +93,6 @@ Composio 项目 ID：`pr_lh5-8poHU4QB`（只有这一个项目）。
 3. `AddMcpServer`：name **`composio-zhimeng`**，command **`/workspace/composio-zhimeng/launch.sh`**，无 args、无 env（在 composio-pg 之后添加）。
 4. 自检：`user-composio-zhimeng` → `COMPOSIO_MANAGE_CONNECTIONS` `{"toolkits":["gmail"]}`（**不要** `reinitiate_all`）→ active；再读一封 zhimeng63 邮件确认。
 5. 若新号上缺少 zhimeng63 的 Gmail 连接：用 `COMPOSIO_MANAGE_CONNECTIONS` 给 Composio 用户 **`zhimeng63`** 重新授权 Gmail（**不要**用 pg-test / composio-pg；旧 `ca_2rJjmKh8j1q0` 已删，勿重建到 composio-pg）。
+
+## Grok Bot 自带邮箱（不是连接器，2026-10-10）
+- `cloudpotato@mail.grokbot.com`：Grok Bot 原生邮箱，由小萌在当前账号领取。**绑在当前账号上，不能转移，换号即丢失**；新号若需要，只能用 ListEmailInboxes / ClaimEmailInbox 另领一个新地址（地址会不同），并相应改写「cloudpotato 来信提醒」任务。只用于临时注册、验证码等可丢弃用途。

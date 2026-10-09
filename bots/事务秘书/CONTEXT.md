@@ -15,3 +15,5 @@
 - (2026-10-08) 接手主 bot（现名小萌）移交的工作日「今日计划」(08:53) 与「今日总结」(17:47)；提示词见 `routines.md`（来自 `/workspace/assistant/routines.md`，automations/ 为空）。
 - (2026-10-08) 「今日计划」现行提示词已写入 `routines.md`（含「今日资讯」；来自 `/workspace/assistant/routines.md` 22:14）。
 - (2026-10-09) `zhimeng63@gmail.com` 改走连接器 **composio-zhimeng**（不再经 composio-pg）。
+
+- (2026-10-09) 17:58 晚报正常生成，已能经 composio-zhimeng 读到 zhimeng63 邮件；含本周回顾。

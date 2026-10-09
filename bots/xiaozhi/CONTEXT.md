@@ -59,3 +59,7 @@
 ## 教训
 - 用户正在按某个方式配置时，不要提供另一套方案（例如重新生成授权链接）。先问清楚、照用户的路子走。
 - 不能控制用户电脑上的浏览器时，直接说明并请他截图或复制关键值（例如完整 User ID）。
+
+## 2026-10-09 ~ 10-10
+- (2026-10-09) Dsivio IM 网关 Rust 实现手册在 box 的 `/workspace/dsivio-im/rust-impl-guide.md`（两个平台的帧格式、心跳、重连、收发、流式和媒体，字段标了出处）。
+- (2026-10-10) 用户嫌 AI 生成的页面全是输入框、没设计感，调研 UI 设计类 skill（含 X 上的推荐）：首推 **Impeccable**（`npx impeccable install`，`/impeccable init` 生成 PRODUCT.md/DESIGN.md，会装改后自动检查的 hook），第二 **shadcn 官方 skill**（`npx skills add shadcn/ui`）配 shadcn/lint，第三 Jakub Krehel skills；建议两者一起用，以 shadcn 主题变量作为唯一色值来源。

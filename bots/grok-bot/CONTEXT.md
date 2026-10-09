@@ -49,7 +49,14 @@
 - **财务管家**：记账/订阅/预算/报销对账（只记录不付款）；账本 `/workspace/finance/` 不进仓库。
 - **dr eggbot**：已于 2026-10-08 删除；新建 bot 改由本 bot（小萌）负责。
 - 另有一个空的 “New Bot”（id `1dbfda76-…`，2026-08 创建，无对话、无设定），不是真正在用的 bot，没有迁移。
+- (2026-10-10) 又出现第二个空白 “New Bot”（id `52d1b935-…`，10-10 03:09 创建，只发了一句自我介绍，无设定），同样暂不登记，等用户或小萌确认用途。
 
 ## 2026-10-08 晚 ~ 10-09
 - (2026-10-08) Dsivio v1.1.0 发布；官网产品页上线；环境配置 PR #2/#3/#4 开出未合；用户次日重点：手工优化环境配置 + 启动 IM Gateway（参考 Hermes）。
 - (2026-10-08) 派小枳做 Hermes IM 网关调研；用户 10/9 凌晨决定自写 Rust 协议实现。
+
+## 2026-10-09 午后 ~ 10-10 凌晨
+- (2026-10-09) 帮用户查了 Codex CLI 0.160–0.162 更新、GPT-6.1 Sol 与 Claude Opus 5.5 API 价格对比、AI 操作 Word/Excel 的开源项目（首推 OfficeCLI，备选 officekit）。
+- (2026-10-10) 应用户要求做了恶搞网页小游戏《刹不住的境界》（虚构车名/厂名），用户最终选第一版；已挂到新的公开仓库 **ZMGID/brake-game**（GitHub Pages：https://zmgid.github.io/brake-game/），只记一笔、不同步进本仓库。素材整理在 box 的 `/workspace/brake-game/`。
+- (2026-10-10) 领取 Grok Bot 邮箱 `cloudpotato@mail.grokbot.com`（绑当前账号、不可转移，见根目录 CONTEXT「Grok Bot 自带邮箱」），并新建自动任务「cloudpotato 来信提醒」。
+- (2026-10-10) 用户想在 Composio 里再接其他邮箱：规矩是每个邮箱单独建一个 Composio 连接器（同 composio-zhimeng 模式），等用户给地址。
