@@ -175,10 +175,10 @@ Routines belong to the bot that creates them, so:
 - **You (grok-bot / 小萌)**:
   - do **not** create the daily sync (belongs to **仓库管家**);
   - do **not** create morning plan / evening summary (belong to **事务秘书**, handed over 2026-10-08);
-  - recreate only「巡检各 bot」from `bots/grok-bot/routines.md` — cron `17 11,15 * * 1-5` (weekdays 11:17 & 15:17 Beijing time).
+  - recreate from `bots/grok-bot/routines.md`:「巡检各 bot」`17 11,15 * * 1-5` and「早晚报兜底检查」`13 9,18 * * 1-5` (plain cron; user zone Asia/Hong_Kong = UTC+8).
 - **Other bots**: each recreates its own from `bots/<slug>/routines.md` on its first turn. Match that file:
-  - `仓库管家`: daily sync `CRON_TZ=Asia/Shanghai 14 3 * * *`; weekly drill `CRON_TZ=Asia/Shanghai 12 15 * * 0`.
-  - `事务秘书`: morning plan `CRON_TZ=Asia/Shanghai 53 8 * * 1-5`; evening summary `CRON_TZ=Asia/Shanghai 47 17 * * 1-5`.
+  - `仓库管家`: daily sync / weekly drill — see `bots/仓库管家/routines.md` (may still use `CRON_TZ=Asia/Shanghai`, same UTC+8).
+  - `事务秘书`: morning `53 8 * * 1-5`, evening `47 17 * * 1-5` (plain cron; Asia/Hong_Kong).
   - `xiaozhi` / `代码工程师` / `搭建运维` / `硬件工程师`: none（暂无）.
 - After a few minutes, check each bot did it (ReadTranscript, or ask the user). If a bot can't create routines, create them yourself only if the user agrees.
 
@@ -191,7 +191,7 @@ Run and record each result:
 3. `gh auth status` shows login **ZMGID** (Step 1: Composio token or device-code fallback) — needed only for pushing.
 4. Skills: every `skills/<slug>` present in `/home/box/agent-data/workflows/`; pstack optional (only if installed).
 5. Bots: every slug in `bots/index.json` exists with the right name; `bots/agent-map.json` updated.
-6. Routines: daily sync on **仓库管家**; 事务秘书 morning/evening plans; 小萌「巡检各 bot」only.
+6. Routines: daily sync on **仓库管家**; 事务秘书 morning/evening; 小萌「巡检各 bot」+「早晚报兜底检查」。
 7. Tools: `tail -20 /tmp/setup.log` summary; spot-check `kicad-cli --version` (9.x), `~/.local/bin/pio --version`, `python3 -c "import cadquery"`, `gitleaks version`.
 8. Secret scan: `bash scripts/secret-scan.sh` → “干净”.
 
@@ -219,7 +219,7 @@ Send one short Chinese message: what's done, what failed, what the user still ne
 - [ ] Step 4: skills imported (currently none) 
 - [ ] Step 5: own profile = **小萌** (slug `grok-bot`), primary, memory seeded from CONTEXT.md
 - [ ] Step 6: 小枳 / 仓库管家 / 代码工程师 / 搭建运维 / 事务秘书 / 硬件工程师 created; `bots/agent-map.json` updated & pushed (no dr eggbot)
-- [ ] Step 7: daily sync on **仓库管家**; 事务秘书 08:53/17:47; 小萌 巡检 11:17/15:17; others per `routines.md`
+- [ ] Step 7: daily sync on **仓库管家**; 事务秘书 08:53/17:47; 小萌 巡检 11:17/15:17 + 兜底 09:13/18:13; others per `routines.md`
 - [ ] Step 8: composio-pg GitHub (ZMGID) + Gmail active via COMPOSIO_MANAGE_CONNECTIONS; secret scan clean
 - [ ] Step 9: write-back rule saved in memory
 - [ ] Step 10: user got the summary

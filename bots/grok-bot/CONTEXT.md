@@ -9,6 +9,7 @@
 - (2026-10-08) 用户批准把 `/workspace/assistant/big-picture.md` 公开进仓库：`bots/grok-bot/notes/big-picture.md`。每日笔记 `/workspace/assistant/daily/` **不进仓库**；每日同步由仓库管家复制 big-picture（见 `scripts/sync.md`）。
 - (2026-10-08) **改名**：显示名 `Grok Bot` → `小萌`（slug 仍为 `grok-bot`）。
 - (2026-10-08) 定时任务「巡检各 bot」`17 11,15 * * 1-5`；早晚计划/总结**已移交给事务秘书**。
+- (2026-10-09) 「巡检各 bot」改用纯 cron `17 11,15 * * 1-5`（用户时区 Asia/Hong_Kong）；新增「早晚报兜底检查」`13 9,18 * * 1-5`（提示词待从小萌补全进 `routines.md`）。
 
 ## 关于用户（主 bot 视角的要点）
 - 用中文交流，Grok Bot 账号多个、轮换使用，GitHub `ZMGID`。
