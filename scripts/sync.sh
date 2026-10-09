@@ -41,7 +41,10 @@ if [[ -f "$MAP" ]]; then
     # 自定义头像（若有）
     for a in "$src"/avatar.{png,jpg,jpeg,webp,gif,svg}; do [[ -f "$a" ]] && cp "$a" "bots/$slug/"; done
     # bot 自己的记忆文件（memory/profile.md、memory/log/），原样备份（只要 .md，不要数据库/其他文件）
-    if [[ -d "$src/memory" ]]; then
+    # 财务管家：memory 可能含金额/流水/账号信息 → 永不拷进 raw/
+    if [[ "$slug" == "财务管家" ]]; then
+      echo "   跳过 $slug 的 memory/（财务数据不进公开仓库）"
+    elif [[ -d "$src/memory" ]]; then
       mkdir -p "$dst/memory"
       (cd "$src/memory" && find . -type f -name '*.md' -print0) | while IFS= read -r -d '' m; do
         mkdir -p "$dst/memory/$(dirname "$m")"; cp "$src/memory/$m" "$dst/memory/$m"

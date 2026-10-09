@@ -91,6 +91,17 @@ while IFS= read -r -d '' f; do
   esac
 done < "$TMPD/files"
 
+# 禁止入库的路径与账本类文件名（收紧，无白名单例外）
+# /workspace/finance/ 账本、/workspace/assistant/daily/ 日记，以及任何看起来像 ledger/流水 的已跟踪路径
+FORBIDDEN_PATHS=$(tr '\0' '\n' < "$TMPD/files" | rg -i '(^|/)(finance(/|$)|assistant/daily(/|$))' || true)
+LEDGER_NAMES=$(tr '\0' '\n' < "$TMPD/files" | rg -i '(^|/)([^/]*(ledger|账本|流水|对账|报销)[^/]*\.(csv|tsv|xlsx|xls|ods|json|md|txt)|[^/]*(ledger|账本|流水)\.[^/]+)$' || true)
+if [[ -n "$FORBIDDEN_PATHS" || -n "$LEDGER_NAMES" ]]; then
+  echo "!! 禁止入库的财务/日记路径或账本类文件："
+  [[ -n "$FORBIDDEN_PATHS" ]] && echo "$FORBIDDEN_PATHS"
+  [[ -n "$LEDGER_NAMES" ]] && echo "$LEDGER_NAMES"
+  STATUS=1
+fi
+
 # 禁止提交的文件名
 BAD=$(tr '\0' '\n' < "$TMPD/files" | rg -i '(^|/)(\.env(\..*)?|.*\.pem|.*\.key|id_rsa.*|id_ed25519.*|\.?composio_pg_key|box-secrets\.json|host-secrets\.json|gateway\.json|hosts\.yml|cpg\.err|.*mcp-remote.*\.log|search-index\.db.*|store\.db|conversation-blobs\.db)$' | rg -v '\.env\.example$' || true)
 if [[ -n "$BAD" ]]; then echo "!! 不该提交的文件："; echo "$BAD"; STATUS=1; fi

@@ -114,6 +114,24 @@
       "description_reconstructed": false,
       "routines": [],
       "plugins_needed": []
+    },
+    {
+      "slug": "财务管家",
+      "name": "财务管家",
+      "title": "",
+      "primary": false,
+      "avatar": {
+        "shape": "",
+        "color": "",
+        "image": null
+      },
+      "old_agent_id": "46700d6c-3bfa-4d52-9b8e-a9aac3285c71",
+      "description_reconstructed": false,
+      "routines": [],
+      "plugins_needed": [],
+      "role": "记账 / 订阅与固定支出 / 预算 / 报销对账 / 财务材料（只记录，从不付款）",
+      "raw_memory_excluded": true,
+      "notes": "ledger at /workspace/finance/ — never in repo"
     }
   ]
 }

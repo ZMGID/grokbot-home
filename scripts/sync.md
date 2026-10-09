@@ -15,11 +15,12 @@
    - 关于用户本人、所有 bot 都需要知道的 → 根目录 `CONTEXT.md`。
    - 设定变化（名字、description、头像）→ `profile.md`；定时任务新增/修改/暂停 → `routines.md`。
    - **主 bot（小萌 / slug grok-bot）笔记**：把 `/workspace/assistant/big-picture.md` 复制到 `bots/grok-bot/notes/big-picture.md`；如有需要把 `/workspace/assistant/routines.md` 的定时任务内容同步进 `bots/grok-bot/routines.md`。**绝不**把 `/workspace/assistant/daily/` 拷进仓库。
+   - **财务管家账本**：`/workspace/finance/` **绝不**拷进仓库，也不在 CONTEXT/commit message 里摘录金额、账号、卡号、流水。与 daily/ 同级禁忌。
 3. **运行 `bash scripts/sync.sh`**，它负责机械部分：
-   - 按 `bots/agent-map.json` 把每个 bot 的 `profile.json`、`settings.json`（去掉 serverId）、`memory/`、自定义头像复制到 `bots/<slug>/raw/`；
+   - 按 `bots/agent-map.json` 把每个 bot 的 `profile.json`、`settings.json`（去掉 serverId）、`memory/`、自定义头像复制到 `bots/<slug>/raw/`；**例外：`财务管家` 跳过 `memory/`**（可能含金额/流水）；
    - 把 `/home/box/agent-data/workflows/` 下的用户技能复制到 `skills/`；
    - 生成 `scripts/env-snapshot.md`（工具环境快照，发现 setup.sh 漏装的东西就顺手补进 setup.sh）；
-   - `git add -A` 后运行 `scripts/secret-scan.sh`（gitleaks 工作区 + 历史；rg 模式扫描所有将提交的文件，含隐藏文件；确认 `~/.composio_pg_key`、两份 `secrets/*.enc` 的明文、口令 `GROKBOT_HOME_PASSPHRASE` 都没出现在文件和未推送提交里；`secrets/` 下只能有 `GBH1` 加密文件）——**不干净就撤销暂存、中止，不提交**；
+   - `git add -A` 后运行 `scripts/secret-scan.sh`（gitleaks 工作区 + 历史；rg 模式扫描所有将提交的文件，含隐藏文件；确认 `~/.composio_pg_key`、两份 `secrets/*.enc` 的明文、口令 `GROKBOT_HOME_PASSPHRASE` 都没出现在文件和未推送提交里；`secrets/` 下只能有 `GBH1` 加密文件；**任何已跟踪的 `finance/`、`assistant/daily/` 路径或账本类文件名一律失败**）——**不干净就撤销暂存、中止，不提交**；
    - 没有变化就退出；有变化就 `git commit -m "sync: <时间> Asia/Shanghai"` 并 `git push origin HEAD:main`（被拒会 pull --rebase 后重试一次）。脚本开头会确认 remote 是 `ZMGID/grokbot-home`、分支是 `main`。
 4. **连接器清单**：用 GetMcpServerStatus 看当前连接器，和 `connectors/README.md` 对比；有新增/删除/状态变化就更新清单（只写名字、id、地址、步骤）。
 5. **汇报**：
@@ -39,3 +40,4 @@ bash scripts/secret-scan.sh      # 只做密钥扫描
 ## 注意
 - 别的 bot 在新号上的 agent id 和旧号不同：BOOTSTRAP 第 6 步建完 bot 后要把新 id 写进 `bots/agent-map.json` 并提交，否则 raw 快照会跳过。
 - 不要把 `/home/box/agent-data/` 下的 `box-secrets.json`、`host-secrets.json`、`gateway.json`、`store.db`、`conversation-blobs.db` 复制进仓库。
+- 不要把 `/workspace/finance/` 或 `/workspace/assistant/daily/` 复制进仓库；`.gitignore` 已忽略；扫描脚本会拦。

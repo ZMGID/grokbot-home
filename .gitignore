@@ -60,3 +60,9 @@ Thumbs.db
 secrets/*
 !secrets/*.enc
 !secrets/README.md
+
+# --- private ledgers / daily notes (never commit) ---
+finance/
+assistant/daily/
+# 财务管家 memory 可能含金额/流水；sync.sh 也跳过拷贝
+bots/财务管家/raw/memory/
