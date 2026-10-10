@@ -63,3 +63,7 @@
 ## 2026-10-09 ~ 10-10
 - (2026-10-09) Dsivio IM 网关 Rust 实现手册在 box 的 `/workspace/dsivio-im/rust-impl-guide.md`（两个平台的帧格式、心跳、重连、收发、流式和媒体，字段标了出处）。
 - (2026-10-10) 用户嫌 AI 生成的页面全是输入框、没设计感，调研 UI 设计类 skill（含 X 上的推荐）：首推 **Impeccable**（`npx impeccable install`，`/impeccable init` 生成 PRODUCT.md/DESIGN.md，会装改后自动检查的 hook），第二 **shadcn 官方 skill**（`npx skills add shadcn/ui`）配 shadcn/lint，第三 Jakub Krehel skills；建议两者一起用，以 shadcn 主题变量作为唯一色值来源。
+
+## 2026-10-10 晚
+- (2026-10-10) 调研 Rust AI 框架：agent/模型调用有 rig（最成熟，未到 1.0）、genai（轻量多模型客户端）、async-openai；MCP 用官方 rmcp；本地推理 mistral.rs / llama-cpp-2 / candle；langchain-rust、llm-chain 已停更勿用；codex-rs 只作参考。对 Dsivio 建议 genai + rmcp 3 自写 agent 循环。
+- (2026-10-10) 评估 kivio 自研 AI 内核：判断已达产品级（协议适配、agent 循环、网络层都比通用库完整），**不建议换框架**；可把 kivio 的模型调用层抽成独立 crate 给 Dsivio 用。随后做了一轮细查：严重 3 个、中等 9 个、小问题 5 个，建议修复顺序：Windows 写文件可能丢数据 → Anthropic thinking 回放 → 默认审批改为需确认 → 升级依赖并补齐 CI（clippy/fmt/audit/Windows 构建）→ 密钥迁到 keyring。完整报告在 box 的 `/workspace/kivio-review-report.md`（不进本仓库）；clippy 需用户在 Mac 上跑一次。等用户决定先改哪几条。
