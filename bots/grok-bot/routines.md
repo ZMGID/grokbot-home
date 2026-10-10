@@ -61,8 +61,8 @@
 - **Composio 触发器**（`GMAIL_NEW_GMAIL_MESSAGE`）：
   - `ti_ePC_aV3eRSPT` → ohulercxm8@gmail.com（connected account `ca_ZnzYtlTeic0s`，经 **composio-pg**）
   - `ti_6ozhOAfOaHLq` → zhimeng63@gmail.com（connected account `ca_5jGHEthCoWuD`，经 **composio-zhimeng**）
-- **盒子**：重启或换号后需手动跑 `/workspace/gmail-listener/start.sh`（脚本在 `services/gmail-listener/`；见 BOOTSTRAP / CONTEXT）。
-- **换号**：须按 Composio 用户重建上述两个触发器，并重新签发 webhook key（用户 secret prompt 提供 `GMAIL_WEBHOOK_KEY`）。
+- **盒子**：重启或换号后需手动跑 `/workspace/gmail-listener/start.sh`（`listener.py`/`run_loop.sh`/`start.sh`/`stop.sh` 在 `services/gmail-listener/`）。
+- **换号**：① 重建本 webhook 例程；② 用户 secret prompt 提供 `GMAIL_WEBHOOK_KEY`；③ 新 URL 写入 `webhook_url.local`（chmod 600）或 env `GMAIL_WEBHOOK_URL`（**永不进仓库**）；④ 按需重建两个 Composio 触发器；⑤ `start.sh`。
 - **状态**：本账号在用。提示词取自 `/workspace/assistant/routines.md` 第 5 节原文。
 - **保存的提示词**：
 

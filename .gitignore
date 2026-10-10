@@ -75,6 +75,8 @@ bots/财务管家/raw/memory/
 **/gmail-listener/failed.jsonl
 **/gmail-listener/supervisor.pid
 **/gmail-listener/__pycache__/
+**/gmail-listener/webhook_url.local
+webhook_url.local
 forwarded_ids.txt
 seen.txt
 failed.jsonl

@@ -102,7 +102,7 @@ Composio 项目 ID：`pr_lh5-8poHU4QB`（只有这一个项目）。
 
 ## Gmail 来信监听（gmail-listener + 小萌 webhook）
 
-盒子上的 `/workspace/gmail-listener/` 订阅 Composio 实时通道，把 `GMAIL_NEW_GMAIL_MESSAGE` 推到小萌的 webhook 例程 **gmail-new-mail**（folder `gmail-new-mail`）。脚本备份：`services/gmail-listener/`（仅 `start.sh` / `stop.sh` / README；**不含** venv、log、`seen.txt`、`forwarded_ids.txt`、`failed.jsonl`）。
+盒子上的 `/workspace/gmail-listener/` 订阅 Composio 实时通道，把 `GMAIL_NEW_GMAIL_MESSAGE` 推到小萌的 webhook 例程 **gmail-new-mail**（folder `gmail-new-mail`）。脚本备份：`services/gmail-listener/`（`listener.py` / `run_loop.sh` / `start.sh` / `stop.sh` / README；**不含** venv、log、`seen.txt`、`forwarded_ids.txt`、`failed.jsonl`、`webhook_url.local`）。
 
 | 触发器 id | 邮箱 | Composio 用户 / MCP | connected account |
 |---|---|---|---|
@@ -114,8 +114,9 @@ Composio 项目 ID：`pr_lh5-8poHU4QB`（只有这一个项目）。
 **换号 / 新账号**：
 1. 按各 Composio 用户重建两个 `GMAIL_NEW_GMAIL_MESSAGE` 触发器（勿把 zhimeng63 建到 pg-test）。
 2. 用户通过密码框重新提供 `GMAIL_WEBHOOK_KEY`（旧 key 作废）。
-3. 从仓库恢复脚本到 `/workspace/gmail-listener/`，建好 venv 后执行 `start.sh`。
-4. 盒子无 systemd：**每次盒子重启后须手动** `/workspace/gmail-listener/start.sh`。
+3. 把新 webhook URL 写入 `/workspace/gmail-listener/webhook_url.local`（`chmod 600`）或 env `GMAIL_WEBHOOK_URL`（**永不进仓库**）。
+4. 从仓库恢复脚本到 `/workspace/gmail-listener/`，建好 venv 后执行 `start.sh`。
+5. 盒子无 systemd：**每次盒子重启后须手动** `/workspace/gmail-listener/start.sh`。
 
 例程提示词见 `bots/grok-bot/routines.md` §6；另见 cloudpotato 邮箱触发 §5。
 

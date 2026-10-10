@@ -96,7 +96,7 @@ done < "$TMPD/files"
 FORBIDDEN_PATHS=$(tr '\0' '\n' < "$TMPD/files" | rg -i '(^|/)(finance(/|$)|assistant/daily(/|$)|\.lark-cli(/|$)|\.local/share/lark-cli(/|$)|feishu-cli/survey(/|$)|gmail-listener/(venv|__pycache__)(/|$))' || true)
 LEDGER_NAMES=$(tr '\0' '\n' < "$TMPD/files" | rg -i '(^|/)([^/]*(ledger|账本|流水|对账|报销)[^/]*\.(csv|tsv|xlsx|xls|ods|json|md|txt)|[^/]*(ledger|账本|流水)\.[^/]+)$' || true)
 # gmail-listener 运行态（含邮件主题）与 webhook 密钥文件名
-GMAIL_RUNTIME=$(tr '\0' '\n' < "$TMPD/files" | rg -i '(^|/)(forwarded_ids\.txt|seen\.txt|failed\.jsonl|listener\.log|supervisor\.pid)$|(^|/)gmail-listener/(forwarded_ids\.txt|seen\.txt|failed\.jsonl|listener\.log|supervisor\.pid|venv/)' || true)
+GMAIL_RUNTIME=$(tr '\0' '\n' < "$TMPD/files" | rg -i '(^|/)(forwarded_ids\.txt|seen\.txt|failed\.jsonl|listener\.log|supervisor\.pid|webhook_url\.local)$|(^|/)gmail-listener/(forwarded_ids\.txt|seen\.txt|failed\.jsonl|listener\.log|supervisor\.pid|webhook_url\.local|venv/)' || true)
 if [[ -n "$FORBIDDEN_PATHS" || -n "$LEDGER_NAMES" || -n "$GMAIL_RUNTIME" ]]; then
   echo "!! 禁止入库的路径/账本/邮件监听运行态/飞书本地数据："
   [[ -n "$FORBIDDEN_PATHS" ]] && echo "$FORBIDDEN_PATHS"

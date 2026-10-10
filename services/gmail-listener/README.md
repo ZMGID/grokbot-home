@@ -1,40 +1,58 @@
-> 仓库副本：仅备份 `start.sh` / `stop.sh` / 本 README。**不**备份 `venv/`、`listener.log`、`forwarded_ids.txt`、`seen.txt`、`failed.jsonl`、`listener.py`（可能含邮件主题）。
-> 运行时目录：`/workspace/gmail-listener/`。密钥只来自环境变量 `COMPOSIO_API_KEY`、`GMAIL_WEBHOOK_KEY`（值不进仓库）。
+> 仓库副本：备份 `listener.py`、`run_loop.sh`、`start.sh`、`stop.sh`、本 README。
+> **永不备份**：`venv/`、`listener.log`、`forwarded_ids.txt`、`seen.txt`、`failed.jsonl`、`supervisor.pid`、`__pycache__/`、`webhook_url.local`（含 webhook URL）。
+> 运行时目录：`/workspace/gmail-listener/`。
 
 # gmail-listener
 
-Forwards Composio Gmail trigger events (GMAIL_NEW_GMAIL_MESSAGE) to the Grok Bot webhook routine
-https://api2.cursor.sh/automations/webhook/<REDACTED-set-at-runtime>
+Forwards Composio Gmail trigger events (`GMAIL_NEW_GMAIL_MESSAGE`) to the Grok Bot webhook routine **gmail-new-mail**
 using Composio's realtime (Pusher websocket) channel via the Python SDK `composio.triggers.subscribe()`.
 No public URL and no Composio webhook subscription needed.
 
-Trigger instances (Composio, labelIds=INBOX, interval=1 min requested):
-- ti_ePC_aV3eRSPT -> ca_ZnzYtlTeic0s (ohulercxm8@gmail.com)
-- ti_6ozhOAfOaHLq -> ca_5jGHEthCoWuD (zhimeng63@gmail.com)
+Webhook URL is **not** in the repo. `listener.py` loads it from:
+1. env `GMAIL_WEBHOOK_URL`, else
+2. file `webhook_url.local` in the same directory (`chmod 600`), else
+3. exits with error.
 
-## Env (required, read at runtime only; never stored here)
-COMPOSIO_API_KEY, GMAIL_WEBHOOK_KEY
+Trigger instances (Composio, labelIds=INBOX, interval=1 min requested):
+- `ti_ePC_aV3eRSPT` → `ca_ZnzYtlTeic0s` (ohulercxm8@gmail.com, composio-pg)
+- `ti_6ozhOAfOaHLq` → `ca_5jGHEthCoWuD` (zhimeng63@gmail.com, composio-zhimeng)
+
+## Env / local secrets (runtime only; values never in repo)
+
+| Name | Purpose |
+|---|---|
+| `COMPOSIO_API_KEY` | Composio project API key (same material as `~/.composio_pg_key`) |
+| `GMAIL_WEBHOOK_KEY` | Webhook auth key (user supplies via secret prompt on new account) |
+| `GMAIL_WEBHOOK_URL` | Full webhook URL (optional if `webhook_url.local` exists) |
 
 ## Files
-- listener.py       subscriber + forwarder (small JSON, no message body)
-- run_loop.sh       supervisor loop (restarts listener.py 10s after any exit)
-- start.sh          idempotent start (no-op if already running)
-- stop.sh           stop everything
-- listener.log      log (no secrets, no bodies); "connected and subscribed" = healthy; hourly heartbeat
-- forwarded_ids.txt listener-local dedupe of message_ids
-- failed.jsonl      events whose POST failed (not auto-retried)
-- seen.txt          owned by the routine; listener doesn't touch it
-- venv/             Python venv with `composio` SDK
 
-## Forwarded JSON
-{"event":"new_mail","account","connected_account_id","message_id","thread_id","subject","sender","timestamp"}
-also {"event":"trigger_disabled"|"account_expired", "account","connected_account_id","trigger_id","timestamp"} if Composio emits them on the realtime channel.
+| File | In repo? |
+|---|---|
+| `listener.py`, `run_loop.sh`, `start.sh`, `stop.sh`, `README.md` | yes |
+| `webhook_url.local` | **no** (mode 600 on box) |
+| `venv/`, `listener.log`, `forwarded_ids.txt`, `seen.txt`, `failed.jsonl`, `supervisor.pid` | **no** |
+
+## New account / rebuild checklist
+
+1. Recreate 小萌's webhook routine **gmail-new-mail** (folder `gmail-new-mail`; prompt in `bots/grok-bot/routines.md`).
+2. User provides the new key into env **`GMAIL_WEBHOOK_KEY`** via secret prompt (never chat / never commit).
+3. Write the new webhook URL into `/workspace/gmail-listener/webhook_url.local` (`chmod 600`) **or** set env `GMAIL_WEBHOOK_URL`.
+4. Recreate Composio `GMAIL_NEW_GMAIL_MESSAGE` triggers per user if needed (ohulercxm8 → composio-pg; zhimeng63 → composio-zhimeng).
+5. Restore scripts from this directory, build venv if missing, run `/workspace/gmail-listener/start.sh`.
 
 ## After a box restart
+
 The box has no systemd/cron (PID 1 is tini), so nothing auto-starts. Run:
-    /workspace/gmail-listener/start.sh
-(from a shell that has COMPOSIO_API_KEY and GMAIL_WEBHOOK_KEY in env). Check: `tail listener.log`, `pgrep -af listener.py`.
-Any agent/routine can call start.sh safely; it won't start a second copy.
+```bash
+/workspace/gmail-listener/start.sh
+```
+(from a shell that has `COMPOSIO_API_KEY` and `GMAIL_WEBHOOK_KEY` in env, and URL via env or `webhook_url.local`).
+Check: `tail listener.log`, `pgrep -af listener.py`. `start.sh` is idempotent.
 
 ## Rebuild venv if missing
-    python3 -m venv venv && ./venv/bin/pip install composio
+
+```bash
+cd /workspace/gmail-listener
+python3 -m venv venv && ./venv/bin/pip install composio
+```

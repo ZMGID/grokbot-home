@@ -243,8 +243,10 @@ mkdir -p "$GL"
 if [[ -d "$REPO_DIR/services/gmail-listener" ]]; then
   install -m 755 "$REPO_DIR/services/gmail-listener/start.sh" "$GL/start.sh"
   install -m 755 "$REPO_DIR/services/gmail-listener/stop.sh" "$GL/stop.sh"
+  install -m 755 "$REPO_DIR/services/gmail-listener/run_loop.sh" "$GL/run_loop.sh"
+  install -m 755 "$REPO_DIR/services/gmail-listener/listener.py" "$GL/listener.py"
   install -m 644 "$REPO_DIR/services/gmail-listener/README.md" "$GL/README.md" 2>/dev/null || true
-  ok "start.sh/stop.sh 已放到 $GL（venv/密钥不由 setup 写入；盒子重启后需手动 start.sh）"
+  ok "listener 脚本已放到 $GL（不含 webhook_url.local / venv / 密钥；盒子重启后需手动 start.sh）"
 else
   warn "仓库缺少 services/gmail-listener/"
 fi

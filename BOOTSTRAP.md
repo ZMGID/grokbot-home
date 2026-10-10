@@ -90,10 +90,12 @@ rm -f /tmp/czm.err
 ### (e) Gmail listener + webhook key + Feishu lark-cli
 
 **Gmail webhook（小萌例程 gmail-new-mail）**
-1. Recreate Composio triggers `GMAIL_NEW_GMAIL_MESSAGE` per user: ohulercxm8 on **composio-pg**, zhimeng63 on **composio-zhimeng** (never put zhimeng63 under pg-test).
+1. Recreate 小萌's webhook routine **gmail-new-mail** (folder `gmail-new-mail`; prompt in `bots/grok-bot/routines.md`).
 2. Ask the user (masked secret-request) for **`GMAIL_WEBHOOK_KEY`** — put it only in the process environment, never in the repo or chat. Env var **name** may be documented; **value** must not.
-3. Restore scripts: `install` from `services/gmail-listener/{start,stop}.sh` into `/workspace/gmail-listener/` (see `services/gmail-listener/README.md` for venv). Then run `/workspace/gmail-listener/start.sh`.
-4. After **every box restart**, run `start.sh` again (no systemd on the box).
+3. Write the new webhook URL into `/workspace/gmail-listener/webhook_url.local` (`chmod 600`) **or** set env `GMAIL_WEBHOOK_URL`. Never commit `webhook_url.local`.
+4. Recreate Composio triggers `GMAIL_NEW_GMAIL_MESSAGE` per user if needed: ohulercxm8 on **composio-pg**, zhimeng63 on **composio-zhimeng** (never put zhimeng63 under pg-test).
+5. Restore scripts from `services/gmail-listener/` (`listener.py`, `run_loop.sh`, `start.sh`, `stop.sh`) into `/workspace/gmail-listener/`, build venv if needed, then run `/workspace/gmail-listener/start.sh`.
+6. After **every box restart**, run `start.sh` again (no systemd on the box).
 
 **Feishu（lark-cli；Composio 无飞书）**
 1. `setup.sh` installs `@larksuite/cli` to `~/.local` (`export PATH="$HOME/.local/bin:$PATH"`).
