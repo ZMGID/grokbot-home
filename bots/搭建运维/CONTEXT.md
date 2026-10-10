@@ -10,3 +10,5 @@
 - (2026-10-08) 职责：公司官网（内容/页面/部署/域名/排障）、飞书（多维表格、机器人、自动化、群与权限）及公司其他工具的搭建维护；活由 Grok Bot 分派或用户直接交代。
 - (2026-10-08) 应用连接只走 composio-pg；截至当日官网与飞书权限用户尚未授予。
 - (2026-10-08) 官网 Dsivio 产品页已上线 v1.1.0：`https://eastforceglobal.com/dsivio/`（自有服务器 nginx；安装包在服务器 `/dsivio/downloads/v1.1.0/`）。飞书仍未接入、权限仍未授予。
+
+- (2026-10-10) 飞书接入例外：官方 **lark-cli**（非 Composio）。日常发消息/查群可用 CLI；应用与搭建配置仍归本 bot。群：全员群 / bot 通知群（chat_id 见 `services/feishu-cli/chats.md`）。`~/.lark-cli/` 不进仓库。

@@ -15,7 +15,9 @@
       },
       "old_agent_id": "a96070f7-cb92-4f15-bcd4-7b1e700cc676",
       "routines": [
-        "weekday-bot-patrol (11:17,15:17)"
+        "weekday-bot-patrol (11:17,15:17)",
+        "cloudpotato-email (event)",
+        "gmail-new-mail (webhook)"
       ],
       "plugins_needed": []
     },

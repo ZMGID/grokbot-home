@@ -87,6 +87,19 @@ rm -f /tmp/czm.err
 
 `1` = OK. Then `AddMcpServer` name **`composio-zhimeng`**, command **`/workspace/composio-zhimeng/launch.sh`** (no args, no env) — **after** composio-pg. Verify Gmail read via `user-composio-zhimeng`. If the zhimeng63 Gmail connection is missing on a new account, re-auth with `COMPOSIO_MANAGE_CONNECTIONS` for Composio user **`zhimeng63`** (toolkit gmail), not the pg-test user.
 
+### (e) Gmail listener + webhook key + Feishu lark-cli
+
+**Gmail webhook（小萌例程 gmail-new-mail）**
+1. Recreate Composio triggers `GMAIL_NEW_GMAIL_MESSAGE` per user: ohulercxm8 on **composio-pg**, zhimeng63 on **composio-zhimeng** (never put zhimeng63 under pg-test).
+2. Ask the user (masked secret-request) for **`GMAIL_WEBHOOK_KEY`** — put it only in the process environment, never in the repo or chat. Env var **name** may be documented; **value** must not.
+3. Restore scripts: `install` from `services/gmail-listener/{start,stop}.sh` into `/workspace/gmail-listener/` (see `services/gmail-listener/README.md` for venv). Then run `/workspace/gmail-listener/start.sh`.
+4. After **every box restart**, run `start.sh` again (no systemd on the box).
+
+**Feishu（lark-cli；Composio 无飞书）**
+1. `setup.sh` installs `@larksuite/cli` to `~/.local` (`export PATH="$HOME/.local/bin:$PATH"`).
+2. After account switch: `lark-cli config init --new --brand feishu` then `lark-cli auth login` — **user scans QR**.
+3. Never copy `~/.lark-cli/`, `~/.local/share/lark-cli/`, or `/workspace/feishu-cli/survey/` into the repo. Group ids: `services/feishu-cli/chats.md`.
+
 ## Step 1 — Push access (only for write-back / daily sync) / 推送权限（只有写回和每日同步需要）
 
 Setup itself needs **no** GitHub login. `gh` must be logged in as ZMGID only to **push** (Step 6 `agent-map.json`, Step 9 write-back, 仓库管家's daily sync). Do this after composio-pg works; if it fails, keep going and list it in the report.
@@ -128,12 +141,14 @@ nohup bash setup.sh > /tmp/setup.log 2>&1 &
 
 ## Step 3 — Connectors / 连接器
 
-Follow `connectors/README.md`. **Rule: all app connections only through Composio stdio MCPs (`composio-pg` + `composio-zhimeng`).** Do **not** install official GitHub (`cursor-github`), Origin, Finance (63408931), or the Composio OAuth plugin (32661537).
+Follow `connectors/README.md`. **Rule: app connections through Composio stdio MCPs (`composio-pg` + `composio-zhimeng`), plus Feishu via official lark-cli (exception).** Do **not** install official GitHub (`cursor-github`), Origin, Finance (63408931), or the Composio OAuth plugin (32661537).
 
 | Item | Action | User does |
 |---|---|---|
 | **composio-pg** | Step 0 (b)(c); AddMcpServer `/workspace/composio-pg/launch.sh` | type the repo passphrase once (masked) |
 | **composio-zhimeng** | Step 0 (d) after composio-pg; AddMcpServer `/workspace/composio-zhimeng/launch.sh` | nothing if zhimeng63 Gmail already ACTIVE; else re-auth for user `zhimeng63` |
+| **gmail-listener + webhook** | Step 0 (e): recreate triggers; secret-prompt `GMAIL_WEBHOOK_KEY`; `start.sh` | provide webhook key (masked); after box restart expect agent to start listener |
+| **飞书 lark-cli** | Step 0 (e): install via setup.sh; `config init` + `auth login` | scan QR twice |
 | pstack plugin, **plugin id 9717366** | optional `InstallPlugin` | nothing |
 | Official GitHub / Origin / Finance / Composio plugin 32661537 | **skip** | nothing |
 
@@ -183,7 +198,7 @@ Routines belong to the bot that creates them, so:
 - **You (grok-bot / 小萌)**:
   - do **not** create the daily sync (belongs to **仓库管家**);
   - do **not** create morning plan / evening summary (belong to **事务秘书**, handed over 2026-10-08);
-  - recreate only「巡检各 bot」from `bots/grok-bot/routines.md` — cron `17 11,15 * * 1-5` (plain cron; user zone Asia/Hong_Kong = UTC+8).
+  - recreate from `bots/grok-bot/routines.md`:「巡检各 bot」`17 11,15 * * 1-5`; email「cloudpotato 来信提醒」; webhook「gmail-new-mail」(needs listener + `GMAIL_WEBHOOK_KEY`).
 - **Other bots**: each recreates its own from `bots/<slug>/routines.md` on its first turn. Match that file:
   - `仓库管家`: daily sync / weekly drill — see `bots/仓库管家/routines.md` (may still use `CRON_TZ=Asia/Shanghai`, same UTC+8).
   - `事务秘书`: morning `53 8 * * 1-5`, evening `47 17 * * 1-5` (plain cron; Asia/Hong_Kong).
@@ -222,7 +237,7 @@ Send one short Chinese message: what's done, what failed, what the user still ne
 
 - [ ] Step 0: repo cloned anonymously at `/workspace/grokbot-home`, git identity set
 - [ ] Step 0: passphrase received via secret-request; `/home/box/.composio_pg_key` decrypted from `.enc` (or `.box-current.enc`), mode 600 (values never shown)
-- [ ] Step 0/3: `composio-pg` + `composio-zhimeng` installed, smoke tests `1`, both AddMcpServer’d and connected
+- [ ] Step 0/3: `composio-pg` + `composio-zhimeng` installed & connected; gmail-listener started; lark-cli auth’d (user QR); `GMAIL_WEBHOOK_KEY` in env only
 - [ ] Step 1: `gh` logged in as ZMGID for pushing (Composio GitHub token, or device-code fallback)
 - [ ] Step 2: `setup.sh` finished (summary checked; failures listed)
 - [ ] Step 3: pstack (9717366) optional（可选，原为 dr eggbot 安装）; official GitHub/Origin/Finance/Composio-plugin **not** installed

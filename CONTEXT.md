@@ -47,11 +47,11 @@
 
 ## 分工（2026-10-08）
 
-- **小萌**（主 bot / 经理；原名 Grok Bot，slug `grok-bot`，2026-10-08 改名）：分派任务、用 CreateAgent **创建新 bot**；工作日仅「巡检各 bot」(11:17/15:17，cron `17 11,15 * * 1-5`)。早晚「今日计划 / 今日总结」已移交**事务秘书**。时区 Asia/Hong_Kong（UTC+8）。
+- **小萌**（主 bot / 经理；原名 Grok Bot，slug `grok-bot`，2026-10-08 改名）：分派任务、用 CreateAgent **创建新 bot**；工作日「巡检各 bot」(11:17/15:17)；另有 cloudpotato 来信提醒与 Gmail webhook「gmail-new-mail」。早晚「今日计划 / 今日总结」已移交**事务秘书**。时区 Asia/Hong_Kong（UTC+8）。
 - **小枳**：调研（AI / 工具 / 技术规范 / 产品方案）与虾皮（Shopee）选品；活一般由小萌派，只走 Composio。
 - **仓库管家**：维护公开仓库 `ZMGID/grokbot-home`，每天 03:14（北京时间）跑同步。
 - **代码工程师**：盯 `ZMGID/Dsivio`（主）与 `ZMGID/kivio` 的 CI / 开着的 PR，修代码并开修复 PR；GitHub 只走 composio-pg。
-- **搭建运维**：公司官网、飞书及其他系统/工具的搭建与维护。
+- **搭建运维**：公司官网、飞书及其他系统/工具的搭建与维护（飞书日常可用 lark-cli；搭建配置仍归本 bot）。
 - **事务秘书**（原名「邮件秘书」，2026-10-08 改名）：非技术事务（邮件、账号与订阅、周报/文档、提醒、比价等）+ 工作日早晚「今日计划」(08:53) 与「今日总结」(17:47)。**邮件/消息只写草稿，从不直接发送。**
 - **硬件工程师**：创作控制器项目（`projects/creative-controller/`）。**(2026-10-08) 项目已暂停、待命**；无用户或小萌新指示不要继续做。
 - **财务管家**（2026-10-09 小萌创建）：记账、订阅与固定支出、预算、报销对账、财务材料起草；**只记录，从不付款/转账/下单**。账本在 `/workspace/finance/`。
@@ -67,6 +67,8 @@
   - **`composio-zhimeng`**（用户 `zhimeng63`）：仅 Gmail `zhimeng63@gmail.com`（`ca_5jGHEthCoWuD`）。
   - (2026-10-09) 经用户同意，已从 composio-pg 删除旧的 zhimeng63 连接 **`ca_2rJjmKh8j1q0`**。新号/重建时**不要**再在 composio-pg（pg-test 用户）下给 zhimeng63 授权；只通过 composio-zhimeng 授权。
 - (2026-10-08) **应用连接只走 Composio**：不要再装官方 GitHub（`cursor-github`）、Origin、Finance、Composio 插件（32661537）。
+- **飞书例外（2026-10-10）**：Composio 无飞书 toolkit → 用官方 **lark-cli** 1.0.97（`npm i -g @larksuite/cli --prefix ~/.local`，brand `feishu`，app `cli_aa430b6809f85d0c`）。配置/token 在 `~/.lark-cli/` 与 `~/.local/share/lark-cli/`（**不进仓库**）。换号后需 `lark-cli config init --new --brand feishu` 与 `lark-cli auth login`（用户扫码）。常用群见 `services/feishu-cli/chats.md`（全员群 / bot 通知群）。
+- **Gmail 来信监听（2026-10-10）**：盒子 `/workspace/gmail-listener/`（脚本备份在 `services/gmail-listener/`）经 Composio 触发器推送到小萌 webhook 例程 `gmail-new-mail`。密钥环境变量名 `GMAIL_WEBHOOK_KEY`（**值不进仓库**）。盒子无 systemd，**重启或换号后须手动** `/workspace/gmail-listener/start.sh`。另有 cloudpotato@mail.grokbot.com 邮箱触发例程。
 - 同步方式：由专门 bot **仓库管家**每天约 03:14（北京时间）跑定时任务，把各 bot 的新记忆和设定同步进仓库，有变化才推送，推送前做密钥扫描。（2026-10-08 用户改口：原先「不单独建同步 bot、由主 bot 跑」已作废，移交给仓库管家。）
 - 新号流程：匿名克隆 → 密码框填一次仓库口令 → 解密 Composio key、装 `composio-pg` + `composio-zhimeng` → 重建各 bot。`gh` 登录只在推送时需要。
 - 不做公开分享模板（export-bot-template 只能生成公开模板，不用）。

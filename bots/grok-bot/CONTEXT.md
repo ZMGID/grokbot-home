@@ -60,3 +60,6 @@
 - (2026-10-10) 应用户要求做了恶搞网页小游戏《刹不住的境界》（虚构车名/厂名），用户最终选第一版；已挂到新的公开仓库 **ZMGID/brake-game**（GitHub Pages：https://zmgid.github.io/brake-game/），只记一笔、不同步进本仓库。素材整理在 box 的 `/workspace/brake-game/`。
 - (2026-10-10) 领取 Grok Bot 邮箱 `cloudpotato@mail.grokbot.com`（绑当前账号、不可转移，见根目录 CONTEXT「Grok Bot 自带邮箱」），并新建自动任务「cloudpotato 来信提醒」。
 - (2026-10-10) 用户想在 Composio 里再接其他邮箱：规矩是每个邮箱单独建一个 Composio 连接器（同 composio-zhimeng 模式），等用户给地址。
+
+- (2026-10-10) 新增例程：**cloudpotato 来信提醒**（email 触发）与 **gmail-new-mail**（webhook；触发器 ti_ePC_aV3eRSPT / ti_6ozhOAfOaHLq；密钥 env `GMAIL_WEBHOOK_KEY` 不进仓库）。盒子 `/workspace/gmail-listener/start.sh`，重启后需手动启动。
+- (2026-10-10) 飞书走官方 **lark-cli**（Composio 无飞书例外）；群 id 见 `services/feishu-cli/chats.md`。

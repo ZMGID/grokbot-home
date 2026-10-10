@@ -4,7 +4,8 @@
 > 连接器装在 **账号** 上，不是装在某个 bot 上：新号上第一个 bot 装好以后，后面用 CreateAgent 建的 bot 都能直接用。
 > 本文件只记名字、ID、地址和步骤，**不含任何密钥**。
 >
-> **规矩**：所有应用连接只走 Composio 自定义 stdio MCP。**不要**再装官方 GitHub / Origin / Finance / Composio 插件。
+> **规矩**：应用连接默认只走 Composio 自定义 stdio MCP。**不要**再装官方 GitHub / Origin / Finance / Composio 插件。
+> **例外**：飞书用官方 **lark-cli**（见下文「飞书 lark-cli」；Composio 无飞书）。
 > - **`composio-pg`**：用户 `pg-test-…` → GitHub ZMGID（`ca_1g4u93YydZsp`）+ Gmail ohulercxm8（`ca_ZnzYtlTeic0s`）——**一个连接器一个 Gmail**
 > - **`composio-zhimeng`**：用户 `zhimeng63` → Gmail zhimeng63（`ca_5jGHEthCoWuD`）only（共用 `/home/box/.composio_pg_key`）
 > - 旧 composio-pg 上的 zhimeng63 连接 **`ca_2rJjmKh8j1q0` 已删除**（2026-10-09，用户同意）；新号勿在 pg-test 下重建 zhimeng63
@@ -13,10 +14,11 @@
 |---|---|---|---|---|---|
 | 1 | **composio-pg**（`user-composio-pg`） | 自定义 **stdio** MCP（跑在 box 上） | 见下文「composio-pg」；BOOTSTRAP Step 0 从本目录安装启动器 | 在密码框里填一次仓库口令 `GROKBOT_HOME_PASSPHRASE`（用来解密 `secrets/*.enc` 里的 Composio key） | ✅ 必需 |
 | 2 | **composio-zhimeng**（`user-composio-zhimeng`） | 自定义 **stdio** MCP（跑在 box 上） | 见下文「composio-zhimeng」；与 composio-pg 共用 key 与 venv | 无（口令已在装 composio-pg 时填过）；若 zhimeng63 Gmail 未授权则在 Composio 里给用户 `zhimeng63` 授权 | ✅ 必需 |
-| 3 | **GitHub**（`cursor-github`） | 官方连接器 | — | — | ❌ 不需要（GitHub 走 composio-pg） |
-| 4 | **Origin**（`cursor-origin`） | 官方连接器 | — | — | ❌ 不需要 |
-| 5 | **Composio 插件**（`user-Composio`，plugin id `32661537`） | 插件市场 OAuth 版 | — | — | ❌ 不需要（它看到的是另一个 Composio user） |
-| 6 | **Finance**（`user-Finance-xai`，plugin id `63408931`） | 插件市场 | — | — | ❌ 不需要 |
+| 3 | **飞书 lark-cli** | 官方 CLI（非 MCP 连接器） | `setup.sh` / `services/feishu-cli/`；见下文 | 换号后扫码：`lark-cli config init --new --brand feishu` + `lark-cli auth login` | ✅ 需要飞书时 |
+| 4 | **GitHub**（`cursor-github`） | 官方连接器 | — | — | ❌ 不需要（GitHub 走 composio-pg） |
+| 5 | **Origin**（`cursor-origin`） | 官方连接器 | — | — | ❌ 不需要 |
+| 6 | **Composio 插件**（`user-Composio`，plugin id `32661537`） | 插件市场 OAuth 版 | — | — | ❌ 不需要（它看到的是另一个 Composio user） |
+| 7 | **Finance**（`user-Finance-xai`，plugin id `63408931`） | 插件市场 | — | — | ❌ 不需要 |
 
 另外两样不是「应用连接器」但要记得：
 
@@ -96,3 +98,31 @@ Composio 项目 ID：`pr_lh5-8poHU4QB`（只有这一个项目）。
 
 ## Grok Bot 自带邮箱（不是连接器，2026-10-10）
 - `cloudpotato@mail.grokbot.com`：Grok Bot 原生邮箱，由小萌在当前账号领取。**绑在当前账号上，不能转移，换号即丢失**；新号若需要，只能用 ListEmailInboxes / ClaimEmailInbox 另领一个新地址（地址会不同），并相应改写「cloudpotato 来信提醒」任务。只用于临时注册、验证码等可丢弃用途。
+
+
+## Gmail 来信监听（gmail-listener + 小萌 webhook）
+
+盒子上的 `/workspace/gmail-listener/` 订阅 Composio 实时通道，把 `GMAIL_NEW_GMAIL_MESSAGE` 推到小萌的 webhook 例程 **gmail-new-mail**（folder `gmail-new-mail`）。脚本备份：`services/gmail-listener/`（仅 `start.sh` / `stop.sh` / README；**不含** venv、log、`seen.txt`、`forwarded_ids.txt`、`failed.jsonl`）。
+
+| 触发器 id | 邮箱 | Composio 用户 / MCP | connected account |
+|---|---|---|---|
+| `ti_ePC_aV3eRSPT` | ohulercxm8@gmail.com | pg-test / **composio-pg** | `ca_ZnzYtlTeic0s` |
+| `ti_6ozhOAfOaHLq` | zhimeng63@gmail.com | zhimeng63 / **composio-zhimeng** | `ca_5jGHEthCoWuD` |
+
+**环境变量**（运行时，**值永不进仓库**）：`COMPOSIO_API_KEY`（可与 `~/.composio_pg_key` 同源）、`GMAIL_WEBHOOK_KEY`。
+
+**换号 / 新账号**：
+1. 按各 Composio 用户重建两个 `GMAIL_NEW_GMAIL_MESSAGE` 触发器（勿把 zhimeng63 建到 pg-test）。
+2. 用户通过密码框重新提供 `GMAIL_WEBHOOK_KEY`（旧 key 作废）。
+3. 从仓库恢复脚本到 `/workspace/gmail-listener/`，建好 venv 后执行 `start.sh`。
+4. 盒子无 systemd：**每次盒子重启后须手动** `/workspace/gmail-listener/start.sh`。
+
+例程提示词见 `bots/grok-bot/routines.md` §6；另见 cloudpotato 邮箱触发 §5。
+
+## 飞书 lark-cli（Composio-only 例外）
+
+- 包：`@larksuite/cli` → 命令 `lark-cli`（当前 box：**1.0.97**），`export PATH="$HOME/.local/bin:$PATH"`。
+- brand：`feishu`；自建应用 id：`cli_aa430b6809f85d0c`（bot + 用户身份；用户 王枳萌）。
+- 换号后：`lark-cli config init --new --brand feishu`（用户扫码），再 `lark-cli auth login`（用户扫码）。
+- **永不进仓库**：`~/.lark-cli/`、`~/.local/share/lark-cli/`、`/workspace/feishu-cli/survey/`。
+- 群 chat_id（仅此）：见 `services/feishu-cli/chats.md` —— 全员群 `oc_1bfe10631cc60ae750bbc378376f3c4d`；bot 通知群 `oc_ba1ec97d712cc401cabc3a09c610dcbb`。

@@ -66,3 +66,25 @@ finance/
 assistant/daily/
 # 财务管家 memory 可能含金额/流水；sync.sh 也跳过拷贝
 bots/财务管家/raw/memory/
+
+# --- gmail-listener runtime (mail subjects / state; never commit) ---
+**/gmail-listener/venv/
+**/gmail-listener/listener.log
+**/gmail-listener/forwarded_ids.txt
+**/gmail-listener/seen.txt
+**/gmail-listener/failed.jsonl
+**/gmail-listener/supervisor.pid
+**/gmail-listener/__pycache__/
+forwarded_ids.txt
+seen.txt
+failed.jsonl
+
+# --- lark-cli / Feishu local secrets & survey dumps ---
+.lark-cli/
+**/.lark-cli/
+.local/share/lark-cli/
+**/.local/share/lark-cli/
+feishu-cli/survey/
+**/feishu-cli/survey/
+**/feishu-cli/**/survey/
+services/feishu-cli/survey/

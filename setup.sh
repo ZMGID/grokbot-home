@@ -216,6 +216,39 @@ if [[ -s "$HOME/.composio_pg_key" ]]; then
   chmod 600 "$HOME/.composio_pg_key"; ok "~/.composio_pg_key 供 composio-pg 与 composio-zhimeng 共用"
 fi
 
+
+# ---------------------------------------------------------------------------
+# 8c. lark-cli（飞书官方 CLI；Composio 无飞书，属例外）+ gmail-listener 脚本
+# ---------------------------------------------------------------------------
+log "lark-cli (Feishu)"
+export PATH="$HOME/.local/bin:$PATH"
+if command -v lark-cli >/dev/null 2>&1; then
+  ok "lark-cli 已安装：$($(command -v lark-cli) --version 2>/dev/null | head -1 || echo present)"
+else
+  if have npm || command -v npm >/dev/null 2>&1; then
+    npm install -g @larksuite/cli --prefix "$HOME/.local" \
+      && ok "已安装 @larksuite/cli → ~/.local" \
+      || warn "lark-cli npm 安装失败"
+  else
+    warn "没有 npm，跳过 lark-cli（见 BOOTSTRAP：换号后手动安装并 QR 登录）"
+  fi
+fi
+# 确保非登录 shell 也能找到
+grep -q '\.local/bin' "$HOME/.bashrc" 2>/dev/null || echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
+export PATH="$HOME/.local/bin:$PATH"
+
+log "gmail-listener scripts"
+GL=/workspace/gmail-listener
+mkdir -p "$GL"
+if [[ -d "$REPO_DIR/services/gmail-listener" ]]; then
+  install -m 755 "$REPO_DIR/services/gmail-listener/start.sh" "$GL/start.sh"
+  install -m 755 "$REPO_DIR/services/gmail-listener/stop.sh" "$GL/stop.sh"
+  install -m 644 "$REPO_DIR/services/gmail-listener/README.md" "$GL/README.md" 2>/dev/null || true
+  ok "start.sh/stop.sh 已放到 $GL（venv/密钥不由 setup 写入；盒子重启后需手动 start.sh）"
+else
+  warn "仓库缺少 services/gmail-listener/"
+fi
+
 # ---------------------------------------------------------------------------
 # 9. gh 登录状态（只检查，不登录）。仓库公开，克隆不需要登录；只有推送（写回/每日同步）需要，见 BOOTSTRAP Step 1
 # ---------------------------------------------------------------------------
