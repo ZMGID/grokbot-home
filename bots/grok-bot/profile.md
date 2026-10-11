@@ -1,7 +1,7 @@
 # grok-bot（小萌 / 主 bot）
 
-> 来源：本账号 `/home/box/agent-data/agents/a96070f7-cb92-4f15-bcd4-7b1e700cc676/`（profile.json、settings.json）。
-> 当前 agent id：`a96070f7-cb92-4f15-bcd4-7b1e700cc676`。
+> 来源：本账号 `/home/box/agent-data/agents/70869d39-bdf3-4146-823b-db0bd0d3da2c/`（profile.json、settings.json）。
+> 当前 agent id：`70869d39-bdf3-4146-823b-db0bd0d3da2c`。
 > **改名（2026-10-08）**：显示名 `Grok Bot` → **`小萌`**。文件夹 slug 仍为 `grok-bot`。
 
 ## 字段
