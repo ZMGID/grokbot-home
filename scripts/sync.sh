@@ -3,7 +3,8 @@
 # “理解对话、写 CONTEXT.md”那部分由仓库管家在运行本脚本之前完成（见 scripts/sync.md）。
 # 用法：bash scripts/sync.sh [--dry-run]
 #   --dry-run：照常收集文件、跑密钥扫描、显示会提交什么，但不 commit、不 push（收集到的文件会留在工作区）。
-# 推送目标固定为 origin（https://github.com/ZMGID/grokbot-home）的 main 分支；推送需要 gh 已登录（ZMGID）。
+# 推送目标固定为 origin（https://github.com/ZMGID/grokbot-home）的 main 分支。
+# 2026-10-11 起不用 gh：git push 失败（退出码 5）属预期，之后改用 Composio GitHub（composio-pg, ZMGID）推送，见 scripts/sync.md。
 set -uo pipefail
 DRY=0; [[ "${1:-}" == "--dry-run" ]] && DRY=1
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -96,4 +97,4 @@ for try in 1 2; do
   git pull --rebase -q "$REMOTE" "$BRANCH" || break
   bash scripts/secret-scan.sh "$REPO" >/dev/null || { echo "!! 合并后的密钥扫描未通过，不推送"; exit 4; }
 done
-echo "!! 推送失败（检查 gh auth status 是否为 ZMGID）"; exit 5
+echo "!! git push 失败：本地已 commit，请按 scripts/sync.md 用 Composio GitHub（composio-pg）推送"; exit 5

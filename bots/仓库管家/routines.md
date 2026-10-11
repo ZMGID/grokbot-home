@@ -9,11 +9,11 @@
 
 ```text
 每日同步 grokbot-home：把本账号所有 bot 的新记忆、设定、技能和连接器清单同步到公开仓库 ZMGID/grokbot-home（本地 /workspace/grokbot-home），并做漂移检查。仓库是公开的：密钥只以加密形式存在 secrets/*.enc（用 scripts/secret-crypt.py 加解密，口令在环境变量 GROKBOT_HOME_PASSPHRASE），任何明文密钥、口令、验证码、密码、一次性授权链接都绝不能进仓库。旧的私有仓库 ZMGID/grokbot-home-private-old 不要再往里推。详细做法以仓库里的 scripts/sync.md 为准，先读它。
-1) 确保 /workspace/grokbot-home 是最新的，origin 指向 ZMGID/grokbot-home（git pull --rebase；目录不存在就用 gh 克隆）。
+1) 确保 /workspace/grokbot-home 是最新的，origin 指向 ZMGID/grokbot-home（git pull --rebase；目录不存在就匿名 git clone）。
 2) 对 bots/agent-map.json 里的每个 bot（包括我自己 仓库管家，以及本账号新出现、还没登记的 bot）：读它自上次同步以来的对话记录和 /home/box/agent-data/agents/<id>/ 下的 profile.json、settings.json、memory/，把新的持久事实、项目进展、决定、偏好写成带日期的要点合并进 bots/<slug>/CONTEXT.md；设定变化写进 profile.md，定时任务变化写进 routines.md；关于用户本人、所有 bot 都该知道的写进根目录 CONTEXT.md。新 bot 要建 bots/<slug>/ 并登记到 agent-map.json、index.json、bots/README.md。因为仓库公开，写进去的内容要当作谁都能看到。
 3) Grok Bot 的笔记：把 /workspace/assistant/big-picture.md 复制到仓库 bots/grok-bot/notes/big-picture.md，/workspace/assistant/routines.md 的定时任务内容同步进 bots/grok-bot/routines.md。/workspace/assistant/daily/ 绝不进仓库。
 4) 漂移检查：把线上实际情况和仓库逐项对比并补齐：本账号现有的 bot 名单与 agent-map.json、index.json；每个 bot 的名字、标题、说明与 profile.md；每个 bot 的定时任务与 routines.md（我自己的看当前定时任务状态，别的 bot 读不到原文就在 Grok Bot 应用里发消息问那个 bot 要）；/home/box/agent-data/workflows/ 下的技能与 skills/；当前连接器状态与 connectors/README.md；已删除的 bot 要从仓库和 BOOTSTRAP 里去掉。
-5) 运行 bash scripts/sync.sh：它会校验 remote 和分支，先做密钥扫描（scripts/secret-scan.sh），不通过就中止、不提交；通过且有变化才 commit + push。绝不绕过、放宽或改白名单来让扫描通过。
+5) 运行 bash scripts/sync.sh：它会校验 remote 和分支，先做密钥扫描（scripts/secret-scan.sh），不通过就中止、不提交；通过且有变化才 commit；推送走 composio-pg 的 Composio GitHub（ZMGID），不用 gh（2026-10-11 起，做法见 scripts/sync.md）。绝不绕过、放宽或改白名单来让扫描通过。
 6) 结果发给这个聊天里的用户：没有变化就不发任何消息；有变化发一行中文说明（改了哪些 bot / 文件、补齐了哪些漂移）；密钥扫描失败、拉取或推送失败等出错时，说清原因和需要用户做什么（只说文件名和行号，不贴可疑内容），并在 Grok Bot 应用里发消息抄送给 Grok Bot（id a96070f7-cb92-4f15-bcd4-7b1e700cc676）。
 ```
 

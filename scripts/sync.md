@@ -21,7 +21,8 @@
    - 把 `/home/box/agent-data/workflows/` 下的用户技能复制到 `skills/`；
    - 生成 `scripts/env-snapshot.md`（工具环境快照，发现 setup.sh 漏装的东西就顺手补进 setup.sh）；
    - `git add -A` 后运行 `scripts/secret-scan.sh`（gitleaks 工作区 + 历史；rg 模式扫描所有将提交的文件，含隐藏文件；确认 `~/.composio_pg_key`、两份 `secrets/*.enc` 的明文、口令 `GROKBOT_HOME_PASSPHRASE` 都没出现在文件和未推送提交里；`secrets/` 下只能有 `GBH1` 加密文件；**任何已跟踪的 `finance/`、`assistant/daily/` 路径或账本类文件名一律失败**）——**不干净就撤销暂存、中止，不提交**；
-   - 没有变化就退出；有变化就 `git commit -m "sync: <时间> Asia/Shanghai"` 并 `git push origin HEAD:main`（被拒会 pull --rebase 后重试一次）。脚本开头会确认 remote 是 `ZMGID/grokbot-home`、分支是 `main`。
+   - 没有变化就退出；有变化就本地 `git commit -m "sync: <时间> Asia/Shanghai"`，再尝试 `git push`。脚本开头会确认 remote 是 `ZMGID/grokbot-home`、分支是 `main`。
+   - **2026-10-11 起不用 gh / git push**（本 Composio 项目会把 GitHub token 打码，gh 登录不了）：脚本推送失败（退出码 5）属预期。接着用 composio-pg 的 Composio GitHub（ZMGID）把 `origin/main..HEAD` 改动的文件作为一个 commit 写到 `main`（blob → tree → commit → update ref；或逐个 create/update file contents），写前确认远端 main 没在这些文件上前进；写完匿名 `git fetch`，`git diff origin/main` 确认一致后 `git reset --hard origin/main`。
 4. **连接器清单**：用 GetMcpServerStatus 看当前连接器，和 `connectors/README.md` 对比；有新增/删除/状态变化就更新清单（只写名字、id、地址、步骤）。
 5. **汇报**：
    - 没有变化：不发消息。

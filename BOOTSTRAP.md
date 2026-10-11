@@ -9,7 +9,7 @@
 
 - Talk to the user in **Chinese**, short and direct. Times in **Asia/Shanghai (UTC+8)**. 用中文、简短、北京时间。
 - **Never put a secret in the repo, in chat, or in a log.** Secrets come only from a masked secret prompt (or 1Password). Never `cat` a key file. 密钥绝不进仓库/聊天/日志。
-- Things that need the user: the repo passphrase `GROKBOT_HOME_PASSPHRASE` once (masked secret-request). Only if something fails: the Composio API key itself (masked), or a `gh` device code for push access. No official connector auth clicks. Batch these. 需要用户做的只有在密码框里填一次仓库口令；Composio key 和设备码仅作备用。尽量一次问完。
+- Things that need the user: the repo passphrase `GROKBOT_HOME_PASSPHRASE` once (masked secret-request). Only if something fails: the Composio API key itself (masked), (pushes go through Composio GitHub, no `gh` login — Step 1). No official connector auth clicks. Batch these. 需要用户做的只有在密码框里填一次仓库口令；Composio key 和设备码仅作备用。尽量一次问完。
 - Do the steps in order; if a step fails, note it, continue with the rest, and report it in the final checklist. 某步失败就记下来继续，最后汇报。
 - The box (`/workspace`, `/home/box`) is shared by all bots on this account, so files you set up are visible to the bots you create.
 - Send the user a one-line progress update after each major step (connectors, bots, self-check), not a wall of text.
@@ -104,31 +104,11 @@ rm -f /tmp/czm.err
 
 ## Step 1 — Push access (only for write-back / daily sync) / 推送权限（只有写回和每日同步需要）
 
-Setup itself needs **no** GitHub login. `gh` must be logged in as ZMGID only to **push** (Step 6 `agent-map.json`, Step 9 write-back, 仓库管家's daily sync). Do this after composio-pg works; if it fails, keep going and list it in the report.
+Setup itself needs **no** GitHub login. Pushing (Step 6 `agent-map.json`, Step 9 write-back, 仓库管家's daily sync) is needed only for writes.
 
-**Preferred:** log `gh` in with the GitHub OAuth token Composio already holds (user `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde`, toolkit `github` = ZMGID). Pipe it — never echo it or write it to a file:
+**Decision 2026-10-11: do not use `gh` / `git push`.** All GitHub writes to `ZMGID/grokbot-home` go through the Composio GitHub toolkit on `user-composio-pg` (ZMGID): find tools with `COMPOSIO_SEARCH_TOOLS` (single file: create/update file contents; multi-file: create blobs → tree → commit → update ref `heads/main`). Reason: this Composio project masks the GitHub access token (the API returns an 8-char placeholder), so `gh auth login --with-token` gets HTTP 401, and the device-code flow is not used. Before writing, check remote `main` has not moved past local HEAD in the touched files; afterwards `git fetch` anonymously and `git reset --hard origin/main` only after `git diff origin/main` shows the remote has exactly your changes.
 
-```bash
-/workspace/composio-pg/.venv/bin/python - <<'PY' | gh auth login --with-token
-from composio import Composio
-key = open("/home/box/.composio_pg_key").read().strip()
-client = Composio(api_key=key)
-for acc in client.connected_accounts.list(user_ids=["pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde"]).items:
-    d = acc.model_dump() if hasattr(acc, "model_dump") else acc
-    toolkit = (d.get("toolkit") or {}).get("slug") if isinstance(d, dict) else None
-    if toolkit == "github" and d.get("status") == "ACTIVE":
-        tok = (d.get("data") or {}).get("access_token")
-        if tok:
-            print(tok, end="")
-            break
-else:
-    raise SystemExit("no ACTIVE github connected account")
-PY
-gh auth setup-git
-gh auth status   # should show ZMGID; OK to show the login name, never the token
-```
-
-**Fallback:** `gh auth login --hostname github.com --git-protocol https --web` in the background, send the user the one-time code + `https://github.com/login/device`（「请打开这个链接输入验证码，授权 ZMGID（只用于往仓库推送）」）. This is a handoff, not a secret. Do **not** install the official GitHub connector as a substitute.
+（2026-10-11 起不再用 gh：推送一律走 composio-pg 的 Composio GitHub（ZMGID）。原因：本 Composio 项目会把 GitHub access token 打码，gh 登录用不了。不装官方 GitHub 连接器。）
 
 ## Step 2 — Tool environment / 工具环境
 
@@ -214,7 +194,7 @@ Run and record each result:
 1. `GetMcpServerStatus`: **composio-pg** and **composio-zhimeng** = connected. Official GitHub / Origin / Finance / Composio plugin should be absent or ignored.
 2. `user-composio-pg` → `COMPOSIO_MANAGE_CONNECTIONS` `{"toolkits": ["github", "gmail"]}` (never `reinitiate_all`) → GitHub **ZMGID**, Gmail ohulercxm8@gmail.com.
 3. `user-composio-zhimeng` → `COMPOSIO_MANAGE_CONNECTIONS` `{"toolkits": ["gmail"]}` → zhimeng63@gmail.com; fetch 1 recent email to verify.
-4. `gh auth status` shows login **ZMGID** (Step 1: Composio token or device-code fallback) — needed only for pushing.
+4. Push access: Composio GitHub on `user-composio-pg` is ZMGID (item 2) — `gh` is not used (Step 1, 2026-10-11).
 5. Skills: every `skills/<slug>` present in `/home/box/agent-data/workflows/`; pstack optional (only if installed).
 6. Bots: every slug in `bots/index.json` exists with the right name; `bots/agent-map.json` updated.
 7. Routines: daily sync on **仓库管家**; 事务秘书 morning/evening; 小萌「巡检各 bot」only。
@@ -224,7 +204,7 @@ Run and record each result:
 ## Step 9 — Write-back rule / 写回规则（永久）
 
 - New durable knowledge goes back into the right file: about the user → `/CONTEXT.md`; about one bot's work → `bots/<slug>/CONTEXT.md`; profile changes → `profile.md`; routine changes → `routines.md`; connector changes → `connectors/README.md`; new tools → `setup.sh`.
-- Then `bash scripts/secret-scan.sh` and `git add -A && git commit -m "<what>" && git pull --rebase && git push origin HEAD:main` (needs Step 1 push access). The daily sync does this automatically for all bots, but write back immediately after anything important.
+- Then `bash scripts/secret-scan.sh`, and commit the changed files to `main` through Composio GitHub on `user-composio-pg` (Step 1; no `gh` / `git push` since 2026-10-11), then sync the local copy (`git fetch` + verify `git diff origin/main` + `git reset --hard origin/main`). The daily sync does this automatically for all bots, but write back immediately after anything important.
 - Never commit: keys, tokens, the passphrase, `.env`, one-time codes, passwords, auth links, mcp-remote logs, `/home/box/agent-data/*secrets*.json`, databases. **The repo is public** — only `secrets/*.enc` may hold a secret, and only encrypted with `scripts/secret-crypt.py`.
 - New bot created later (by **小萌** / primary)? Add `bots/<slug>/` (profile.md, CONTEXT.md, routines.md) + `index.json` + `agent-map.json` + `bots/README.md` table.
 - **Never** copy `/workspace/finance/` or `/workspace/assistant/daily/` into the repo. `财务管家` raw memory is skipped by `sync.sh`.
@@ -240,7 +220,7 @@ Send one short Chinese message: what's done, what failed, what the user still ne
 - [ ] Step 0: repo cloned anonymously at `/workspace/grokbot-home`, git identity set
 - [ ] Step 0: passphrase received via secret-request; `/home/box/.composio_pg_key` decrypted from `.enc` (or `.box-current.enc`), mode 600 (values never shown)
 - [ ] Step 0/3: `composio-pg` + `composio-zhimeng` installed & connected; gmail-listener started; lark-cli auth’d (user QR); `GMAIL_WEBHOOK_KEY` in env only
-- [ ] Step 1: `gh` logged in as ZMGID for pushing (Composio GitHub token, or device-code fallback)
+- [ ] Step 1: push access via Composio GitHub (composio-pg, ZMGID); no `gh`
 - [ ] Step 2: `setup.sh` finished (summary checked; failures listed)
 - [ ] Step 3: pstack (9717366) optional（可选，原为 dr eggbot 安装）; official GitHub/Origin/Finance/Composio-plugin **not** installed
 - [ ] Step 4: skills imported (currently none) 

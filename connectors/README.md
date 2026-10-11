@@ -24,7 +24,7 @@
 
 - **pstack 插件**（plugin id **`9717366`**，cursor-public）：写代码类 bot 用的工作流技能包（architect、tdd、swarm、arena……）。**可选**（原为 dr eggbot 安装；该 bot 已于 2026-10-08 删除）。这是技能插件，不是应用连接；需要时再 `InstallPlugin 9717366`。
 - **`x` 工具命名空间**（X/Twitter 搜索、新闻）：平台自带，不需要安装；新号若没有就忽略。
-- **`gh` 命令行**：不是连接器。仓库公开，克隆不需要登录；只有推送（写回、每日同步）才需要。新号上用 Composio 里 GitHub（ZMGID）的 access token 做 `gh auth login --with-token`（见 BOOTSTRAP Step 1）；失败再退回设备码登录。
+- **`gh` 命令行**：（2026-10-11 起不用）仓库公开，克隆不需要登录。推送（写回、每日同步）一律走 composio-pg 的 Composio GitHub 工具（ZMGID；单文件 create/update file contents，多文件 blob → tree → commit → update ref），不用 gh / git push。原因：本 Composio 项目会把 GitHub access token 打码，`gh auth login --with-token` 返回 401；也不走设备码（见 BOOTSTRAP Step 1）。
 
 ## composio-pg（自定义 stdio MCP）——GitHub + ohulercxm8 Gmail
 

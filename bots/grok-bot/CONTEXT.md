@@ -68,3 +68,4 @@
 - (2026-10-10) 帮用户看了 Monid（统一付费的工具/数据接口平台），结论：可借鉴思路，不必自建；记入 `/workspace/assistant/ideas/monid-unified-api.md`，等 Dsivio 环境配置忙完再拿出来商量。
 - (2026-10-10) 接下用户三条主线（kivio bot 模式 + 版本检查、kivio Rust SDK 标准、Dsivio 运营插件），小萌要先摸清 kivio / Dsivio 代码结构再出拆解和计划；插件线建议让事务秘书问运营同事日常，或用户直接口述。
 - (2026-10-11) 两个空白 “New Bot”（`1dbfda76-…`、`52d1b935-…`）已不在本账号的 agent 目录中（应已删除，从未登记，无需清理）。又出现一个默认设定的空白 “Grok Bot”（id `04d9635a-…`，10-10 17:22 创建，只有自我介绍和一问一答，无分工），同样暂不登记，等用户或小萌确认用途。
+- (2026-10-11) 新账号 bootstrap：所有 bot 已重建，新 agent id 写在 `bots/agent-map.json`；小萌新 id `70869d39-bdf3-4146-823b-db0bd0d3da2c`。不用 gh（Composio 项目把 GitHub token 打码），推送一律走 composio-pg 的 Composio GitHub（ZMGID）。
