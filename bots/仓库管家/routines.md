@@ -14,7 +14,7 @@
 3) 小萌的笔记：/workspace/assistant/ 下的 routines.md、big-picture.md、ideas/ 以明文进 workspace/assistant/（按 sync.sh 的做法），daily/ 只以 secrets/daily.tgz.enc 加密入库；明文 /workspace/finance/ 只以 secrets/finance.tgz.enc 入库。
 4) 漂移检查：把线上实际情况和仓库逐项对比并补齐：本账号现有的 bot 名单与 agent-map.json、index.json（sync.sh 在 id 对不上时按名字匹配，留意 id 变化要写回 agent-map）；每个 bot 的名字、标题、说明与 profile.md；每个 bot 的定时任务与 routines.md（我自己的看当前定时任务状态，别的 bot 读不到原文就在 Grok Bot 应用里发消息问那个 bot 要）；/home/box/agent-data/workflows/ 下的技能与 skills/；当前连接器状态与 connectors/README.md；已删除的 bot 要从仓库和 BOOTSTRAP 里去掉。
 5) 运行 bash scripts/sync.sh：它会校验 remote 和分支，调用 scripts/pack-bundles.sh 用口令重打包所有加密包（缺口令就跳过打包、保留已有 .enc，并在结果里提一句），再做密钥扫描（scripts/secret-scan.sh），不通过就中止、不提交；通过且有变化才 commit 并推送（做法见 scripts/sync.md）。绝不绕过、放宽或改白名单来让扫描通过。
-6) 结果发给这个聊天里的用户：没有变化就不发任何消息；有变化发一行中文说明（改了哪些 bot / 文件、补齐了哪些漂移）；密钥扫描失败、打包失败、拉取或推送失败等出错时，说清原因和需要用户做什么（只说文件名和行号，不贴可疑内容），并在 Grok Bot 应用里发消息抄送给 小萌（id a96070f7-cb92-4f15-bcd4-7b1e700cc676）。
+6) 结果发给这个聊天里的用户：没有变化就不发任何消息；有变化发一行中文说明（改了哪些 bot / 文件、补齐了哪些漂移）；密钥扫描失败、打包失败、拉取或推送失败等出错时，说清原因和需要用户做什么（只说文件名和行号，不贴可疑内容），并在 Grok Bot 应用里发消息抄送给 小萌（id 70869d39-bdf3-4146-823b-db0bd0d3da2c）。
 ```
 
 如果每日同步要读别的 bot 的对话记录，需要有 ReadTranscript 工具（cursor 命名空间）。没有的话退而求其次：读 `/home/box/agent-data/agents/<id>/memory/` 和 `/home/box/agent-data/search-index.db` 的 `messages` 表（只读，先复制到 /tmp 再打开）。
@@ -32,5 +32,5 @@
 3) 完整性：bots/agent-map.json 和 bots/index.json 里的每个 bot 都有完整的 profile.md、CONTEXT.md、routines.md，每条定时任务都有 cron 和提示词原文；setup.sh、scripts/pack-bundles.sh、scripts/sync.sh 能通过 bash -n；连接器和服务步骤（composio-pg、composio-zhimeng、gmail-listener、lark-cli 等）引用的文件都在。
 4) 安全审计：对公开仓库的全部 git 历史和工作区跑 scripts/secret-scan.sh 和 gitleaks 全历史扫描，确认没有明文密钥、口令、验证码、一次性链接、webhook 地址、邮件正文、每日笔记明文、账本明文，secrets/ 下只有 README 和以 GBH1 开头的 .enc。检查遗留风险：旧私有仓库 ZMGID/grokbot-home-private-old 是否仍存在；口令是否仍然偏短（现在所有密钥包都在公开仓库里，短口令可被离线暴力破解，需要明确提醒）。只提醒，不替用户删仓库或改口令。
 5) 发现断点就在 /workspace/grokbot-home 里修好（包过期就通过 bash scripts/sync.sh 重打包），推送前一律运行 bash scripts/sync.sh（密钥扫描不干净就中止，绝不放宽扫描或加白名单）；修不了的记下来。演练结束删除 /tmp 下所有临时目录和解密内容。
-6) 结果发给这个聊天里的用户：全部正常就只发一句「本周演练通过」，遗留风险仍在时在同一句后面简短提醒；发现问题或出错时，用简短中文说清是什么问题（哪个包、哪一步）、已经修了什么、需要用户做什么（只说文件名和行号，不贴可疑内容），并把同样的内容在 Grok Bot 应用里发消息抄送给 小萌（经理 bot，id a96070f7-cb92-4f15-bcd4-7b1e700cc676）。
+6) 结果发给这个聊天里的用户：全部正常就只发一句「本周演练通过」，遗留风险仍在时在同一句后面简短提醒；发现问题或出错时，用简短中文说清是什么问题（哪个包、哪一步）、已经修了什么、需要用户做什么（只说文件名和行号，不贴可疑内容），并把同样的内容在 Grok Bot 应用里发消息抄送给 小萌（经理 bot，id 70869d39-bdf3-4146-823b-db0bd0d3da2c）。
 ```
