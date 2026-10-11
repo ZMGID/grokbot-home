@@ -42,9 +42,25 @@ if [[ -f "$MAP" ]]; then
     # 自定义头像（若有）
     for a in "$src"/avatar.{png,jpg,jpeg,webp,gif,svg}; do [[ -f "$a" ]] && cp "$a" "bots/$slug/"; done
     # bot 自己的记忆文件（memory/profile.md、memory/log/），原样备份（只要 .md，不要数据库/其他文件）
-    # 财务管家：memory 可能含金额/流水/账号信息 → 永不拷进 raw/
+    # 财务管家：明文 memory 永不拷进 raw/；有内容则加密进 secrets/
     if [[ "$slug" == "财务管家" ]]; then
-      echo "   跳过 $slug 的 memory/（财务数据不进公开仓库）"
+      echo "   跳过 $slug 的明文 memory/（改为加密备份，若有内容）"
+      if [[ -d "$src/memory" ]] && [[ -n "$(find "$src/memory" -type f 2>/dev/null | head -1)" ]]; then
+        if [[ -z "${GROKBOT_HOME_PASSPHRASE:-}" ]]; then
+          echo "   !! GROKBOT_HOME_PASSPHRASE 未设置，无法加密 财务管家 memory，跳过"
+        else
+          _mtmp=$(mktemp /tmp/cw-mem.XXXXXX.tgz)
+          tar -C "$src" -czf "$_mtmp" memory
+          if [[ -s "$_mtmp" ]]; then
+            python3 scripts/secret-crypt.py enc-bin "$_mtmp" "secrets/财务管家-memory.tgz.enc" \
+              && echo "   已更新 secrets/财务管家-memory.tgz.enc" \
+              || echo "   !! 加密 财务管家 memory 失败"
+          fi
+          shred -u "$_mtmp" 2>/dev/null || rm -f "$_mtmp"
+        fi
+      else
+        echo "   财务管家 memory 为空或不存在，跳过加密包"
+      fi
     elif [[ -d "$src/memory" ]]; then
       mkdir -p "$dst/memory"
       (cd "$src/memory" && find . -type f -name '*.md' -print0) | while IFS= read -r -d '' m; do
@@ -54,6 +70,27 @@ if [[ -f "$MAP" ]]; then
   done
 else
   echo "   没有 $MAP，跳过原始设定快照"
+fi
+
+# 1b) 账本加密备份：重新打包 /workspace/finance/ → secrets/finance.tgz.enc
+#     明文永不进入工作树；临时 tar 只在 /tmp，结束后 shred。
+if [[ -d /workspace/finance ]] && [[ -n "$(ls -A /workspace/finance 2>/dev/null)" ]]; then
+  if [[ -z "${GROKBOT_HOME_PASSPHRASE:-}" ]]; then
+    echo "!! GROKBOT_HOME_PASSPHRASE 未设置，无法更新 secrets/finance.tgz.enc"
+  else
+    _ftmp=$(mktemp /tmp/finance-sync.XXXXXX.tgz)
+    tar -C /workspace -czf "$_ftmp" finance
+    if [[ -s "$_ftmp" ]]; then
+      python3 scripts/secret-crypt.py enc-bin "$_ftmp" secrets/finance.tgz.enc \
+        && echo "   已更新 secrets/finance.tgz.enc" \
+        || { echo "!! 加密 finance 失败"; shred -u "$_ftmp" 2>/dev/null || rm -f "$_ftmp"; exit 6; }
+    else
+      echo "   finance tarball 为空，跳过"
+    fi
+    shred -u "$_ftmp" 2>/dev/null || rm -f "$_ftmp"
+  fi
+else
+  echo "   /workspace/finance/ 不存在或为空，跳过 finance.tgz.enc 更新"
 fi
 
 # 2) 用户自建技能

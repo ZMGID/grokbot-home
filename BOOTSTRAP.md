@@ -49,6 +49,26 @@ Then read: `README.md`, `CONTEXT.md` (shared user memory), `connectors/README.md
    「Composio 项目 API key（控制台 → 项目设置 → API Keys），用于 composio-pg；写入 ~/.composio_pg_key」, or have the user type it in **your desktop terminal**:
    `read -rsp 'Composio key: ' K && umask 077 && printf %s "$K" > ~/.composio_pg_key && unset K`. Never in chat.
 
+### (b+) Restore finance ledgers from encrypted backup / 解密恢复账本
+
+After `GROKBOT_HOME_PASSPHRASE` is set, restore `/workspace/finance/` if missing or empty (plaintext ledgers stay on the box only; never `git add` them):
+
+```bash
+cd /workspace/grokbot-home
+if [[ ! -d /workspace/finance ]] || [[ -z "$(ls -A /workspace/finance 2>/dev/null)" ]]; then
+  umask 077
+  TMP=$(mktemp /tmp/finance.XXXXXX.tgz)
+  python3 scripts/secret-crypt.py dec-bin secrets/finance.tgz.enc "$TMP"
+  tar -C /workspace -xzf "$TMP"
+  shred -u "$TMP" 2>/dev/null || rm -f "$TMP"
+  echo "finance restored to /workspace/finance/"
+else
+  echo "finance already present; skip restore (do not overwrite live books without asking)"
+fi
+```
+
+若还有 `secrets/财务管家-memory.tgz.enc`，可同样用 `dec-bin` 解到临时目录后按需合并进该 bot 的 `memory/`（勿提交明文）。细节见 `secrets/README.md`。
+
 ### (c) Install composio-pg from the repo + smoke test
 
 ```bash
@@ -207,7 +227,7 @@ Run and record each result:
 - Then `bash scripts/secret-scan.sh`, and commit the changed files to `main` through Composio GitHub on `user-composio-pg` (Step 1; no `gh` / `git push` since 2026-10-11), then sync the local copy (`git fetch` + verify `git diff origin/main` + `git reset --hard origin/main`). The daily sync does this automatically for all bots, but write back immediately after anything important.
 - Never commit: keys, tokens, the passphrase, `.env`, one-time codes, passwords, auth links, mcp-remote logs, `/home/box/agent-data/*secrets*.json`, databases. **The repo is public** — only `secrets/*.enc` may hold a secret, and only encrypted with `scripts/secret-crypt.py`.
 - New bot created later (by **小萌** / primary)? Add `bots/<slug>/` (profile.md, CONTEXT.md, routines.md) + `index.json` + `agent-map.json` + `bots/README.md` table.
-- **Never** copy `/workspace/finance/` or `/workspace/assistant/daily/` into the repo. `财务管家` raw memory is skipped by `sync.sh`.
+- **Finance restore / 账本**：明文 `/workspace/finance/` **永不**进 git（`.gitignore` 已忽略）。迁移备份是加密包 `secrets/finance.tgz.enc`。口令就绪后（Step 0 (b)），按 Step 0 (b+) 与 `secrets/README.md` 解密恢复到 `/workspace/finance/`。每日同步会重新打包并 `enc-bin` 覆盖该文件。`/workspace/assistant/daily/` 仍绝不进仓库。`财务管家` 的 plaintext `memory/` 不拷进 `raw/`；有内容时 sync 另加密为 `secrets/财务管家-memory.tgz.enc`。
 
 ## Step 10 — Report to the user / 最后汇报
 
@@ -218,7 +238,7 @@ Send one short Chinese message: what's done, what failed, what the user still ne
 ## Final checklist / 最终清单
 
 - [ ] Step 0: repo cloned anonymously at `/workspace/grokbot-home`, git identity set
-- [ ] Step 0: passphrase received via secret-request; `/home/box/.composio_pg_key` decrypted from `.enc` (or `.box-current.enc`), mode 600 (values never shown)
+- [ ] Step 0: passphrase received via secret-request; `/home/box/.composio_pg_key` decrypted from `.enc` (or `.box-current.enc`), mode 600 (values never shown); `/workspace/finance/` restored from `secrets/finance.tgz.enc` if needed
 - [ ] Step 0/3: `composio-pg` + `composio-zhimeng` installed & connected; gmail-listener started; lark-cli auth’d (user QR); `GMAIL_WEBHOOK_KEY` in env only
 - [ ] Step 1: push access via Composio GitHub (composio-pg, ZMGID); no `gh`
 - [ ] Step 2: `setup.sh` finished (summary checked; failures listed)

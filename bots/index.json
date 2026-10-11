@@ -133,7 +133,7 @@
       "plugins_needed": [],
       "role": "记账 / 订阅与固定支出 / 预算 / 报销对账 / 财务材料（只记录，从不付款）",
       "raw_memory_excluded": true,
-      "notes": "ledger at /workspace/finance/ — never in repo"
+      "notes": "明文账本 /workspace/finance/；加密备份 secrets/finance.tgz.enc；raw memory 不进仓"
     }
   ]
 }

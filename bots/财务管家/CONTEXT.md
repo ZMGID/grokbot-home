@@ -7,9 +7,11 @@
 - 记账、订阅与固定支出、资金与预算、报销与对账、按需起草财务材料。
 - 数据来源：用户给的文件；Gmail（只读：ohulercxm8 走 composio-pg；若查 zhimeng63 走 composio-zhimeng）里的账单/收据。
 - **只记录、分析、提醒、起草，从不付款/转账/下单/改订阅。**
-- 账本目录：`/workspace/finance/`（不进公开仓库）。
+- 账本目录：明文只在 `/workspace/finance/`；加密备份在 `secrets/finance.tgz.enc`（公开仓库只含该 `.enc`）。**禁止**把金额、账号、流水写进本文件。
 
 ## 记录
 - (2026-10-09) 小萌创建本 bot（agent id `46700d6c-3bfa-4d52-9b8e-a9aac3285c71`）。暂无定时任务；automations/ 与 memory/ 均尚未出现。
 
 - (2026-10-09) 用户补记了 10 月份 AI 订阅续费。工作经费已接近用完，下次 11/8 续费时会不够，届时需向老板申请追加（具体金额只在账本里，不进仓库）。
+
+- (2026-10-11) 账本改为加密进仓库 `secrets/finance.tgz.enc`；同步时重打包；明文仍只在 `/workspace/finance/`。

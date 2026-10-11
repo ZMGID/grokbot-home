@@ -54,14 +54,14 @@
 - **搭建运维**：公司官网、飞书及其他系统/工具的搭建与维护（飞书日常可用 lark-cli；搭建配置仍归本 bot）。
 - **事务秘书**（原名「邮件秘书」，2026-10-08 改名）：非技术事务（邮件、账号与订阅、周报/文档、提醒、比价等）+ 工作日早晚「今日计划」(08:53) 与「今日总结」(17:47)。**邮件/消息只写草稿，从不直接发送。**
 - **硬件工程师**：创作控制器项目（`projects/creative-controller/`）。**(2026-10-08) 项目已暂停、待命**；无用户或小萌新指示不要继续做。
-- **财务管家**（2026-10-09 小萌创建）：记账、订阅与固定支出、预算、报销对账、财务材料起草；**只记录，从不付款/转账/下单**。账本在 `/workspace/finance/`。
+- **财务管家**（2026-10-09 小萌创建）：记账、订阅与固定支出、预算、报销对账、财务材料起草；**只记录，从不付款/转账/下单**。明文账本 `/workspace/finance/`；加密备份 `secrets/finance.tgz.enc`（换号按 BOOTSTRAP 解密恢复）。
 
 （2026-10-08 用户已删除 **dr eggbot**；原先「设计并创建 bot」改由主 bot **小萌**自己做。）
 
 ## 换号方案（2026-10-08 已确认）
 - 所有东西放进 GitHub 仓库 `ZMGID/grokbot-home`（2026-10-08 起改为**公开**，旧私有仓库改名为 `grokbot-home-private-old`）：共享记忆（本文件）、每个 bot 的设定/记忆/定时任务（`bots/`）、连接器清单和启动脚本（`connectors/`）、技能（`skills/`）、工具环境脚本（`setup.sh`）、项目文件（`projects/`）。
 - 新号流程：打开一个 Grok Bot，对它说「按 https://github.com/ZMGID/grokbot-home 配置你自己」。它按 `BOOTSTRAP.md` 配好自己，再用 CreateAgent 把其他 bot 全部建出来。
-- **明文密钥永远不进仓库**。唯一例外：Composio key 用 `scripts/secret-crypt.py` 加密后放 `secrets/*.enc`；解密口令 `GROKBOT_HOME_PASSPHRASE` 只通过 bot 的密码框（secret prompt）提供。
+- **明文密钥/账本永远不进仓库**。加密进 `secrets/*.enc`（Composio key 用 `enc`/`dec`；账本 tar 用 `enc-bin`/`dec-bin`，见 `secrets/finance.tgz.enc`）。解密口令 `GROKBOT_HOME_PASSPHRASE` 只通过 bot 的密码框（secret prompt）提供。
 - Composio 连接走两个自定义 stdio MCP（共用 `~/.composio_pg_key`；**一个 Composio 连接器对应一个 Gmail**）：
   - **`composio-pg`**（用户 `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde`）：GitHub ZMGID（`ca_1g4u93YydZsp`）+ Gmail `ohulercxm8@gmail.com`（`ca_ZnzYtlTeic0s`）。**不含** zhimeng63。
   - **`composio-zhimeng`**（用户 `zhimeng63`）：仅 Gmail `zhimeng63@gmail.com`（`ca_5jGHEthCoWuD`）。

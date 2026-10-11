@@ -45,15 +45,22 @@ if [[ -n "$HITS" ]]; then
   echo "!! 可疑位置（只列文件:行号）："; echo "$HITS"; STATUS=1
 fi
 
-# 实际密钥内容比对：~/.composio_pg_key，以及（有口令时）secrets/*.enc 解密出的明文
+# 实际密钥内容比对：~/.composio_pg_key，以及（有口令时）secrets/*.enc 解密出的*文本*明文
+# 二进制包（finance.tgz.enc 等）用 dec-bin 校验能解开，但不把二进制内容当“密钥串”去扫仓库
 KEYS=()
 [[ -s "$HOME/.composio_pg_key" ]] && KEYS+=("$HOME/.composio_pg_key")
 if [[ -n "${GROKBOT_HOME_PASSPHRASE:-}" && -f scripts/secret-crypt.py ]]; then
   for e in secrets/*.enc; do
     [[ -f "$e" ]] || continue
     out="$TMPD/dec.$(basename "$e")"
-    if python3 scripts/secret-crypt.py dec "$e" "$out" >/dev/null 2>&1; then KEYS+=("$out:$e")
-    else echo "   （$e 用当前口令解不开，跳过该明文比对）"; fi
+    if python3 scripts/secret-crypt.py dec "$e" "$out" >/dev/null 2>&1; then
+      KEYS+=("$out:$e")
+    elif python3 scripts/secret-crypt.py dec-bin "$e" "$out" >/dev/null 2>&1; then
+      echo "   （$e 为二进制加密包，已用 dec-bin 校验可解密，跳过明文串比对）"
+      shred -u "$out" 2>/dev/null || rm -f "$out"
+    else
+      echo "   （$e 用当前口令解不开，跳过该明文比对）"
+    fi
   done
 fi
 for entry in "${KEYS[@]}"; do
@@ -91,10 +98,10 @@ while IFS= read -r -d '' f; do
   esac
 done < "$TMPD/files"
 
-# 禁止入库的路径与账本类文件名（收紧，无白名单例外）
-# /workspace/finance/ 账本、/workspace/assistant/daily/ 日记，以及任何看起来像 ledger/流水 的已跟踪路径
+# 禁止入库的路径与账本类文件名（收紧）
+# 明文 finance/、assistant/daily/ 等禁止；secrets/*.enc（含 finance.tgz.enc）允许（上方已校验 GBH1）
 FORBIDDEN_PATHS=$(tr '\0' '\n' < "$TMPD/files" | rg -i '(^|/)(finance(/|$)|assistant/daily(/|$)|\.lark-cli(/|$)|\.local/share/lark-cli(/|$)|feishu-cli/survey(/|$)|gmail-listener/(venv|__pycache__)(/|$))' || true)
-LEDGER_NAMES=$(tr '\0' '\n' < "$TMPD/files" | rg -i '(^|/)([^/]*(ledger|账本|流水|对账|报销)[^/]*\.(csv|tsv|xlsx|xls|ods|json|md|txt)|[^/]*(ledger|账本|流水)\.[^/]+)$' || true)
+LEDGER_NAMES=$(tr '\0' '\n' < "$TMPD/files" | rg -i '(^|/)([^/]*(ledger|账本|流水|对账|报销)[^/]*\.(csv|tsv|xlsx|xls|ods|json|md|txt)|[^/]*(ledger|账本|流水)\.[^/]+)$' | rg -v '^secrets/.*\.enc$' || true)
 # gmail-listener 运行态（含邮件主题）与 webhook 密钥文件名
 GMAIL_RUNTIME=$(tr '\0' '\n' < "$TMPD/files" | rg -i '(^|/)(forwarded_ids\.txt|seen\.txt|failed\.jsonl|listener\.log|supervisor\.pid|webhook_url\.local)$|(^|/)gmail-listener/(forwarded_ids\.txt|seen\.txt|failed\.jsonl|listener\.log|supervisor\.pid|webhook_url\.local|venv/)' || true)
 if [[ -n "$FORBIDDEN_PATHS" || -n "$LEDGER_NAMES" || -n "$GMAIL_RUNTIME" ]]; then

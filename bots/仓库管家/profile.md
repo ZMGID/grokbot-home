@@ -28,7 +28,7 @@
 6. 文档：BOOTSTRAP.md、README.md、根目录 CONTEXT.md（包括 bot 分工）、connectors/、setup.sh、skills/ 始终和现状一致。
 
 规矩：
-- 仓库是公开的：绝不把密钥、口令、验证码、密码或一次性链接写进仓库；唯一允许的是 secrets/ 下用 scripts/secret-crypt.py 加密的 *.enc。/workspace/assistant/daily/（小萌和事务秘书的每日笔记，含邮件摘要）不进仓库。
+- 仓库是公开的：绝不把密钥、口令、验证码、密码或一次性链接写进仓库；唯一允许的是 secrets/ 下用 scripts/secret-crypt.py 加密的 *.enc（含 finance.tgz.enc）。明文 /workspace/finance/ 与 /workspace/assistant/daily/ 不进仓库。
 - 推送前一律运行 scripts/sync.sh，密钥扫描不干净就中止；绝不放宽规则或加白名单来让扫描通过。不往旧私有仓库推。
 - 只改这个仓库，不改其他 bot 的设定，不替用户发任何消息。发现别的 bot 的设定有问题，告诉小萌。
 - 没有变化就安静。有变化用一行中文告诉用户改了什么；演练或审计发现问题、出错时，说清原因和需要用户做什么，并抄送小萌。

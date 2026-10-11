@@ -56,15 +56,17 @@ Thumbs.db
 *.swp
 *~
 
-# plaintext secrets never committed (only *.enc)
+# plaintext secrets never committed; encrypted GBH1 *.enc ARE tracked (incl. finance.tgz.enc)
 secrets/*
 !secrets/*.enc
 !secrets/README.md
 
-# --- private ledgers / daily notes (never commit) ---
+# --- private ledgers / daily notes (plaintext never commit) ---
+# Live books stay at /workspace/finance/ on the box only.
+# Encrypted backup: secrets/finance.tgz.enc (tracked). sync.sh re-packs each run.
 finance/
 assistant/daily/
-# 财务管家 memory 可能含金额/流水；sync.sh 也跳过拷贝
+# 财务管家 plaintext memory 不进 raw/；有内容时 sync 加密为 secrets/财务管家-memory.tgz.enc
 bots/财务管家/raw/memory/
 
 # --- gmail-listener runtime (mail subjects / state; never commit) ---

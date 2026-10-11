@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Encrypt/decrypt repo secrets with a passphrase (scrypt N=2^20 + AES-256-CBC via openssl).
 Passphrase is read from env GROKBOT_HOME_PASSPHRASE (never pass it on the command line).
-  encrypt: secret-crypt.py enc <plain_in> <enc_out>
-  decrypt: secret-crypt.py dec <enc_in> <plain_out>
+  encrypt text:   secret-crypt.py enc     <plain_in> <enc_out>
+  decrypt text:   secret-crypt.py dec     <enc_in>   <plain_out>
+  encrypt binary: secret-crypt.py enc-bin <plain_in> <enc_out>
+  decrypt binary: secret-crypt.py dec-bin <enc_in>   <plain_out>
 File format: b"GBH1" + 16-byte salt + AES-256-CBC ciphertext (key/iv = scrypt(pass, salt)[:32]/[32:48]).
+enc/dec are for text secrets (Composio keys): decrypt rejects non-ASCII-printable output.
+enc-bin/dec-bin are for binary blobs (e.g. finance.tgz): decrypt skips the printable check.
 Never prints key material: on any failure only a short generic message is shown.
 Note: scrypt needs ~1 GiB RAM and a few seconds per call.
 """
@@ -12,8 +16,8 @@ import hashlib, os, subprocess, sys
 def die(msg, code=1):
     sys.stderr.write("secret-crypt: " + msg + "\n"); sys.exit(code)
 
-if len(sys.argv) != 4 or sys.argv[1] not in ("enc", "dec"):
-    die("usage: secret-crypt.py enc|dec <in> <out>", 2)
+if len(sys.argv) != 4 or sys.argv[1] not in ("enc", "dec", "enc-bin", "dec-bin"):
+    die("usage: secret-crypt.py enc|dec|enc-bin|dec-bin <in> <out>", 2)
 mode, src, dst = sys.argv[1:4]
 pw = os.environ.get("GROKBOT_HOME_PASSPHRASE", "")
 if not pw:
@@ -36,7 +40,7 @@ def write_private(path, data):
     finally:
         os.close(fd)
 
-if mode == "enc":
+if mode in ("enc", "enc-bin"):
     plain = open(src, "rb").read()
     if not plain.strip():
         die("refusing to encrypt an empty file")
@@ -51,7 +55,10 @@ else:
         die("not a GBH1-encrypted file: " + src)
     key, iv = derive(data[4:20])
     pt = openssl(["-d", "-K", key, "-iv", iv], data[20:])
-    # wrong passphrase: openssl padding check fails (or, rarely, yields garbage -> reject non-printable output)
-    if pt is None or not pt.strip() or any(b < 0x20 and b not in (9, 10, 13) for b in pt) or any(b > 0x7e for b in pt):
+    if pt is None or not pt.strip():
         die("decryption failed (wrong passphrase or corrupted file); nothing written")
+    # text mode: reject non-printable (wrong passphrase may still yield garbage that passes padding)
+    if mode == "dec":
+        if any(b < 0x20 and b not in (9, 10, 13) for b in pt) or any(b > 0x7e for b in pt):
+            die("decryption failed (wrong passphrase or corrupted file); nothing written")
     write_private(dst, pt)

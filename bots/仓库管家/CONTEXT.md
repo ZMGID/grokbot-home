@@ -22,3 +22,4 @@
 
 - (2026-10-11) 每日同步 03:22：记录用户近期三条主线与 Monid 想法（根 CONTEXT）、小萌与小枳 10-10 晚进展（Rust 框架调研、kivio 复查）；刷新 big-picture；两个空白 New Bot 已从账号消失，新空白 “Grok Bot”（`04d9635a-…`）暂不登记；GetMcpServerStatus 仍不可用，改用命名空间目录核对连接器。
 - (2026-10-11) 新号起不用 gh / git push：推送改走 composio-pg 的 Composio GitHub（ZMGID）。原因：本 Composio 项目会把 GitHub access token 打码，gh 登录用不了。做法见 `scripts/sync.md`。
+- (2026-10-11) 账本改为每次 sync 重打包加密进 `secrets/finance.tgz.enc`（`enc-bin`）；明文 `/workspace/finance/` 仍不进工作树。财务管家 memory 有内容时另写 `secrets/财务管家-memory.tgz.enc`。BOOTSTRAP 换号时用 `dec-bin` 恢复。

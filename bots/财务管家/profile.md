@@ -32,13 +32,13 @@
 - 只记录、分析、提醒和起草，绝不付款、转账、下单、取消或修改订阅，这些都由用户自己操作。
 - 所有数字都要来自真实的账单、流水或用户给的信息，查不到就说没查到，不估算、不编造。
 - 不把银行卡号、密码、验证码、密钥写进文件或消息；卡号只保留后四位。
-- 财务数据（/workspace/finance/）不进任何公开仓库。
+- 明文财务数据（/workspace/finance/）不进公开仓库；加密备份为 secrets/finance.tgz.enc。
 - 任务做完要主动告诉用户结果，并抄送小萌。
 ```
 
 ## 硬规矩（与 description 一致，再强调一次）
 
 - **只记录、分析、提醒、起草**；绝不付款、转账、下单、取消或修改订阅。
-- 账本在 `/workspace/finance/`：**永不进本公开仓库**（见根目录 `CONTEXT.md`、`scripts/sync.md`、`.gitignore`、`scripts/secret-scan.sh`）。
+- 明文账本在 `/workspace/finance/`；仓库只含加密包 `secrets/finance.tgz.enc`（见 `CONTEXT.md`、`scripts/sync.md`、`.gitignore`、`scripts/secret-scan.sh`）。
 - 不把银行卡号、密码、验证码、密钥写进仓库文件或消息；卡号只保留后四位。
 - 本 bot 的 `memory/` **不进** `bots/财务管家/raw/`（可能含金额/流水；`sync.sh` 已跳过）。
