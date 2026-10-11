@@ -252,15 +252,11 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# 9. gh 登录状态（只检查，不登录）。仓库公开，克隆不需要登录；只有推送（写回/每日同步）需要，见 BOOTSTRAP Step 1
+# 9. GitHub 推送说明（只提示，不登录）。2026-10-11 起不用 gh / git push：
+#    仓库公开，克隆不需要登录；推送（写回/每日同步）一律走 composio-pg 的 Composio GitHub（ZMGID），见 BOOTSTRAP Step 1
 # ---------------------------------------------------------------------------
-log "gh auth"
-if gh auth status >/dev/null 2>&1; then
-  ok "gh 已登录"
-  gh auth setup-git >/dev/null 2>&1 || true
-else
-  echo "    · gh 未登录：只影响推送。按 BOOTSTRAP Step 1 用 Composio 的 GitHub token 登录（失败再用设备码）"
-fi
+log "GitHub 推送"
+echo "    · 不使用 gh 登录：推送走 composio-pg 的 Composio GitHub（ZMGID），见 BOOTSTRAP Step 1"
 
 # ---------------------------------------------------------------------------
 log "汇总"

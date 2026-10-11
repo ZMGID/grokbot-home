@@ -23,7 +23,7 @@ git config user.name  >/dev/null || git config user.name ZMGID
 git config user.email >/dev/null || git config user.email 214914950+ZMGID@users.noreply.github.com
 
 echo "== git pull"
-gh auth setup-git >/dev/null 2>&1 || true
+# （2026-10-11 起不用 gh，已移除 gh auth setup-git）
 git pull --rebase --autostash -q "$REMOTE" "$BRANCH" || { echo "!! git pull 失败"; exit 3; }
 
 # 1) 原始设定快照：profile.json / settings.json（不含密钥）。按 index.json 里的 slug ↔ 当前 agent id 映射。
