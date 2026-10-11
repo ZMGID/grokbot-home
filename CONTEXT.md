@@ -62,12 +62,14 @@
 - 所有东西放进 GitHub 仓库 `ZMGID/grokbot-home`（2026-10-08 起改为**公开**，旧私有仓库改名为 `grokbot-home-private-old`）：共享记忆（本文件）、每个 bot 的设定/记忆/定时任务（`bots/`）、连接器清单和启动脚本（`connectors/`）、技能（`skills/`）、工具环境脚本（`setup.sh`）、项目文件（`projects/`）。
 - 新号流程：打开一个 Grok Bot，对它说「按 https://github.com/ZMGID/grokbot-home 配置你自己」。它按 `BOOTSTRAP.md` 配好自己，再用 CreateAgent 把其他 bot 全部建出来。
 - **明文密钥/账本永远不进仓库**。加密进 `secrets/*.enc`（Composio key 用 `enc`/`dec`；账本 tar 用 `enc-bin`/`dec-bin`，见 `secrets/finance.tgz.enc`）。解密口令 `GROKBOT_HOME_PASSPHRASE` 只通过 bot 的密码框（secret prompt）提供。
+- (2026-10-12) 用户要求仓库包含**恢复所需的全部东西，含密钥**，但只能加密：`scripts/pack-bundles.sh`（sync 每次自动跑、内容没变不重新加密）生成 `secrets/box-secrets.tgz.enc`（Composio key、飞书 lark-cli app secret 与 token、gh 登录、ssh 配置与 eastforce 服务器资料/私钥、gmail webhook URL、`COMPOSIO_API_KEY`/`GMAIL_WEBHOOK_KEY` 的值）、`secrets/daily.tgz.enc`（`/workspace/assistant/daily/`）、`secrets/feishu-cli.tgz.enc`（`/workspace/feishu-cli/` 全部）、`secrets/finance.tgz.enc`。无密钥的 `/workspace/assistant/`（routines、big-picture、ideas）明文放 `workspace/assistant/`，`/workspace/brake-game/` 放 `projects/brake-game/`。恢复步骤见 BOOTSTRAP Step 0 (b++)。
+- ⚠️ 仓库公开 + 口令很短 → 这些加密包可被离线暴力破解，应尽快换长口令（换法见 `secrets/README.md`）。
 - Composio 连接走两个自定义 stdio MCP（共用 `~/.composio_pg_key`；**一个 Composio 连接器对应一个 Gmail**）：
   - **`composio-pg`**（用户 `pg-test-5be86c3e-d220-4538-ab6d-ae22d538dfde`）：GitHub ZMGID（`ca_1g4u93YydZsp`）+ Gmail `ohulercxm8@gmail.com`（`ca_ZnzYtlTeic0s`）。**不含** zhimeng63。
   - **`composio-zhimeng`**（用户 `zhimeng63`）：仅 Gmail `zhimeng63@gmail.com`（`ca_5jGHEthCoWuD`）。
   - (2026-10-09) 经用户同意，已从 composio-pg 删除旧的 zhimeng63 连接 **`ca_2rJjmKh8j1q0`**。新号/重建时**不要**再在 composio-pg（pg-test 用户）下给 zhimeng63 授权；只通过 composio-zhimeng 授权。
 - (2026-10-08) **应用连接只走 Composio**：不要再装官方 GitHub（`cursor-github`）、Origin、Finance、Composio 插件（32661537）。
-- **飞书例外（2026-10-10）**：Composio 无飞书 toolkit → 用官方 **lark-cli** 1.0.97（`npm i -g @larksuite/cli --prefix ~/.local`，brand `feishu`，app `cli_aa430b6809f85d0c`）。配置/token 在 `~/.lark-cli/` 与 `~/.local/share/lark-cli/`（**不进仓库**）。换号后需 `lark-cli config init --new --brand feishu` 与 `lark-cli auth login`（用户扫码）。常用群见 `services/feishu-cli/chats.md`（全员群 / bot 通知群）。
+- **飞书例外（2026-10-10）**：Composio 无飞书 toolkit → 用官方 **lark-cli** 1.0.97（`npm i -g @larksuite/cli --prefix ~/.local`，brand `feishu`，app `cli_aa430b6809f85d0c`）。配置/token 在 `~/.lark-cli/` 与 `~/.local/share/lark-cli/`（明文不进仓库，加密在 `secrets/box-secrets.tgz.enc`）。换号后先解包试 `lark-cli auth status`，用户 token 约 7 天不用会过期；不行再 `lark-cli config init --new --brand feishu` 与 `lark-cli auth login`（用户扫码）。常用群见 `services/feishu-cli/chats.md`（全员群 / bot 通知群）。
 - **Gmail 来信监听（2026-10-10）**：盒子 `/workspace/gmail-listener/`（脚本备份在 `services/gmail-listener/`）经 Composio 触发器推送到小萌 webhook 例程 `gmail-new-mail`。密钥环境变量名 `GMAIL_WEBHOOK_KEY`（**值不进仓库**）。盒子无 systemd，**重启或换号后须手动** `/workspace/gmail-listener/start.sh`。另有 cloudpotato@mail.grokbot.com 邮箱触发例程。
 - 同步方式：由专门 bot **仓库管家**每天约 03:14（北京时间）跑定时任务，把各 bot 的新记忆和设定同步进仓库，有变化才推送，推送前做密钥扫描。（2026-10-08 用户改口：原先「不单独建同步 bot、由主 bot 跑」已作废，移交给仓库管家。）
 - 新号流程：匿名克隆 → 密码框填一次仓库口令 → 解密 Composio key、装 `composio-pg` + `composio-zhimeng` → 重建各 bot。`gh` 登录只在推送时需要。

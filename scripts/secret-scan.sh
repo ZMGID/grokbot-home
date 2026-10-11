@@ -39,7 +39,7 @@ else
 fi
 
 echo "== rg 模式扫描"
-PATTERNS='(ak_[A-Za-z0-9]{12,}|ghp_[A-Za-z0-9]{20,}|gho_[A-Za-z0-9]{20,}|ghu_[A-Za-z0-9]{20,}|ghs_[A-Za-z0-9]{20,}|ghr_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9_-]{20,}|xox[abeprs]-[A-Za-z0-9-]{10,}|-----BEGIN [A-Z ]*PRIVATE KEY-----|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{35}|ya29\.[A-Za-z0-9_-]{20,}|(api[_-]?key|secret|token|password|passphrase)["'\'' ]*[:=]["'\'' ]*[A-Za-z0-9_\-]{16,})'
+PATTERNS='(ak_[A-Za-z0-9]{12,}|ghp_[A-Za-z0-9]{20,}|gho_[A-Za-z0-9]{20,}|ghu_[A-Za-z0-9]{20,}|ghs_[A-Za-z0-9]{20,}|ghr_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9_-]{20,}|xox[abeprs]-[A-Za-z0-9-]{10,}|-----BEGIN [A-Z ]*PRIVATE KEY-----|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{35}|ya29\.[A-Za-z0-9_-]{20,}|automations/webhook/[0-9a-fA-F]{8}-[0-9a-fA-F-]{20,}|(api[_-]?key|secret|token|password|passphrase)["'\'' ]*[:=]["'\'' ]*[A-Za-z0-9_\-]{16,})'
 HITS=$(xargs -0 -r rg -n -i -o --no-heading --no-messages -g '!scripts/secret-scan.sh' -g '!*.kicad_pcb' -g '!*.step' -g '!*.stl' -g '!*.3mf' -g '!*.bin' -g '!*.enc' -e "$PATTERNS" -- < "$TMPD/files" 2>/dev/null | cut -d: -f1,2 | sort -u)
 if [[ -n "$HITS" ]]; then
   echo "!! 可疑位置（只列文件:行号）："; echo "$HITS"; STATUS=1
@@ -49,6 +49,15 @@ fi
 # 二进制包（finance.tgz.enc 等）用 dec-bin 校验能解开，但不把二进制内容当“密钥串”去扫仓库
 KEYS=()
 [[ -s "$HOME/.composio_pg_key" ]] && KEYS+=("$HOME/.composio_pg_key")
+# 环境变量里的密钥值、webhook URL、gh token：写到临时文件（700 目录，结束 shred）再做字面比对
+for v in COMPOSIO_API_KEY GMAIL_WEBHOOK_KEY GMAIL_WEBHOOK_URL; do
+  if [[ -n "${!v:-}" ]]; then printf '%s' "${!v}" > "$TMPD/env.$v"; KEYS+=("$TMPD/env.$v:环境变量 $v"); fi
+done
+[[ -s /workspace/gmail-listener/webhook_url.local ]] && KEYS+=("/workspace/gmail-listener/webhook_url.local")
+if [[ -s "$HOME/.config/gh/hosts.yml" ]]; then
+  i=0; while IFS= read -r t; do [[ -n "$t" ]] || continue; i=$((i+1)); printf '%s' "$t" > "$TMPD/gh.$i"; KEYS+=("$TMPD/gh.$i:gh token #$i"); done \
+    < <(sed -nE 's/^[[:space:]]*oauth_token:[[:space:]]*"?([^"[:space:]]+)"?.*$/\1/p' "$HOME/.config/gh/hosts.yml" | sort -u)
+fi
 if [[ -n "${GROKBOT_HOME_PASSPHRASE:-}" && -f scripts/secret-crypt.py ]]; then
   for e in secrets/*.enc; do
     [[ -f "$e" ]] || continue
@@ -100,7 +109,7 @@ done < "$TMPD/files"
 
 # 禁止入库的路径与账本类文件名（收紧）
 # 明文 finance/、assistant/daily/ 等禁止；secrets/*.enc（含 finance.tgz.enc）允许（上方已校验 GBH1）
-FORBIDDEN_PATHS=$(tr '\0' '\n' < "$TMPD/files" | rg -i '(^|/)(finance(/|$)|assistant/daily(/|$)|\.lark-cli(/|$)|\.local/share/lark-cli(/|$)|feishu-cli/survey(/|$)|gmail-listener/(venv|__pycache__)(/|$))' || true)
+FORBIDDEN_PATHS=$(tr '\0' '\n' < "$TMPD/files" | rg -i '(^|/)(finance(/|$)|assistant/daily(/|$)|\.lark-cli(/|$)|\.local/share/lark-cli(/|$)|feishu-cli/survey(/|$)|feishu-cli/(approvals|chats)(/|$)|gmail-listener/(venv|__pycache__)(/|$)|\.ssh(/|$)|servers/eastforce(/|$)|\.config/gh(/|$)|\.grokbot-home(/|$)|\.mcp-auth(/|$))' || true)
 LEDGER_NAMES=$(tr '\0' '\n' < "$TMPD/files" | rg -i '(^|/)([^/]*(ledger|账本|流水|对账|报销)[^/]*\.(csv|tsv|xlsx|xls|ods|json|md|txt)|[^/]*(ledger|账本|流水)\.[^/]+)$' | rg -v '^secrets/.*\.enc$' || true)
 # gmail-listener 运行态（含邮件主题）与 webhook 密钥文件名
 GMAIL_RUNTIME=$(tr '\0' '\n' < "$TMPD/files" | rg -i '(^|/)(forwarded_ids\.txt|seen\.txt|failed\.jsonl|listener\.log|supervisor\.pid|webhook_url\.local)$|(^|/)gmail-listener/(forwarded_ids\.txt|seen\.txt|failed\.jsonl|listener\.log|supervisor\.pid|webhook_url\.local|venv/)' || true)
@@ -113,7 +122,7 @@ if [[ -n "$FORBIDDEN_PATHS" || -n "$LEDGER_NAMES" || -n "$GMAIL_RUNTIME" ]]; the
 fi
 
 # 禁止提交的文件名
-BAD=$(tr '\0' '\n' < "$TMPD/files" | rg -i '(^|/)(\.env(\..*)?|.*\.pem|.*\.key|id_rsa.*|id_ed25519.*|\.?composio_pg_key|box-secrets\.json|host-secrets\.json|gateway\.json|hosts\.yml|cpg\.err|.*mcp-remote.*\.log|search-index\.db.*|store\.db|conversation-blobs\.db)$' | rg -v '\.env\.example$' || true)
+BAD=$(tr '\0' '\n' < "$TMPD/files" | rg -i '(^|/)(\.env(\..*)?|.*\.pem|.*\.key|id_rsa.*|id_ed25519.*|.*_id_(rsa|ed25519|ecdsa|dsa)(\.pub)?|secrets\.env|master\.key|appsecret_.*|\.?composio_pg_key|box-secrets\.json|host-secrets\.json|gateway\.json|hosts\.yml|cpg\.err|.*mcp-remote.*\.log|search-index\.db.*|store\.db|conversation-blobs\.db)$' | rg -v '\.env\.example$' || true)
 if [[ -n "$BAD" ]]; then echo "!! 不该提交的文件："; echo "$BAD"; STATUS=1; fi
 
 if [[ $STATUS -eq 0 ]]; then echo "== 密钥扫描：干净"; else echo "== 密钥扫描：发现问题，禁止推送"; fi

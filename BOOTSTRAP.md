@@ -69,6 +69,50 @@ fi
 
 若还有 `secrets/财务管家-memory.tgz.enc`，可同样用 `dec-bin` 解到临时目录后按需合并进该 bot 的 `memory/`（勿提交明文）。细节见 `secrets/README.md`。
 
+### (b++) Restore ALL encrypted box bundles / 一次性恢复全部加密包（2026-10-12 起）
+
+`scripts/pack-bundles.sh`（每次 sync 自动跑）把恢复所需的密钥/私密文件打成 GBH1 加密包。`box-secrets` 包内路径**相对于 `/`**（如 `home/box/.composio_pg_key`）；`daily`/`feishu-cli`/`finance` 包内路径**相对于 `/workspace`**：
+
+| 包 | 内容 |
+|---|---|
+| `secrets/box-secrets.tgz.enc` | `~/.composio_pg_key`；`~/.lark-cli/config.json` + `~/.local/share/lark-cli/`（飞书 app `cli_aa430b6809f85d0c` 的 app secret + 用户 token + master.key）；`~/.config/gh/`（gh 登录）；`~/.gitconfig`；`~/.ssh/config`、`known_hosts`；`~/servers/`（eastforce 服务器资料 + ssh 私钥）；`/workspace/gmail-listener/webhook_url.local`；`~/.grokbot-home/secrets.env`（`COMPOSIO_API_KEY`、`GMAIL_WEBHOOK_KEY` 的值，**不含**口令） |
+| `secrets/daily.tgz.enc` | `/workspace/assistant/daily/` |
+| `secrets/feishu-cli.tgz.enc` | `/workspace/feishu-cli/`（README、chats、approvals、survey、日志） |
+| `secrets/finance.tgz.enc` | `/workspace/finance/`（同 (b+)） |
+
+口令就绪后（never print values）：
+
+```bash
+cd /workspace/grokbot-home
+umask 077
+T=$(mktemp -d /tmp/gbh-restore.XXXXXX)
+for b in box-secrets daily feishu-cli finance; do
+  [ -f secrets/$b.tgz.enc ] || continue
+  python3 scripts/secret-crypt.py dec-bin secrets/$b.tgz.enc "$T/$b.tgz" || { echo "!! $b 解密失败"; continue; }
+  tar -tzf "$T/$b.tgz" > "$T/$b.list"              # 想先看清单可以 less 这个文件（只有路径）
+  if [ $b = box-secrets ]; then DEST=/; else DEST=/workspace; fi
+  tar -C $DEST -xzpf "$T/$b.tgz" --no-overwrite-dir   # 同名文件会被覆盖；finance 若已有活账本，先备份再解
+  echo "restored $b ($(wc -l < "$T/$b.list") entries)"
+done
+find "$T" -type f -exec shred -u {} +; rm -rf "$T"
+# 权限
+chmod 600 ~/.composio_pg_key ~/.grokbot-home/secrets.env ~/.config/gh/hosts.yml ~/.lark-cli/config.json 2>/dev/null
+chmod 700 ~/.ssh ~/.lark-cli ~/.local/share/lark-cli ~/servers ~/servers/* ~/.grokbot-home 2>/dev/null
+find ~/.local/share/lark-cli ~/servers ~/.ssh -type f -exec chmod 600 {} + 2>/dev/null
+chmod 600 /workspace/gmail-listener/webhook_url.local 2>/dev/null
+```
+
+恢复后检查（只看状态，不打印 token）：
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+gh auth status 2>&1 | grep -E 'Logged in|Token scopes|X '      # token 可能已过期/被撤销 → 让用户重新 gh auth login
+lark-cli auth status 2>&1 | sed -E 's/[A-Za-z0-9_-]{24,}/<redacted>/g'   # 用户 token 约 7 天不用就过期 → lark-cli auth login（扫码）
+ssh -o BatchMode=yes -o ConnectTimeout=8 eastforce true && echo "eastforce ssh ok"
+```
+
+`~/.grokbot-home/secrets.env` 里是 `export COMPOSIO_API_KEY=…` / `export GMAIL_WEBHOOK_KEY=…`。新号上优先让用户用 masked secret-request 重新提供这两个 env（平台 secret 最可靠）；临时启动 listener 可以 `set -a; . ~/.grokbot-home/secrets.env; set +a` 后再跑 `start.sh`。**注意：webhook URL/KEY 属于旧号的 gmail-new-mail 例程；新号重建例程后 URL 和 key 都会变，要把新值写回 `webhook_url.local` / env，再跑一次 sync 让加密包更新。**
+
 ### (c) Install composio-pg from the repo + smoke test
 
 ```bash
@@ -112,7 +156,7 @@ rm -f /tmp/czm.err
 **Gmail webhook（小萌例程 gmail-new-mail）**
 1. Recreate 小萌's webhook routine **gmail-new-mail** (folder `gmail-new-mail`; prompt in `bots/grok-bot/routines.md`).
 2. Ask the user (masked secret-request) for **`GMAIL_WEBHOOK_KEY`** — put it only in the process environment, never in the repo or chat. Env var **name** may be documented; **value** must not.
-3. Write the new webhook URL into `/workspace/gmail-listener/webhook_url.local` (`chmod 600`) **or** set env `GMAIL_WEBHOOK_URL`. Never commit `webhook_url.local`.
+3. Write the new webhook URL into `/workspace/gmail-listener/webhook_url.local` (`chmod 600`) **or** set env `GMAIL_WEBHOOK_URL`. Never commit `webhook_url.local` in plaintext (旧号的 URL 已随 `box-secrets.tgz.enc` 恢复；新号例程 URL 会变，要覆盖它)。
 4. Recreate Composio triggers `GMAIL_NEW_GMAIL_MESSAGE` per user if needed: ohulercxm8 on **composio-pg**, zhimeng63 on **composio-zhimeng** (never put zhimeng63 under pg-test).
 5. Restore scripts from `services/gmail-listener/` (`listener.py`, `run_loop.sh`, `start.sh`, `stop.sh`) into `/workspace/gmail-listener/`, build venv if needed, then run `/workspace/gmail-listener/start.sh`.
 6. After **every box restart**, run `start.sh` again (no systemd on the box).
@@ -120,7 +164,8 @@ rm -f /tmp/czm.err
 **Feishu（lark-cli；Composio 无飞书）**
 1. `setup.sh` installs `@larksuite/cli` to `~/.local` (`export PATH="$HOME/.local/bin:$PATH"`).
 2. After account switch: `lark-cli config init --new --brand feishu` then `lark-cli auth login` — **user scans QR**.
-3. Never copy `~/.lark-cli/`, `~/.local/share/lark-cli/`, or `/workspace/feishu-cli/survey/` into the repo. Group ids: `services/feishu-cli/chats.md`.
+3. **先试恢复的凭据**：(b++) 已把 `~/.lark-cli/config.json`、`~/.local/share/lark-cli/`（app secret + 用户 token）和 `/workspace/feishu-cli/` 解回来。跑 `lark-cli auth status`：有效就不用重新配置；app secret 有效但用户 token 过期 → 只需 `lark-cli auth login`（扫码一次）；都不行才走第 2 步全量重配。
+4. 明文 `~/.lark-cli/`、`~/.local/share/lark-cli/`、`/workspace/feishu-cli/{survey,chats,approvals}/` 永不进仓库（只以加密包存在）。Group ids: `services/feishu-cli/chats.md`.
 
 ## Step 1 — Push access (only for write-back / daily sync) / 推送权限（只有写回和每日同步需要）
 
@@ -227,7 +272,7 @@ Run and record each result:
 - Then `bash scripts/secret-scan.sh`, and commit the changed files to `main` through Composio GitHub on `user-composio-pg` (Step 1; no `gh` / `git push` since 2026-10-11), then sync the local copy (`git fetch` + verify `git diff origin/main` + `git reset --hard origin/main`). The daily sync does this automatically for all bots, but write back immediately after anything important.
 - Never commit: keys, tokens, the passphrase, `.env`, one-time codes, passwords, auth links, mcp-remote logs, `/home/box/agent-data/*secrets*.json`, databases. **The repo is public** — only `secrets/*.enc` may hold a secret, and only encrypted with `scripts/secret-crypt.py`.
 - New bot created later (by **小萌** / primary)? Add `bots/<slug>/` (profile.md, CONTEXT.md, routines.md) + `index.json` + `agent-map.json` + `bots/README.md` table.
-- **Finance restore / 账本**：明文 `/workspace/finance/` **永不**进 git（`.gitignore` 已忽略）。迁移备份是加密包 `secrets/finance.tgz.enc`。口令就绪后（Step 0 (b)），按 Step 0 (b+) 与 `secrets/README.md` 解密恢复到 `/workspace/finance/`。每日同步会重新打包并 `enc-bin` 覆盖该文件。`/workspace/assistant/daily/` 仍绝不进仓库。`财务管家` 的 plaintext `memory/` 不拷进 `raw/`；有内容时 sync 另加密为 `secrets/财务管家-memory.tgz.enc`。
+- **Finance restore / 账本**：明文 `/workspace/finance/` **永不**进 git（`.gitignore` 已忽略）。迁移备份是加密包 `secrets/finance.tgz.enc`。口令就绪后（Step 0 (b)），按 Step 0 (b+) 与 `secrets/README.md` 解密恢复到 `/workspace/finance/`。每日同步会重新打包并 `enc-bin` 覆盖该文件。`/workspace/assistant/daily/` 明文仍绝不进仓库，只以 `secrets/daily.tgz.enc` 加密备份（2026-10-12 起）；其他 box 密钥见 Step 0 (b++)。`财务管家` 的 plaintext `memory/` 不拷进 `raw/`；有内容时 sync 另加密为 `secrets/财务管家-memory.tgz.enc`。
 
 ## Step 10 — Report to the user / 最后汇报
 
@@ -239,6 +284,7 @@ Send one short Chinese message: what's done, what failed, what the user still ne
 
 - [ ] Step 0: repo cloned anonymously at `/workspace/grokbot-home`, git identity set
 - [ ] Step 0: passphrase received via secret-request; `/home/box/.composio_pg_key` decrypted from `.enc` (or `.box-current.enc`), mode 600 (values never shown); `/workspace/finance/` restored from `secrets/finance.tgz.enc` if needed
+- [ ] Step 0 (b++): `box-secrets` / `daily` / `feishu-cli` 加密包已解到原路径并 chmod；`gh auth status`、`lark-cli auth status`、`ssh eastforce` 已检查
 - [ ] Step 0/3: `composio-pg` + `composio-zhimeng` installed & connected; gmail-listener started; lark-cli auth’d (user QR); `GMAIL_WEBHOOK_KEY` in env only
 - [ ] Step 1: push access via Composio GitHub (composio-pg, ZMGID); no `gh`
 - [ ] Step 2: `setup.sh` finished (summary checked; failures listed)

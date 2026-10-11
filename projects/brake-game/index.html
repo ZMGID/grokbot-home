@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d12">
+<title>刹不住的境界 · 断界V八百极限制动模拟器</title>
+<meta name="description" content="后排萃浓缩，前排踩空气。纯属虚构恶搞小游戏。">
+<style>
+:root{
+  --font:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC","Source Han Sans SC","WenQuanYi Micro Hei",sans-serif;
+  --emoji:"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji";
+  --red:#d62828;--red-d:#7d0f17;--yel:#ffd23f;--ink:#0b0d12;--paper:#fffaf0;
+  --sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px);--sal:env(safe-area-inset-left,0px);--sar:env(safe-area-inset-right,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+html,body{margin:0;height:100%;background:var(--ink);overflow:hidden;font-family:var(--font);color:#fff}
+#c{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:block}
+#probe{position:fixed;visibility:hidden;pointer-events:none;padding:var(--sat) var(--sar) var(--sab) var(--sal)}
+.hidden{display:none!important}
+button{font-family:var(--font)}
+.kbd{display:inline-block;font:700 10px/1 var(--font);padding:3px 5px;border-radius:5px;background:#0009;color:#fff;border:1px solid #fff4;box-shadow:0 2px 0 #0006}
+body.touch .kbd{display:none!important}
+.emo{font-family:var(--emoji),var(--font)}
+
+/* 操作区 */
+#ui{position:fixed;inset:0;pointer-events:none;z-index:4}
+#tools,#pedal{pointer-events:auto}
+#tools{position:absolute;display:grid;gap:8px}
+.tool{position:relative;border:none;border-radius:16px;color:#fff;padding:6px 4px 9px;min-height:58px;cursor:pointer;touch-action:none;
+  background:linear-gradient(180deg,#535a69,#2e333d);box-shadow:0 5px 0 #15181e,inset 0 1px 0 #ffffff30,0 8px 14px #0006;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;transition:transform .08s,box-shadow .08s,filter .2s,opacity .2s}
+.tool::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:0 0 0 4px #fff9,0 8px 26px #ffb703aa;opacity:0}
+.tool.ready::after{animation:breathe .9s ease-in-out infinite alternate;will-change:opacity}
+.tool .ic{font-size:22px;line-height:1.1;font-family:var(--emoji),var(--font)}
+.tool .nm{font-weight:900;font-size:14px;letter-spacing:1px;text-shadow:0 1px 0 #0008}
+.tool .sb{font-size:10px;opacity:.75}
+.tool .kbd{position:absolute;top:5px;left:6px}
+.tool .bar{position:absolute;left:10px;right:10px;bottom:4px;height:4px;border-radius:2px;background:#0004;overflow:hidden}
+.tool .bar i{display:block;height:100%;width:100%;background:#fff;border-radius:2px;transform-origin:0 50%;transform:scaleX(var(--p,0))}
+.tool .tag{position:absolute;top:4px;right:6px;font-size:10px;font-weight:900;padding:1px 5px;border-radius:6px;background:#0008;color:#fff}
+.tool.locked{filter:grayscale(1) brightness(.75);opacity:.55}
+.tool.ready{background:linear-gradient(180deg,#ffe066,#f4a11c);color:#3a1d00;box-shadow:0 5px 0 #a25a00,inset 0 1px 0 #fff9,0 0 0 3px #fff5,0 8px 18px #f4a11c66}
+.tool.ready .nm{text-shadow:none}
+.tool.active{background:linear-gradient(180deg,#5bd4ff,#1f7fbf);box-shadow:0 2px 0 #0d4a73,inset 0 1px 0 #fff8;transform:translateY(3px)}
+.tool.used{opacity:.38;filter:grayscale(.8)}
+.tool.hit{transform:translateY(5px) scale(.97)!important;box-shadow:0 0 0 #000,inset 0 2px 6px #0007!important}
+.tool.pop{animation:pop .3s cubic-bezier(.3,1.8,.5,1)}
+@keyframes breathe{from{opacity:0}to{opacity:1}}
+@keyframes pop{0%{transform:scale(.88)}100%{transform:scale(1)}}
+#pedal{position:absolute;border:none;border-radius:22px;cursor:pointer;touch-action:none;color:#fff;overflow:hidden;padding:0;
+  background:linear-gradient(180deg,#4a4f5a,#1d2027);box-shadow:0 8px 0 #090a0d,inset 0 2px 0 #ffffff26,0 12px 22px #0008;transition:transform .07s,box-shadow .07s}
+#pedal .rib{position:absolute;inset:14px 16px;border-radius:12px;background:repeating-linear-gradient(180deg,#2a2e36 0 7px,#3b404b 7px 11px);box-shadow:inset 0 0 0 2px #0006;transition:transform .3s}
+#pedal .fill{position:absolute;left:0;right:0;bottom:0;height:100%;transform-origin:50% 100%;transform:scaleY(var(--f,0));background:linear-gradient(0deg,#ff2e2e,#ff8a3d);opacity:.55}
+#pedal .lb{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:5px}
+#pedal .big{font:900 26px/1 var(--font);letter-spacing:4px;text-shadow:0 2px 0 #000,0 0 10px #000}
+#pedal .sm{font-size:11px;opacity:.9;text-shadow:0 1px 2px #000}
+#pedal.down{transform:translateY(7px);box-shadow:0 1px 0 #090a0d,inset 0 3px 8px #000a}
+#pedal.warn .rib{box-shadow:inset 0 0 0 3px #ff4d4d,0 0 14px #ff4d4d}
+#pedal.broken{background:repeating-linear-gradient(135deg,#2b2b2b 0 12px,#1a1a1a 12px 24px);box-shadow:0 3px 0 #000;transform:translateY(5px) rotate(-2deg)}
+#pedal.broken .rib{opacity:.25;transform:rotate(14deg) translate(10px,18px)}
+#pedal.broken .big{color:#ff5a5a}
+#pedal.off{filter:grayscale(1);opacity:.6}
+body.m-portrait #tools{left:calc(var(--sal) + 10px);right:calc(var(--sar) + 20px + var(--pw));bottom:calc(var(--sab) + 14px);grid-template-columns:repeat(3,1fr)}
+body.m-portrait .tool{min-height:var(--th,62px);padding:4px 3px 8px}
+body.m-portrait .tool .ic{font-size:20px}
+body.m-portrait .tool[data-id=ft]{grid-column:span 2}
+body.m-portrait #pedal{right:calc(var(--sar) + 10px);bottom:calc(var(--sab) + 14px);width:var(--pw);height:var(--ph)}
+body.m-wide #tools{left:calc(var(--sal) + 16px);bottom:calc(var(--sab) + 18px);grid-template-columns:repeat(5,clamp(92px,8.4vw,160px));gap:10px}
+body.m-wide .tool{min-height:var(--ph)}
+body.m-wide .tool .ic{font-size:clamp(24px,2.2vw,36px)}
+body.m-wide .tool .nm{font-size:clamp(14px,1.1vw,19px)}
+body.m-wide .tool .sb{font-size:clamp(10px,.75vw,13px)}
+body.m-wide #pedal .big{font-size:clamp(26px,2vw,36px)}
+body.m-wide #pedal{right:calc(var(--sar) + 18px);bottom:calc(var(--sab) + 18px);width:var(--pw);height:var(--ph)}
+body.m-side #tools{left:calc(var(--sal) + 8px);bottom:calc(var(--sab) + 10px);grid-template-columns:repeat(2,74px);gap:6px}
+body.m-side .tool{min-height:50px;padding:4px 2px 8px;border-radius:13px}
+body.m-side .tool .ic{font-size:17px}
+body.m-side .tool .nm{font-size:12px}
+body.m-side .tool .sb{display:none}
+body.m-side .tool[data-id=ft]{grid-column:span 2}
+body.m-side #pedal{right:calc(var(--sar) + 10px);bottom:calc(var(--sab) + 12px);width:var(--pw);height:var(--ph)}
+
+/* 弹层通用 */
+.screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:10;
+  padding:calc(var(--sat) + 12px) calc(var(--sar) + 12px) calc(var(--sab) + 12px) calc(var(--sal) + 12px);
+  background:radial-gradient(ellipse at center,#0b0d12a6,#0b0d12ee);animation:fadeIn .25s ease-out}
+.screen>*{animation:rise .42s cubic-bezier(.2,1.4,.4,1)}
+@keyframes fadeIn{from{opacity:0}}
+@keyframes rise{from{opacity:0;transform:translateY(24px) scale(.94)}}
+.card{background:var(--paper);color:#1a1a1a;border-radius:20px;max-width:460px;width:100%;padding:20px 18px 14px;text-align:center;box-shadow:0 18px 50px #000c,0 0 0 4px #ffffff14;max-height:100%;overflow:auto}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin:8px 0;padding:14px 12px;border-radius:14px;border:none;font:900 18px/1.1 var(--font);letter-spacing:1px;cursor:pointer;
+  background:linear-gradient(180deg,#ef3b3b,#c1121f);color:#fff;box-shadow:0 5px 0 var(--red-d),0 10px 18px #c1121f44;transition:transform .08s,box-shadow .08s}
+.btn:active,.btn.hit{transform:translateY(4px);box-shadow:0 1px 0 var(--red-d)}
+.btn.alt{background:linear-gradient(180deg,#3a3f4a,#22262e);box-shadow:0 5px 0 #0c0d10}
+.btn.alt:active{box-shadow:0 1px 0 #0c0d10}
+.foot{font-size:11px;color:#8a8270;margin-top:10px;line-height:1.6}
+
+/* 标题 */
+.tcard{max-width:480px;background-color:var(--paper);background-image:radial-gradient(#e8dfc8 1px,transparent 1.2px);background-size:12px 12px}
+.presenter{font-size:11px;letter-spacing:4px;color:#8a8270;margin-bottom:12px}
+.logo{display:inline-block;position:relative;font:900 clamp(34px,10vw,56px)/1.05 var(--font);color:#fff;background:linear-gradient(180deg,#ef3b3b,#b5101b);padding:8px 18px 10px;border-radius:10px;transform:skew(-7deg) rotate(-2deg);
+  text-shadow:3px 3px 0 #5a0710;box-shadow:7px 7px 0 var(--yel),9px 9px 0 2px #111;letter-spacing:2px;margin:4px 10px 0}
+.logo b{font-weight:900;color:var(--yel)}
+.logo .crack{position:absolute;right:-16px;top:-16px;font:900 15px/1 var(--font);background:#111;color:var(--yel);padding:5px 8px;border-radius:8px;transform:rotate(12deg);text-shadow:none;letter-spacing:0;box-shadow:0 3px 0 #000}
+.sub{margin:18px 0 4px;font:900 15px/1.3 var(--font);letter-spacing:1px}
+.slogan{display:inline-block;margin:6px 0 10px;font:900 18px/1.2 var(--font);color:var(--red);border-top:2px solid #1a1a1a;border-bottom:2px solid #1a1a1a;padding:5px 10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:2px 0 10px}
+.chip{font-size:12px;font-weight:700;padding:4px 9px;border-radius:999px;background:#1a1a1a;color:#fff}
+.chip.r{background:var(--red)}
+.how{display:grid;gap:6px;text-align:left;margin:6px 0 4px}
+.how div{display:flex;gap:10px;align-items:center;background:#f1ead8;border-radius:12px;padding:8px 10px;font-size:13px;line-height:1.45}
+.how .e{font-size:22px;flex:none;width:28px;text-align:center;font-family:var(--emoji),var(--font)}
+#startBtn{font-size:21px;padding:16px;margin-top:12px;animation:nudge 1.4s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateY(-3px) scale(1.02)}}
+@media (max-height:540px) and (orientation:landscape){
+  .tcard{max-width:820px;display:grid;grid-template-columns:1.05fr 1fr;gap:4px 18px;align-items:center;padding:14px 16px 10px}
+  .tcard .lft{grid-row:span 2}
+  .logo{font-size:40px}
+  .how{margin:0}.how div{padding:5px 8px;font-size:12px}
+  .sub{margin-top:14px}
+  #startBtn{margin-top:6px;padding:12px}
+}
+/* 每台车开场 */
+#carCard{position:fixed;left:0;right:0;top:40%;z-index:6;display:flex;justify-content:center;pointer-events:none;padding:0 12px}
+#carCard .in{background:#0b0d12ee;border:2px solid #fff2;border-left:8px solid var(--yel);border-radius:14px;padding:12px 26px 12px 20px;box-shadow:0 14px 40px #000a;text-align:left;animation:slideCar 1.6s cubic-bezier(.2,.9,.3,1) both;max-width:100%}
+#carCard .n{font:900 34px/1 var(--font);color:var(--yel);letter-spacing:2px;text-shadow:0 3px 0 #000}
+#carCard .n small{font-size:18px;color:#fff8}
+#carCard .d{font-size:14px;margin-top:6px;color:#ddd}
+#carCard .mod{font-size:13px;margin-top:6px;font-weight:700}
+#carCard .mod:empty{display:none}
+@keyframes slideCar{0%{transform:translateX(120vw) skew(-10deg)}22%{transform:translateX(-10px) skew(0)}30%{transform:translateX(0)}82%{transform:translateX(0);opacity:1}100%{transform:translateX(-120vw) skew(10deg);opacity:0}}
+/* PR 会议 */
+.meet{max-width:470px;width:100%;background:#f7f8fa;color:#1d2433;border-radius:14px;overflow:hidden;box-shadow:0 18px 50px #000c;position:relative;max-height:100%;display:flex;flex-direction:column}
+.mh{display:flex;align-items:center;justify-content:space-between;background:#1d3557;color:#fff;padding:10px 14px;font-size:13px;font-weight:700;flex:none}
+.mh .conf{background:var(--red);padding:2px 8px;border-radius:4px;font-size:11px;letter-spacing:2px}
+.mb{padding:12px 14px;overflow:auto}
+.mrow{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:#6b7385;border-bottom:1px dashed #cfd5df;padding-bottom:7px;margin-bottom:9px;text-align:left}
+.mt{font:900 19px/1.3 var(--font);text-align:left;margin-bottom:8px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.kpi{background:#fff;border:1px solid #e1e5ec;border-radius:10px;padding:7px 4px;text-align:center}
+.kpi b{display:block;font:900 18px/1.1 var(--font)}
+.kpi span{font-size:10px;color:#6b7385}
+.kpi.dn b{color:#16a34a}
+.chart{grid-column:1/-1;background:#fff;border:1px solid #e1e5ec;border-radius:10px;padding:6px 8px 4px;text-align:left}
+.chart svg{display:block;width:100%;height:46px}
+.chart span{font-size:10px;color:#6b7385}
+@media (max-height:700px) and (orientation:portrait){.chart{display:none}}.kpi.bad b{color:var(--red)}
+.ask{font-size:12px;color:#6b7385;text-align:left;margin:2px 0 6px}
+.opt{display:flex;align-items:center;gap:10px;width:100%;text-align:left;margin:7px 0;padding:10px 12px;border-radius:12px;border:2px solid #d5dbe5;background:#fff;color:#1d2433;cursor:pointer;
+  box-shadow:0 4px 0 #c5ccd8;transition:transform .08s,box-shadow .08s,border-color .15s}
+.opt:hover{border-color:#1d3557}
+.opt:active,.opt.hit{transform:translateY(3px);box-shadow:0 1px 0 #c5ccd8}
+.opt .e{font-size:24px;flex:none;font-family:var(--emoji),var(--font)}
+.opt .tx{flex:1}
+.opt .tx b{display:block;font:900 16px/1.25 var(--font)}
+.opt .tx small{font-size:12px;color:#6b7385}
+.opt .kbd{background:#1d3557}
+.opt.chosen{border-color:var(--red);background:#fff1f1}
+.stamp{position:absolute;right:18px;top:60px;border:4px solid var(--red);color:var(--red);font:900 24px/1 var(--font);padding:8px 12px;border-radius:8px;transform:rotate(-14deg) scale(2.4);opacity:0;pointer-events:none;letter-spacing:3px;background:#fff9}
+.stamp.on{animation:stamp .35s cubic-bezier(.3,1.6,.5,1) forwards}
+@keyframes stamp{to{transform:rotate(-14deg) scale(1);opacity:.95}}
+@media (max-height:540px) and (orientation:landscape){
+  .meet{max-width:760px}
+  .mb{display:grid;grid-template-columns:1fr 1fr;gap:0 14px;align-items:start}
+  .mb .mrow,.mb .mt{grid-column:span 2}
+  .mb .kpis{grid-column:1;grid-row:3/6}
+  .mb .ask,.mb .opt{grid-column:2}
+  .mb .opt{margin:4px 0;padding:7px 10px}
+  .mb .foot{grid-column:span 2;margin-top:4px}
+}
+/* 下架播放器 */
+#takedown{position:fixed;inset:0;z-index:15;background:#000e;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;animation:fadeIn .2s;padding:calc(var(--sat) + 10px) 12px calc(var(--sab) + 10px)}
+.player{width:min(680px,92vw,calc((100vh - 90px) * 16 / 9));aspect-ratio:16/9;background:#111;border-radius:12px;position:relative;overflow:hidden;box-shadow:0 20px 50px #000;border:1px solid #2a2a2a;animation:rise .35s}
+.player .ttl{position:absolute;left:0;right:0;top:0;padding:10px 14px;font-size:13px;color:#ddd;background:linear-gradient(#000c,#0000);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player .mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#bbb;text-align:center;padding:0 16px}
+.player .spin{width:40px;height:40px;border:4px solid #333;border-top-color:#ddd;border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.player .err{width:56px;height:56px;border-radius:50%;border:4px solid #666;display:flex;align-items:center;justify-content:center;font:900 32px/1 var(--font);color:#777}
+.player .et{font:700 17px/1.3 var(--font);color:#e5e5e5}
+.player .es{font-size:12px;color:#888;line-height:1.6}
+.player .ctl{position:absolute;left:0;right:0;bottom:0;padding:8px 12px 10px;background:linear-gradient(#0000,#000d);display:flex;align-items:center;gap:12px;font-size:12px;color:#ccc}
+.player .prog{position:absolute;left:12px;right:12px;bottom:36px;height:4px;background:#ffffff30;border-radius:2px}
+.player .prog i{position:absolute;left:0;top:0;bottom:0;width:37%;background:#fb7299;border-radius:2px}
+.player .prog b{position:absolute;left:0;top:0;bottom:0;width:52%;background:#ffffff40;border-radius:2px}
+.player .prog u{position:absolute;left:37%;top:-4px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:#fff}
+.player .grow{flex:1}
+.tdnote{font-size:12px;color:#888}
+/* 结算 */
+.ecard{max-width:520px;padding:14px 14px 10px}
+.ehead{display:flex;align-items:baseline;justify-content:center;gap:8px}
+.ehead .lab{font-size:13px;color:#8a8270}
+.ehead .num{font:900 46px/1 var(--font);color:var(--red);font-variant-numeric:tabular-nums}
+.ehead .u{font:900 18px var(--font)}
+.etitle{display:inline-block;font:900 22px/1.2 var(--font);background:#1a1a1a;color:var(--yel);padding:6px 14px;border-radius:10px;margin:6px 0 8px;transform:scale(0);transition:transform .45s cubic-bezier(.3,1.8,.5,1)}
+.etitle.on{transform:scale(1) rotate(-2deg)}
+#endImg{display:block;margin:0 auto 8px;max-width:100%;max-height:min(46vh,560px);border-radius:12px;box-shadow:0 6px 20px #0005}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:0 8px}
+.acts .btn{margin:5px 0;font-size:16px}
+.acts .primary{grid-column:span 2;font-size:19px}
+@media (max-height:540px) and (orientation:landscape){
+  .ecard{max-width:820px;display:grid;grid-template-columns:auto 1fr;gap:0 16px;align-items:center}
+  #endImg{max-height:calc(100vh - 56px);grid-row:span 2;margin:0}
+  .ehead .num{font-size:40px}
+}
+@media (min-width:1500px) and (min-height:900px){.screen>*{zoom:1.3}#carCard .in{zoom:1.3}}
+#toast{position:fixed;left:50%;top:calc(var(--sat) + 70px);transform:translateX(-50%);background:#111e;color:#fff;padding:10px 16px;border-radius:999px;z-index:30;font-size:14px;font-weight:700;box-shadow:0 8px 20px #0008;white-space:nowrap}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="probe"></div>
+
+<div id="ui" class="hidden">
+  <div id="tools"></div>
+  <button id="pedal" aria-label="刹车"><div class="fill"></div><div class="rib"></div><div class="lb"><div class="big" id="pedBig">刹车</div><div class="sm" id="pedSm">按住</div></div></button>
+</div>
+
+<div id="carCard" class="hidden"><div class="in"><div class="n" id="ccN"></div><div class="d" id="ccD"></div><div class="mod" id="ccM"></div></div></div>
+
+<div id="title" class="screen">
+  <div class="card tcard">
+    <div class="lft">
+      <div class="presenter">不懂车帝 · 极限测试场 出品</div>
+      <div class="logo">刹不住的<b>境界</b><span class="crack">咯嚓!</span></div>
+      <div class="sub">断界 V八百 · 百公里极限制动模拟器</div>
+      <div class="slogan">后排萃浓缩，前排踩空气。</div>
+      <div class="chips"><span class="chip">售价 101.6 万</span><span class="chip">后排冰箱＋咖啡机</span><span class="chip">100 km/h</span><span class="chip r">标准 38 米</span></div>
+    </div>
+    <div class="how">
+      <div><span class="e">🦶</span><span><b>按住刹车</b>：右下角大踏板<span class="kbd" style="margin-left:4px">空格</span>。点刹慢踩能保住支架，一脚到底就「咯嚓」。</span></div>
+      <div><span class="e">🛠️</span><span><b>断了就地取材</b>：P挡、手刹、冰箱伞、咖啡反推、乘客脚刹<span class="kbd" style="margin-left:4px">1 – 5</span></span></div>
+      <div><span class="e">🚐</span><span><b>连测三台</b>：一台是断界，一台是断界，还有一台也是断界。</span></div>
+    </div>
+    <div>
+      <button class="btn" id="startBtn"><span class="emo">🚦</span> 开始测试 <span class="kbd">Enter</span></button>
+      <div class="foot">纯属虚构恶搞，如有雷同，请检查你的刹车<br>品牌、机构、股票均为虚构；弹幕为网友吐槽的二创改写</div>
+    </div>
+  </div>
+</div>
+
+<div id="pr" class="screen hidden">
+  <div class="meet">
+    <div class="mh"><span><span class="emo">🔒</span> 断界汽车 · 公关部紧急会议</span><span class="conf">绝密</span></div>
+    <div class="mb">
+      <div class="mrow"><span id="prMeta">会议纪要 · 第 1 次</span><span>出席：公关部、法务、一位很累的工程师</span></div>
+      <div class="mt" id="prTitle">议题：第1台刹车支架断了</div>
+      <div class="kpis">
+        <div class="kpi bad"><b id="kDist">0m</b><span>刹停距离</span></div>
+        <div class="kpi dn"><b id="kStock">0%</b><span>股价</span></div>
+        <div class="kpi bad"><b>6/10</b><span>热搜占位</span></div>
+        <div class="chart"><svg viewBox="0 0 300 60" preserveAspectRatio="none"><polyline points="0,14 30,12 60,15 90,13 120,16 150,14 170,22 185,40 200,44 230,50 260,52 300,56" fill="none" stroke="#16a34a" stroke-width="3" stroke-linejoin="round"/><line x1="0" y1="56" x2="300" y2="56" stroke="#e1e5ec" stroke-dasharray="4 4"/></svg><span>江湖汽车(虚构) 分时图 · 跌停线</span></div>
+      </div>
+      <div class="ask">请选择官方回应（定稿后立即发布）：</div>
+      <button class="opt" data-c="0"><span class="e">🧪</span><span class="tx"><b>「测试太极端了」</b><small>正常车主不会这样踩刹车</small></span><span class="kbd">1</span></button>
+      <button class="opt" data-c="1"><span class="e">🔩</span><span class="tx"><b>「免费升级为钢制支架」</b><small>下一台支架更结实（大概）</small></span><span class="kbd">2</span></button>
+      <button class="opt" data-c="2"><span class="e">🙅</span><span class="tx"><b>「建议车主不要踩刹车」</b><small>没有踏板，就不会踩断踏板</small></span><span class="kbd">3</span></button>
+      <div class="foot" style="color:#8b93a3">纯属虚构恶搞，如有雷同，请检查你的刹车</div>
+    </div>
+    <div class="stamp" id="prStamp">已定稿</div>
+  </div>
+</div>
+
+<div id="takedown" class="hidden">
+  <div class="player">
+    <div class="ttl">▶ 【不懂车帝】断界V八百 第2台 百公里急刹 完整版（9分钟）</div>
+    <div class="mid"><div class="spin" id="tdSpin"></div><div class="err hidden" id="tdIco">!</div><div class="et" id="tdText">正在缓冲……</div><div class="es" id="tdSub"></div></div>
+    <div class="prog"><b></b><i></i><u></u></div>
+    <div class="ctl"><span>▶</span><span>03:24 / 09:12</span><span class="grow"></span><span>弹幕 99+</span><span>1080P</span><span>⛶</span></div>
+  </div>
+  <div class="tdnote">（游戏内剧情，纯属虚构）</div>
+</div>
+
+<div id="end" class="screen hidden">
+  <div class="card ecard">
+    <img id="endImg" alt="刹车鉴定报告">
+    <div>
+      <div class="ehead"><span class="lab">最佳刹停</span><span class="num" id="cntBest">0.0</span><span class="u">米</span></div>
+      <div class="etitle" id="eTitle">「」</div>
+      <div class="acts">
+        <button class="btn primary" id="saveBtn"><span class="emo">💾</span> 保存图片</button>
+        <button class="btn alt" id="copyBtn"><span class="emo">📋</span> 复制分享文案</button>
+        <button class="btn alt" id="againBtn"><span class="emo">🔁</span> 再来一次 <span class="kbd">Enter</span></button>
+      </div>
+      <div class="foot" style="margin-top:4px">纯属虚构恶搞，如有雷同，请检查你的刹车</div>
+    </div>
+  </div>
+</div>
+<div id="toast" class="hidden"></div>
+<script>
+(()=>{
+'use strict';
+const FONT='"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC","Source Han Sans SC","WenQuanYi Micro Hei",sans-serif';
+const EMOJI='"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji",sans-serif';
+const cv=document.getElementById('c');let ctx=cv.getContext('2d',{alpha:false});
+const QS=new URLSearchParams(location.search);
+const $=id=>document.getElementById(id);
+const rand=(a,b)=>a+Math.random()*(b-a);
+const pick=a=>a[Math.random()*a.length|0];
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const easeOut=t=>1-Math.pow(1-clamp(t,0,1),3);
+const easeBack=t=>{t=clamp(t,0,1);const c=1.9;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2);};
+let W=0,H=0,DPR=1;
+const PIX_BUDGET=4.4e6;                 // 设备像素预算（≈1440×900@1.75x）
+const Q={k:1,floor:1,win:[],t:0};       // 自适应画质
+const SPR=new Map();const BG={key:'',c:null};let needDraw=true;
+const varCache={};
+function setVar(k,v){if(varCache[k]===v)return;varCache[k]=v;document.documentElement.style.setProperty(k,v);}
+const L={};
+
+// ======================= 布局：所有区域按安全区分车道，互不重叠 =======================
+function layout(){
+  W=innerWidth;H=innerHeight;
+  // 渲染分辨率：最高 2x，且总像素不超过预算（Retina 大屏会被压到 ~1.5-1.8x）；慢机自动再降
+  const dpr=window.devicePixelRatio||1;
+  let rs=Math.min(dpr,2);const budget=PIX_BUDGET*Q.k;
+  if(W*H*rs*rs>budget)rs=Math.sqrt(budget/(W*H));
+  rs=Math.max(Math.min(1,dpr)*Q.floor,Math.round(rs*20)/20);
+  DPR=rs;
+  const tw=Math.round(W*DPR),th=Math.round(H*DPR);
+  if(cv.width!==tw||cv.height!==th){cv.width=tw;cv.height=th;SPR.clear();BG.key='';needDraw=true;}
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  const cs=getComputedStyle($('probe'));
+  const sa={t:parseFloat(cs.paddingTop)||0,r:parseFloat(cs.paddingRight)||0,b:parseFloat(cs.paddingBottom)||0,l:parseFloat(cs.paddingLeft)||0};
+  L.sa=sa;
+  const portrait=H>=W, side=!portrait&&H<540;
+  L.mode=portrait?'portrait':side?'side':'wide';
+  const bc=document.body.classList;
+  if(!bc.contains('m-'+L.mode)){bc.remove('m-portrait','m-side','m-wide');bc.add('m-'+L.mode);}
+  L.left=sa.l+10;L.right=W-sa.r-10;
+  L.tickH=28+sa.t;
+  L.hudY=L.tickH+8;
+  L.hudH=side?58:portrait?76:(H>900?(W>1500?108:96):84);
+  L.dmFont=W<600?14:W>1500?19:16;
+  L.dmLanes=side?2:portrait?3:(H>900?4:3);
+  L.laneH=L.dmFont+10;
+  L.dmTop=L.hudY+L.hudH+8;
+  L.annFont=Math.round(clamp(Math.min(W*0.045,H*0.05),17,32));
+  L.annLanes=side?1:2;
+  L.annLaneH=Math.round(L.annFont*1.55+8);
+  L.annTop=L.dmTop+L.dmLanes*L.laneH+6;
+  L.annBottom=L.annTop+L.annLanes*L.annLaneH;
+  let pw,ph,ctrlTop;
+  if(L.mode==='portrait'){pw=Math.round(clamp(W*0.32,112,170));ph=Math.round(clamp(H*0.19,152,190));ctrlTop=H-sa.b-14-ph;}
+  else if(L.mode==='wide'){pw=Math.round(clamp(W*0.1,128,190));ph=Math.round(clamp(H*0.13,88,140));ctrlTop=H-sa.b-18-ph;}
+  else{pw=Math.round(clamp(W*0.14,104,140));ph=Math.round(clamp(H*0.32,108,150));ctrlTop=H-sa.b;}
+  setVar('--pw',pw+'px');setVar('--ph',ph+'px');setVar('--th',Math.floor((ph-8)/2)+'px');
+  // 以真实按钮位置为准（防止按钮比预估高）
+  if(!$('ui').classList.contains('hidden')&&L.mode!=='side'){const tr=$('tools').getBoundingClientRect();if(tr.height>0)ctrlTop=Math.min(ctrlTop,tr.top-6);}
+  L.ctrlTop=ctrlTop;
+  const base=L.mode==='side'?H-sa.b:ctrlTop;
+  const roadBelow=portrait?Math.max(70,(base-L.annBottom)*0.34):Math.max(L.mode==='side'?40:46,(base-L.annBottom)*0.2);
+  L.gy=Math.round(base-roadBelow);
+  L.ppm=clamp(Math.min(W/(portrait?16:L.mode==='side'?30:34),(L.gy-L.annBottom-10)/4.2),12,46);
+  L.camX=L.mode==='side'?W*0.58:portrait?W*0.66:W*0.52;
+}
+addEventListener('resize',()=>layout());addEventListener('orientationchange',()=>setTimeout(layout,120));
+layout();
+
+// ======================= 声音（WebAudio 合成） =======================
+let AC=null,master=null,noiseBuf=null,engine=null,grind=null;
+function audio(){
+  if(AC){if(AC.state==='suspended')AC.resume();return;}
+  try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){return;}
+  master=AC.createGain();master.gain.value=0.6;master.connect(AC.destination);
+  noiseBuf=AC.createBuffer(1,AC.sampleRate*1.5,AC.sampleRate);
+  const d=noiseBuf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+  const o=AC.createOscillator();o.type='sawtooth';o.frequency.value=50;
+  const f=AC.createBiquadFilter();f.type='lowpass';f.frequency.value=380;
+  const g=AC.createGain();g.gain.value=0;o.connect(f);f.connect(g);g.connect(master);o.start();
+  engine={o,g};
+  const n=AC.createBufferSource();n.buffer=noiseBuf;n.loop=true;
+  const bf=AC.createBiquadFilter();bf.type='bandpass';bf.frequency.value=900;bf.Q.value=1.5;
+  const gg=AC.createGain();gg.gain.value=0;n.connect(bf);bf.connect(gg);gg.connect(master);n.start();
+  grind={g:gg};
+}
+function noise(dur,type,freq,vol,q){
+  if(!AC)return;const t=AC.currentTime;
+  const s=AC.createBufferSource();s.buffer=noiseBuf;
+  const f=AC.createBiquadFilter();f.type=type;f.frequency.value=freq;if(q)f.Q.value=q;
+  const g=AC.createGain();g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+  s.connect(f);f.connect(g);g.connect(master);s.start(t);s.stop(t+dur+0.05);return f;
+}
+function tone(freq,dur,type='sine',vol=0.2,toFreq=null,delay=0){
+  if(!AC)return;const t=AC.currentTime+delay;
+  const o=AC.createOscillator();o.type=type;o.frequency.setValueAtTime(freq,t);
+  if(toFreq)o.frequency.exponentialRampToValueAtTime(toFreq,t+dur);
+  const g=AC.createGain();g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+  o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+0.05);
+}
+const SFX={
+  crack(){noise(0.08,'highpass',2500,1.0);noise(0.35,'bandpass',1400,0.8,3);tone(1800,0.05,'square',0.3);tone(900,0.06,'square',0.25,null,0.04);tone(140,0.4,'sine',0.7,40);},
+  creak(){tone(rand(160,220),0.18,'sawtooth',0.06,rand(120,150));},
+  crash(){noise(1.2,'lowpass',500,1.0);tone(70,0.8,'sine',0.8,25);noise(0.3,'highpass',3000,0.4);},
+  whoosh(){const f=noise(0.7,'bandpass',300,0.6,0.8);if(f)f.frequency.exponentialRampToValueAtTime(2500,AC.currentTime+0.6);},
+  hiss(){noise(2.2,'highpass',2800,0.35);tone(600,0.15,'square',0.08);},
+  stomp(){tone(150,0.15,'sine',0.5,45);noise(0.08,'lowpass',800,0.3);},
+  clunk(){tone(220,0.1,'square',0.25,90);noise(0.12,'lowpass',1200,0.4);},
+  ding(){tone(880,0.15,'triangle',0.2);tone(1320,0.2,'triangle',0.15,null,0.08);},
+  tick(){tone(1400,0.03,'square',0.05);},
+  stamp(){tone(90,0.2,'sine',0.6,40);noise(0.1,'lowpass',900,0.5);},
+  whooshIn(){const f=noise(0.5,'bandpass',600,0.35,0.7);if(f)f.frequency.exponentialRampToValueAtTime(200,AC.currentTime+0.45);},
+  sad(){[392,370,349,294].forEach((f,i)=>tone(f,i==3?0.8:0.3,'triangle',0.18,i==3?260:null,i*0.3));},
+  fanfare(){[523,659,784,1047].forEach((f,i)=>tone(f,0.25,'square',0.08,null,i*0.12));}
+};
+
+// ======================= 弹幕（改写自 X 网友吐槽） =======================
+const DANMAKU=[
+ '我这辈子只听过三台车踩断刹车：一台断界，一台断界，还有一台也是断界',
+ '后排还在萃浓缩，前排踏板已经断在手里当纪念品了',
+ '等等，塑料件？刹车？一百万的车？？',
+ '面子做在看得见的地方，成本省在看不见的地方',
+ '下次买车先问一句：刹车踏板是什么做的？',
+ '别在车里聊测评！会自动收回刹车功能！',
+ '测试场断的是踏板，股市断的是股价，一个都刹不住',
+ '这下真领先了，领先到刹不住',
+ '阁下是什么界？在下刹不住的境界',
+ '建议起诉测试员：恶意踩踏刹车踏板',
+ '测试员练了一年腿专门来踩的吧',
+ '你不怕刹车断吗？怕，但更怕刹不住',
+ '断得像三胞胎一样整齐',
+ '踏板一脚能踩断，还能顺便当破窗器',
+ '这车是用来开的还是用来摆的？',
+ '这视频什么时候被下架？且看且珍惜',
+ '冰箱彩电大沙发，安全成本挪去内饰了',
+ '1612牛就断？这就是普通人急刹的力气啊',
+ '官方省流：免费升级，依旧遥遥领先',
+ '祝车主逢凶化吉、洪福齐天',
+ 'P挡：没想到吧，我才是主刹车',
+ '咖啡机：我也能出力！',
+ '把命交给一根塑料筋',
+ '前方高能 咯嚓！',
+ '笑不活了 但是不敢坐',
+ '百年汽车工业史的先河',
+ '三台车三个断口，位置一模一样，这就叫一致性'
+];
+let danmaku=[];
+// 密度上限：每条车道最多 2 条；新弹幕排在车道尾部，不叠字
+function spawnDanmaku(text,color){
+  if(danmaku.length>=L.dmLanes*2)return false;
+  const t=text||pick(DANMAKU);
+  ctx.font=`700 ${L.dmFont}px ${FONT}`;const w=ctx.measureText(t).width;
+  const tails=new Array(L.dmLanes).fill(-1e9);danmaku.forEach(d=>{if(d.lane<L.dmLanes)tails[d.lane]=Math.max(tails[d.lane],d.x+d.w);});
+  let lane=0;for(let i=1;i<L.dmLanes;i++)if(tails[i]<tails[lane])lane=i;
+  if(tails[lane]>W*1.5)return false;
+  danmaku.push({t,w,lane,x:Math.max(W+20,tails[lane]+56),sp:W>800?125:95,c:color||pick(['#fff','#fff','#fff','#ffe66d','#9be7ff','#ffb3c1'])});
+  return true;
+}
+
+// ======================= 状态 =======================
+const BENCH=38, LINE=0, WALL=172, CAR_L=5.3, V0=100/3.6;
+const TOOLS=[
+ {id:'p',k:'1',ic:'🅿️',name:'P挡',sub:'咯噔咯噔'},
+ {id:'hb',k:'2',ic:'✋',name:'手刹',sub:'它也是塑料'},
+ {id:'fr',k:'3',ic:'🪂',name:'冰箱伞',sub:'后排冰箱'},
+ {id:'cf',k:'4',ic:'☕',name:'咖啡反推',sub:'一杯美式'},
+ {id:'ft',k:'5',ic:'🦶',name:'乘客脚刹',sub:'狂按！'}
+];
+let G={phase:'title',round:0,results:[],stockPct:0,mods:{},shake:0,t:0,flash:0,hold:0};
+let R=null,particles=[],banners=[],floats=[],resultPop=null;
+const STOCK0=27.47;
+function blankRound(limit){
+  return {pos:-104,v:V0,force:0,limit,limit0:limit,snapped:false,pedalOff:false,
+    tools:{p:{u:0,a:0,t:0},hb:{u:0,a:0,t:0},fr:{u:0,a:0,t:0},cf:{u:0,a:0,t:0},ft:{u:0,a:0,t:0}},
+    foot:0,startPos:null,crashed:false,peak:0,t:0,stopped:false,stopT:0,decel:0,wheel:0,cues:{},usedList:[],creakT:0,snapForce:0,pitch:0};
+}
+function newRound(){
+  const r=G.round;
+  const base=[[1250,1750],[1150,1650],[1050,1612]][r];
+  let limit=rand(base[0],base[1]);
+  const m=G.mods;
+  if(m.steel)limit+=450;
+  R=blankRound(limit);R.pedalOff=!!m.noBrake;
+  particles=[];floats=[];banners=[];resultPop=null;
+  const names=[['第1台','全新出厂 · 里程 3 公里'],['第2台','再买一台 · 里程 5 公里'],['第3台','买来验证的 · 里程 3 公里']];
+  let mod='',mc='#fff';
+  if(m.steel){mod='🔩 已免费升级「钢制」支架（钢色喷漆）';mc='#9be7ff';}
+  if(m.noBrake){mod='🙅 刹车功能已远程收回，请文明驾驶';mc='#ffb3c1';}
+  if(m.extreme){mod='🧪 本场已调整为「不极端」模式（仍是100km/h）';mc='#ffe66d';}
+  carCard(names[r][0],names[r][1],mod,mc);SFX.whooshIn();
+  G.hold=1.35;
+  buildTools();updatePedal(true);
+}
+function carCard(n,d,mod,mc){
+  const el=$('carCard');el.classList.add('hidden');void el.offsetWidth;
+  $('ccN').innerHTML=`${n} <small>/ 3</small>`;$('ccD').textContent=d;$('ccM').textContent=mod;$('ccM').style.color=mc;
+  el.classList.remove('hidden');
+  clearTimeout(carCard._t);carCard._t=setTimeout(()=>el.classList.add('hidden'),1650);
+}
+function banner(text,color,dur,big){
+  while(banners.length>=L.annLanes)banners.shift();
+  banners.push({text,color:color||'#fff',t:0,dur:dur||1.8,big:!!big});
+}
+function floatText(text,color,size){
+  const big=(size||40)>=60;
+  if(big)floats=floats.filter(f=>!f.big);
+  else{const smalls=floats.filter(f=>!f.big);if(smalls.length>=2)floats.splice(floats.indexOf(smalls[0]),1);}
+  floats.push({text,color,size:size||40,t:0,big});
+}
+
+// ======================= 按钮 UI =======================
+let toolCache={};
+function buildTools(){
+  const box=$('tools');box.innerHTML='';
+  TOOLS.forEach(tl=>{
+    const b=document.createElement('button');b.className='tool';b.dataset.id=tl.id;
+    b.innerHTML=`<span class="kbd">${tl.k}${tl.id==='ft'?' / F':''}</span><span class="tag"></span><span class="ic">${tl.ic}</span><span class="nm">${tl.name}</span><span class="sb">${tl.sub}</span><span class="bar"><i></i></span>`;
+    b.addEventListener('pointerdown',e=>{e.preventDefault();markTouch(e);audio();useTool(tl.id);hitFx(b);});
+    b._tag=b.querySelector('.tag');box.appendChild(b);
+  });
+  toolEls=[...box.querySelectorAll('.tool')];toolCache={};refreshTools();
+}
+function toolsUnlocked(){return R&&(R.snapped||R.pedalOff);}
+let toolEls=[];
+function refreshTools(){
+  if(!R)return;
+  toolEls.forEach(b=>{
+    const id=b.dataset.id,st=R.tools[id];
+    let state='locked',tag='🔒',p=0;
+    if(toolsUnlocked()){
+      if(R.stopped){state=st.u?'used':'locked';tag=st.u?'已用':'';}
+      else if(id==='ft'){state=R.foot>0.3?'active':'ready';tag=st.u?`×${st.u}`:'';p=R.foot/6;}
+      else if(st.a){state='active';tag='生效中';p=id==='hb'?1-st.t/2.4:id==='cf'?1-st.t/2.6:1;}
+      else if(st.u){state='used';tag='已用';}
+      else{state='ready';tag='';}
+    }
+    const key=state+'|'+tag+'|'+Math.round(p*20);
+    if(toolCache[id]===key)return;toolCache[id]=key;
+    b.classList.toggle('locked',state==='locked');b.classList.toggle('ready',state==='ready');
+    b.classList.toggle('active',state==='active');b.classList.toggle('used',state==='used');
+    const tg=b._tag;if(tg.textContent!==tag)tg.textContent=tag;tg.style.display=tag?'':'none';
+    b.style.setProperty('--p',(Math.round(clamp(p,0,1)*20)/20)+'');
+  });
+}
+function hitFx(el){if(!el)return;el.classList.remove('pop');el.classList.add('hit');setTimeout(()=>{el.classList.remove('hit');el.classList.add('pop');setTimeout(()=>el.classList.remove('pop'),320);},90);}
+let pedalKey='';
+function updatePedal(force){
+  if(!R)return;
+  const p=$('pedal');
+  let cls='',big='刹车',sm='按住 <span class="kbd">空格</span>';
+  if(R.pedalOff){cls='off broken';big='已收回';sm='请勿踩刹车';}
+  else if(R.snapped){cls='broken';big='咯嚓';sm='踏板已离家出走';}
+  else{if(braking)cls='down';if(R.force/R.limit0>0.72)cls+=' warn';}
+  const key=cls+big;
+  if(force||key!==pedalKey){pedalKey=key;p.className=cls;$('pedBig').textContent=big;$('pedSm').innerHTML=sm;}
+  const fv=(R.pedalOff||R.snapped?0:Math.round(Math.min(R.force/2000,1)*50)/50)+'';if(p._f!==fv){p._f=fv;p.style.setProperty('--f',fv);}
+}
+
+// ======================= 输入 =======================
+let braking=false;
+function markTouch(e){if(e&&e.pointerType==='touch')document.body.classList.add('touch');}
+if(matchMedia('(hover:none) and (pointer:coarse)').matches)document.body.classList.add('touch');
+function setBrake(on){
+  if(braking===on)return;braking=on;
+  if(G.phase==='drive'&&on&&R&&G.hold<=0){
+    if(R.pedalOff){floatText('刹车已收回','#ffb3c1',26);SFX.clunk();}
+    else if(R.snapped){floatText('踩空了…','#ccc',26);}
+  }
+  updatePedal();
+}
+addEventListener('keydown',e=>{
+  audio();
+  if(e.code==='Space'||e.code==='ArrowDown'||e.code==='KeyS'){e.preventDefault();if(!e.repeat)setBrake(true);return;}
+  if(e.code==='Enter'||e.code==='NumpadEnter'){if(G.phase==='title'||G.phase==='end'){e.preventDefault();startGame();}return;}
+  if(G.phase==='pr'){const i=['Digit1','Digit2','Digit3','Numpad1','Numpad2','Numpad3'].indexOf(e.code);if(i>=0)choosePR(i%3);return;}
+  if(G.phase==='drive'){
+    const map={Digit1:'p',Digit2:'hb',Digit3:'fr',Digit4:'cf',Digit5:'ft',KeyF:'ft',Numpad1:'p',Numpad2:'hb',Numpad3:'fr',Numpad4:'cf',Numpad5:'ft'};
+    const id=map[e.code];if(id&&!e.repeat){useTool(id);hitFx(document.querySelector(`.tool[data-id=${id}]`));}
+  }
+});
+addEventListener('keyup',e=>{if(e.code==='Space'||e.code==='ArrowDown'||e.code==='KeyS')setBrake(false);});
+addEventListener('blur',()=>setBrake(false));
+const pedal=$('pedal');
+pedal.addEventListener('pointerdown',e=>{e.preventDefault();markTouch(e);audio();try{pedal.setPointerCapture(e.pointerId);}catch(_){}setBrake(true);});
+['pointerup','pointercancel','lostpointercapture'].forEach(ev=>pedal.addEventListener(ev,()=>setBrake(false)));
+pedal.addEventListener('contextmenu',e=>e.preventDefault());
+cv.addEventListener('pointerdown',e=>{markTouch(e);audio();});
+$('startBtn').onclick=()=>{audio();startGame();};
+$('againBtn').onclick=()=>{audio();startGame();};
+document.querySelectorAll('#pr .opt').forEach(b=>b.addEventListener('click',()=>choosePR(+b.dataset.c)));
+document.querySelectorAll('.btn,.opt').forEach(b=>b.addEventListener('pointerdown',e=>markTouch(e)));
+
+// ======================= 流程 =======================
+function startGame(){
+  G={phase:'drive',round:0,results:[],stockPct:0,mods:{},shake:0,t:G.t,flash:0,hold:0};
+  danmaku=[];banners=[];
+  ['title','end','pr'].forEach(id=>$(id).classList.add('hidden'));
+  $('ui').classList.remove('hidden');layout();
+  SFX.ding();newRound();
+  setTimeout(()=>spawnDanmaku(),900);
+}
+function stock(delta,why){
+  const before=G.stockPct;G.stockPct=Math.max(-99,G.stockPct+delta);
+  if(delta<0&&before>-10&&G.stockPct<=-10){setTimeout(()=>{floatText('跌停！','#22c55e',90);SFX.sad();G.shake=Math.max(G.shake,8);},600);}
+  if(why)G.tickNote={text:`${delta>0?'▲ +':'▼ '}${delta.toFixed(1)}% · ${why}`,up:delta>0,t:0};
+}
+function useTool(id){
+  if(G.phase!=='drive'||!R||R.stopped||G.hold>0)return;
+  if(!toolsUnlocked()){floatText('刹车还没断，先踩刹车！','#ffe66d',22);SFX.clunk();return;}
+  const st=R.tools[id];
+  if(R.startPos===null)R.startPos=R.pos;
+  if(id==='ft'){
+    R.foot=Math.min(R.foot+1.3,6);st.u++;SFX.stomp();
+    if(st.u===1){banner('乘客们：把脚伸出去！','#ffe66d',1.5);R.usedList.push('ft');spawnDanmaku('老头乐同款脚刹','#ffe66d');}
+    for(let i=0;i<4;i++)particles.push({x:R.pos-rand(1.5,4),y:0.1,vx:rand(-6,-2),vy:rand(1,3),life:0.6,max:0.6,c:'#c9a46b',s:rand(3,7)});
+    refreshTools();return;
+  }
+  if(st.u)return;
+  st.u=1;st.a=1;st.t=0;R.usedList.push(id);
+  if(id==='p'){banner('挂入 P 挡！咯噔咯噔咯噔','#ffe66d',1.6);SFX.clunk();spawnDanmaku('P挡：没想到吧，我才是主刹车');}
+  if(id==='hb'){banner('拉起手刹！','#ffe66d',1.3);SFX.clunk();}
+  if(id==='fr'){banner('打开后排冰箱 → 展开降落伞！','#9be7ff',1.6);SFX.whoosh();spawnDanmaku('冰箱：我这辈子值了','#9be7ff');}
+  if(id==='cf'){banner('咖啡机反推：一杯美式，全力输出！','#f0c48a',1.6);SFX.hiss();spawnDanmaku('咖啡机：我也能出力！','#f0c48a');}
+  refreshTools();
+}
+function snap(){
+  R.snapped=true;R.snapForce=R.force;R.force=0;
+  G.shake=Math.max(G.shake,22);G.flash=0.3;
+  SFX.crack();
+  floatText('咯嚓！','#ffd23f',120);
+  banner(`踏板支架断裂（${Math.round(R.snapForce)} N）→ 用 1-5 应急！`,'#ff6b6b',2.6,true);
+  stock(-2.6,'热搜+1');
+  setTimeout(()=>spawnDanmaku(),400);setTimeout(()=>spawnDanmaku(),1100);
+  for(let i=0;i<26;i++)particles.push({x:R.pos-1.2,y:0.6,vx:rand(-4,8),vy:rand(1,7),life:1.2,max:1.2,c:pick(['#222','#444','#666','#111']),s:rand(2,5)});
+  updatePedal(true);refreshTools();
+}
+function endRound(){
+  R.stopped=true;R.stopT=0;braking=false;updatePedal(true);refreshTools();
+  const dist=R.startPos===null?Infinity:(R.pos-R.startPos);
+  const res={dist:R.crashed?Math.max(dist,WALL-(R.startPos??0)):dist,crashed:R.crashed,snapped:R.snapped,tools:[...R.usedList],peak:R.peak,feet:R.tools.ft.u};
+  if(!isFinite(res.dist))res.dist=WALL;
+  G.results.push(res);
+  if(engine)engine.g.gain.setTargetAtTime(0,AC.currentTime,0.2);
+  if(grind)grind.g.gain.setTargetAtTime(0,AC.currentTime,0.1);
+  const ratio=res.dist/BENCH;
+  let verdict,vc;
+  if(R.crashed){verdict='撞穿「免费升级」墙';vc='#ff6b6b';stock(-4,'撞墙');}
+  else if(res.dist<=BENCH+2){verdict=R.snapped?'达到出厂标准？？':'支架完好，达标！';vc='#4ade80';SFX.fanfare();stock(+1.5,'奇迹');}
+  else if(!R.snapped&&res.dist<=60){verdict='支架保住了！温柔的脚';vc='#4ade80';SFX.fanfare();stock(+0.8,'稳住');}
+  else if(ratio>3){verdict='欢迎加入 140 米俱乐部';vc='#ff6b6b';SFX.sad();stock(-1.5,'140米俱乐部');}
+  else{verdict=R.snapped?'踏板没了，但人停了':'停是停了，有点远';vc='#ffe66d';SFX.ding();}
+  resultPop={dist:res.dist,ratio,verdict,vc,t:0,crashed:R.crashed};
+  banners=[];
+  G.phase='after';
+  setTimeout(()=>{
+    if(G.round>=2){finish();return;}
+    if(G.round===1)takedownGag(()=>openPR());else openPR();
+  },2900);
+}
+let prBusy=false;
+function openPR(){
+  G.phase='pr';prBusy=false;
+  const r=G.results[G.round];
+  $('prMeta').textContent=`会议纪要 · 第 ${G.round+1} 次`;
+  $('prTitle').textContent=`议题：第${G.round+1}台${r.crashed?'撞墙了':r.snapped?'刹车支架断了':'刹车……居然没断？'}`;
+  $('kDist').textContent=r.dist.toFixed(1)+'m';
+  $('kStock').textContent=G.stockPct.toFixed(2)+'%';
+  $('prStamp').classList.remove('on');
+  document.querySelectorAll('#pr .opt').forEach(o=>o.classList.remove('chosen'));
+  $('ui').classList.add('hidden');
+  $('pr').classList.remove('hidden');
+}
+function choosePR(c){
+  if(G.phase!=='pr'||prBusy)return;prBusy=true;
+  const opt=document.querySelector(`#pr .opt[data-c="${c}"]`);opt.classList.add('chosen');hitFx(opt);
+  const st=$('prStamp');st.textContent=['已发布','已定稿','已发布'][c];st.classList.remove('on');void st.offsetWidth;st.classList.add('on');
+  setTimeout(()=>SFX.stamp(),200);
+  setTimeout(()=>{
+    $('pr').classList.add('hidden');$('ui').classList.remove('hidden');layout();
+    G.mods={};
+    if(c===0){G.mods.extreme=true;stock(-3,'网友：踩刹车也算极端？');setTimeout(()=>{spawnDanmaku('极端？我踩个刹车也叫极端？','#ffe66d');spawnDanmaku('建议起诉测试员：恶意踩踏刹车踏板');},1500);}
+    if(c===1){G.mods.steel=true;stock(+1.2,'免费升级');setTimeout(()=>spawnDanmaku('升级完先别急着踩','#9be7ff'),1500);}
+    if(c===2){G.mods.noBrake=true;stock(-6,'史诗级公关');setTimeout(()=>{spawnDanmaku('没有踏板就不会踩断踏板，逻辑闭环','#ffb3c1');spawnDanmaku('别在车里聊测评！会自动收回刹车功能！');},1500);}
+    G.round++;G.phase='drive';newRound();
+  },750);
+}
+function takedownGag(cb){
+  G.phase='gag';$('ui').classList.add('hidden');
+  const td=$('takedown');td.classList.remove('hidden');
+  $('tdSpin').classList.remove('hidden');$('tdIco').classList.add('hidden');
+  $('tdText').textContent='正在缓冲……';$('tdSub').textContent='';
+  setTimeout(()=>{
+    $('tdSpin').classList.add('hidden');$('tdIco').classList.remove('hidden');SFX.clunk();
+    $('tdText').textContent='本视频已被下架';
+    $('tdSub').innerHTML='错误码：1612N · 原因：支架不想说话<br>该内容暂时无法播放';
+  },1100);
+  setTimeout(()=>{$('tdText').textContent='……但第3台已经买好了。继续测。';$('tdSub').textContent='';},2800);
+  setTimeout(()=>{td.classList.add('hidden');cb();},3800);
+}
+
+// ======================= 结算 =======================
+const TOOLNAME={p:'P挡',hb:'手刹',fr:'冰箱伞',cf:'咖啡反推',ft:'乘客脚刹'};
+function rankOf(res){
+  const best=Math.min(...res.map(r=>r.dist)),avg=res.reduce((a,r)=>a+r.dist,0)/res.length;
+  const cnt={};res.forEach(r=>r.tools.forEach(t=>cnt[t]=(cnt[t]||0)+1));
+  let fav=null,fc=0;for(const k in cnt)if(cnt[k]>fc){fc=cnt[k];fav=k;}
+  const crashes=res.filter(r=>r.crashed).length, intact=res.filter(r=>!r.snapped&&!r.crashed&&r.dist<=60).length;
+  let t,p;
+  if(intact>=2){t='羽毛脚·支架守护神';p='全程没敢使劲踩，支架感动得流下了塑料的眼泪。';}
+  else if(crashes>=2){t='免费升级破壁人';p='刹车没刹住，墙倒是先刹住了。';}
+  else if(avg>=115){t='140米俱乐部 终身VIP';p='标准38米，你刹出了一个足球场。';}
+  else if(fav==='ft'){t='人肉刹车大师';p='四位乘客，八只脚，一辆百万豪车，靠鞋底刹停。';}
+  else if(fav==='p'){t='P挡战神';p='刹车只是摆设，P挡才是信仰。';}
+  else if(fav==='fr'){t='冰箱伞兵';p='冰箱里的可乐全飞了，车停了。';}
+  else if(fav==='cf'){t='咖啡反推工程师';p='一杯美式的推力，是你对豪华的最后理解。';}
+  else if(fav==='hb'){t='手刹也断了大师';p='手刹表示：我和踏板是同一个供应商。';}
+  else if(best<=BENCH+3){t='懂车也懂刹车';p='你刹住了，但没人相信你开的是断界。';}
+  else{t='断界首席试车员';p='一台是断界，一台是断界，还有一台也是断界。';}
+  return {title:t,punch:p,best,avg,fav};
+}
+let lastShare='';
+function finish(){
+  G.phase='end';$('ui').classList.add('hidden');
+  const rk=rankOf(G.results);
+  const card=renderCard(rk);
+  let url='';
+  // 异步编码 PNG（toDataURL 会在主线程同步编码，结算瞬间卡一下）
+  try{card.toBlob(b=>{if(!b)return;if(finish._u)URL.revokeObjectURL(finish._u);url=finish._u=URL.createObjectURL(b);$('endImg').src=url;},'image/png');}catch(e){try{url=card.toDataURL('image/png');$('endImg').src=url;}catch(_){}}
+  $('eTitle').textContent=`「${rk.title}」`;$('eTitle').classList.remove('on');
+  $('end').classList.remove('hidden');
+  const t0=performance.now(),dur=1000,el=$('cntBest');let lt=0;
+  (function step(now){const k=easeOut((now-t0)/dur);el.textContent=(rk.best*k).toFixed(1);if(k<1){if(now-lt>60){lt=now;SFX.tick();}requestAnimationFrame(step);}else{$('eTitle').classList.add('on');SFX.fanfare();}})(t0);
+  const link=/^https?:/.test(location.href)?' '+location.href.split('#')[0]:'';
+  lastShare=`我在《刹不住的境界》里开「断界V八百」百公里急刹，最好成绩 ${rk.best.toFixed(1)} 米（标准38米），荣获称号「${rk.title}」！后排萃浓缩，前排踩空气——你能刹住吗？#刹不住的境界${link}`;
+  $('saveBtn').onclick=()=>{
+    if(!url)return toast('图片生成中，请稍候');const a=document.createElement('a');a.href=url;a.download=`刹车鉴定报告-${rk.title}.png`;document.body.appendChild(a);a.click();a.remove();toast('已保存（手机可长按图片保存）');
+  };
+  $('copyBtn').onclick=()=>copyText(lastShare);
+}
+function toast(t){const el=$('toast');el.textContent=t;el.classList.add('hidden');void el.offsetWidth;el.classList.remove('hidden');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.add('hidden'),1800);}
+function copyText(t){
+  const fb=()=>{const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('文案已复制，去分享吧');}catch(e){toast('复制失败，请手动复制');}ta.remove();};
+  if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(()=>toast('文案已复制，去分享吧'),fb);else fb();
+}
+function wrapText(c,text,x,y,maxW,lh){
+  let line='',yy=y;for(const ch of text){if(c.measureText(line+ch).width>maxW){c.fillText(line,x,yy);line=ch;yy+=lh;}else line+=ch;}
+  if(line)c.fillText(line,x,yy);return yy;
+}
+function renderCard(rk){
+  const w=750,h=1200,c2=document.createElement('canvas');c2.width=w;c2.height=h;const c=c2.getContext('2d');
+  const F=FONT;
+  c.fillStyle='#fffaf0';c.fillRect(0,0,w,h);
+  for(let i=-h;i<w;i+=40){c.fillStyle=(i/40|0)%2?'#111':'#ffd23f';c.beginPath();c.moveTo(i,0);c.lineTo(i+20,0);c.lineTo(i+44,24);c.lineTo(i+24,24);c.fill();c.beginPath();c.moveTo(i,h-24);c.lineTo(i+20,h-24);c.lineTo(i+44,h);c.lineTo(i+24,h);c.fill();}
+  c.textAlign='center';c.fillStyle='#c1121f';c.font=`900 74px ${F}`;c.fillText('刹车鉴定报告',w/2,128);
+  c.fillStyle='#555';c.font=`26px ${F}`;c.fillText('不懂车帝 · 极限测试场 · 断界 V八百 专项',w/2,172);
+  c.strokeStyle='#ddd';c.lineWidth=2;c.beginPath();c.moveTo(60,200);c.lineTo(w-60,200);c.stroke();
+  c.fillStyle='#888';c.font=`28px ${F}`;c.fillText('鉴定称号',w/2,256);
+  c.fillStyle='#111';c.font=`900 ${rk.title.length>8?58:70}px ${F}`;c.fillText(`「${rk.title}」`,w/2,340);
+  c.fillStyle='#c1121f';c.font=`900 120px ${F}`;c.fillText(rk.best.toFixed(1),w/2-40,500);
+  c.fillStyle='#111';c.font=`700 44px ${F}`;c.fillText('米',w/2+120,500);
+  c.fillStyle='#555';c.font=`26px ${F}`;c.fillText(`最佳刹停距离 · 标准值 38 米 · 是标准的 ${(rk.best/BENCH).toFixed(1)} 倍`,w/2,546);
+  const top=600,maxD=Math.max(180,...G.results.map(r=>r.dist));
+  c.textAlign='left';
+  G.results.forEach((r,i)=>{
+    const y=top+i*86;c.fillStyle='#333';c.font=`700 28px ${F}`;c.fillText(`第${i+1}台`,60,y+34);
+    const bw=(w-300)*r.dist/maxD;c.fillStyle=r.crashed?'#c1121f':r.dist<=BENCH+3?'#22a35a':(!r.snapped&&r.dist<=60)?'#2a9d8f':'#f4a261';c.fillRect(170,y+8,bw,36);
+    c.fillStyle='#111';c.font=`700 26px ${F}`;c.fillText(`${r.dist.toFixed(1)}m`,178+bw,y+36);
+    c.fillStyle='#777';c.font=`20px ${F}`;
+    const tl=r.tools.length?r.tools.filter((v,j,a)=>a.indexOf(v)===j).map(t=>TOOLNAME[t]).join('+'):(r.snapped?'踩空':'纯踏板');
+    c.fillText(`${r.snapped?'咯嚓':'未断'} · ${r.crashed?'撞墙 · ':''}${tl}`,170,y+70);
+  });
+  const bx=170+(w-300)*BENCH/maxD;c.strokeStyle='#22a35a';c.setLineDash([8,6]);c.lineWidth=3;c.beginPath();c.moveTo(bx,top-6);c.lineTo(bx,top+250);c.stroke();c.setLineDash([]);
+  c.fillStyle='#22a35a';c.font=`20px ${F}`;c.fillText('38m 标准',bx-40,top-12);
+  c.textAlign='center';c.fillStyle='#222';c.font=`700 32px ${F}`;wrapText(c,rk.punch,w/2,905,w-120,44);
+  c.fillStyle='#c1121f';c.font=`900 40px ${F}`;c.fillText('后排萃浓缩，前排踩空气。',w/2,1010);
+  c.fillStyle='#555';c.font=`24px ${F}`;c.fillText(`江湖汽车（虚构）股价：${G.stockPct.toFixed(2)}%${G.stockPct<=-10?'（跌停）':''}`,w/2,1056);
+  c.fillStyle='#999';c.font=`20px ${F}`;c.fillText('#刹不住的境界  本报告随时可能「被下架」',w/2,1100);
+  c.fillText('纯属虚构恶搞，如有雷同，请检查你的刹车',w/2,1132);
+  c.save();c.translate(600,420);c.rotate(-0.35);c.strokeStyle='#c1121fcc';c.lineWidth=6;c.beginPath();c.arc(0,0,82,0,Math.PI*2);c.stroke();c.beginPath();c.arc(0,0,68,0,Math.PI*2);c.lineWidth=2;c.stroke();
+  c.fillStyle='#c1121fcc';c.font=`900 30px ${F}`;c.textAlign='center';c.fillText('不懂车帝',0,-8);c.font=`700 22px ${F}`;c.fillText('刹车已鉴定',0,26);c.restore();
+  return c2;
+}
+
+// ======================= 物理更新 =======================
+let layoutT=0;const MAXP=180;
+function compact(a,keep){let j=0;for(let i=0;i<a.length;i++)if(keep(a[i]))a[j++]=a[i];a.length=j;}
+function update(dt){
+  G.t+=dt;layoutT+=dt;if(layoutT>0.7){layoutT=0;if(innerWidth!==W||innerHeight!==H)layout();}
+  G.shake*=Math.pow(0.02,dt);if(G.shake<0.3)G.shake=0;
+  G.flash=Math.max(0,G.flash-dt);
+  for(const d of danmaku)d.x-=d.sp*dt;compact(danmaku,d=>d.x+d.w>-20);
+  for(const b of banners)b.t+=dt;compact(banners,b=>b.t<b.dur);
+  for(const f of floats)f.t+=dt;compact(floats,f=>f.t<(f.big?1.1:1.6));
+  if(resultPop)resultPop.t+=dt;
+  if(G.tickNote){G.tickNote.t+=dt;if(G.tickNote.t>2.6)G.tickNote=null;}
+  for(const p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy-=(p.g??9)*dt;p.life-=dt;if(p.y<0){p.y=0;p.vy*=-0.3;p.vx*=0.7;}}
+  compact(particles,p=>p.life>0);if(particles.length>MAXP)particles.splice(0,particles.length-MAXP);
+  if((G.phase==='drive'||G.phase==='title')&&Math.random()<dt*0.7)spawnDanmaku();
+  if(G.phase==='title'&&R){R.pos+=8*dt;R.wheel+=8*dt/0.38;if(R.pos>-8)R.pos=-70;}
+  if(!R||(G.phase!=='drive'&&G.phase!=='after'))return;
+  if(G.hold>0){G.hold-=dt;return;}
+  R.t+=dt;
+  if(R.stopped){R.stopT+=dt;R.pitch*=0.9;return;}
+  if(!R.cues.a&&R.pos>-45){R.cues.a=1;banner('前方制动线，准备……','#ffe66d',1.3);}
+  if(!R.cues.b&&R.pos>-6){R.cues.b=1;banner(R.pedalOff?'刹车已收回！直接用 1-5！':'现在！踩刹车！','#ff6b6b',1.3,true);SFX.ding();}
+  // 刹车力：按住缓升，松开缓降 → 点刹可以稳在安全区
+  if(braking&&!R.snapped&&!R.pedalOff){
+    R.force=Math.min(R.force+1650*dt,2400);
+    if(R.startPos===null&&R.force>200)R.startPos=R.pos;
+  }else R.force=Math.max(R.force-2600*dt,0);
+  R.peak=Math.max(R.peak,R.force);
+  if(R.force>1000)R.limit-=(R.force-1000)*0.07*dt;
+  if(!R.snapped&&!R.pedalOff){
+    const ratio=R.force/R.limit;
+    if(ratio>0.78){R.creakT-=dt;if(R.creakT<=0){SFX.creak();R.creakT=0.22;G.shake=Math.max(G.shake,2);}}
+    if(R.force>=R.limit)snap();
+  }
+  if(R.startPos===null&&R.pos>=LINE+4)R.startPos=LINE;
+  let a=0;
+  a+=11.2*Math.min(R.force,1750)/1600;
+  const T=R.tools;
+  if(T.p.a){T.p.t+=dt;a+=2.7;if(Math.random()<dt*30)particles.push({x:R.pos-4.2,y:0.05,vx:rand(-14,-6),vy:rand(1,4),life:0.4,max:0.4,c:pick(['#ffd23f','#ff9f1c','#fff']),s:2});}
+  if(T.hb.a){T.hb.t+=dt;a+=3.2;if(T.hb.t>2.4){T.hb.a=0;banner('咔——手刹也断了（同一供应商）','#ff6b6b',1.6);SFX.crack();G.shake=Math.max(G.shake,10);}}
+  if(T.fr.a){T.fr.t+=dt;a+=Math.min(1,T.fr.t*2)*(0.011*R.v*R.v+0.5);if(Math.random()<dt*8)particles.push({x:R.pos-CAR_L-0.3,y:1.2,vx:rand(-3,4),vy:rand(1,5),life:1.4,max:1.4,c:pick(['#e63946','#2a9d8f','#e9c46a','#f1faee']),s:5,can:1});}
+  if(T.cf.a){T.cf.t+=dt;a+=4.6;if(Math.random()<dt*50)particles.push({x:R.pos+0.2,y:rand(0.8,1.6),vx:rand(14,26)+R.v,vy:rand(-1,2),life:0.5,max:0.5,c:pick(['#6f4e37','#8b5a2b','#c8a27a','#ffffff88']),s:rand(3,7),g:0});if(T.cf.t>2.6){T.cf.a=0;banner('咖啡豆用完了','#f0c48a',1.2);}}
+  if(R.foot>0){a+=R.foot;R.foot=Math.max(0,R.foot-1.6*dt);}
+  a+=0.15;
+  R.decel=a;
+  R.v=Math.max(0,R.v-(R.pos>-10||R.startPos!==null?a:0)*dt);
+  R.pos+=R.v*dt;R.wheel+=R.v*dt/0.38;
+  R.pitch+=((R.v>0?Math.min(a,12):0)*0.0065-R.pitch)*Math.min(1,dt*8);
+  if(engine){const fq=Math.round(35+R.v*3.2),eg=R.v>0.2?0.05:0;if(fq!==engine.lf){engine.lf=fq;engine.o.frequency.setTargetAtTime(fq,AC.currentTime,0.05);}if(eg!==engine.lg){engine.lg=eg;engine.g.gain.setTargetAtTime(eg,AC.currentTime,0.1);}}
+  if(grind){const gv=R.v>0.3?(T.p.a?0.18:0)+(T.hb.a?0.12:0)+(R.force>300?0.05:0):0;if(gv!==grind.lg){grind.lg=gv;grind.g.gain.setTargetAtTime(gv,AC.currentTime,0.05);}}
+  if(R.force>400&&Math.random()<dt*10)particles.push({x:R.pos-rand(0.8,4.5),y:0.05,vx:-rand(2,6),vy:rand(0.5,1.5),life:0.7,max:0.7,c:'#bbbbbb88',s:rand(6,12),g:-1});
+  if(R.pos>=WALL-0.4){
+    R.pos=WALL-0.4;R.crashed=true;R.v=0;G.shake=34;G.flash=0.3;SFX.crash();floatText('轰！','#ff6b6b',120);
+    for(let i=0;i<30;i++)particles.push({x:WALL+rand(0,1),y:rand(0,3),vx:rand(2,14),vy:rand(2,10),life:1.6,max:1.6,c:pick(['#c68b59','#a0522d','#fff','#ffd23f']),s:rand(5,12),box:1});
+    endRound();return;
+  }
+  if(R.v<=0&&R.startPos!==null){endRound();}
+}
+
+// ======================= 绘制工具 =======================
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+function fitFont(text,size,maxW,weight){let s=size;ctx.font=`${weight||900} ${s}px ${FONT}`;while(s>9&&ctx.measureText(text).width>maxW){s-=1;ctx.font=`${weight||900} ${s}px ${FONT}`;}return s;}
+// 位图缓存：文字描边等昂贵绘制只画一次，之后每帧 drawImage
+function sprite(key,w,h,fn,boost){
+  let sp=SPR.get(key);if(sp)return sp;
+  const k=DPR*(boost||1),c=document.createElement('canvas');
+  c.width=Math.max(1,Math.ceil(w*k));c.height=Math.max(1,Math.ceil(h*k));
+  const x=c.getContext('2d');x.scale(k,k);const prev=ctx;ctx=x;try{fn();}finally{ctx=prev;}
+  sp={c,w,h};if(SPR.size>400)SPR.clear();SPR.set(key,sp);return sp;
+}
+// 描边小字（居中/左对齐，垂直居中）
+function otext(text,font,fs,x,y,fill,lw,align){
+  const key='o|'+font+'|'+text+'|'+fill+'|'+lw;
+  let sp=SPR.get(key);
+  if(!sp){ctx.font=font;const tw=ctx.measureText(text).width,pad=lw+2;
+    sp=sprite(key,tw+pad*2,fs*1.5+pad*2,()=>{ctx.font=font;ctx.textAlign='left';ctx.textBaseline='middle';outlined(text,pad,(fs*1.5+pad*2)/2,fill,lw);});}
+  ctx.drawImage(sp.c,align==='left'?x-(lw+2):x-sp.w/2,y-sp.h/2,sp.w,sp.h);
+}
+// 统一「大字」风格：900 粗体 + 黑描边 + 下投影（咯嚓！/跌停！/结果数字）
+function display(text,x,y,size,fill,maxW){
+  const s=maxW?fitFont(text,size,maxW):size;ctx.font=`900 ${s}px ${FONT}`;
+  ctx.lineJoin='round';ctx.textAlign='center';ctx.textBaseline='middle';
+  const lw=Math.max(4,s*0.14);ctx.lineWidth=lw;ctx.strokeStyle='#000';
+  ctx.fillStyle='#000';ctx.strokeText(text,x+s*0.04,y+s*0.07);ctx.fillText(text,x+s*0.04,y+s*0.07);
+  ctx.strokeText(text,x,y);ctx.fillStyle=fill;ctx.fillText(text,x,y);
+  return s;
+}
+function outlined(text,x,y,fill,lw){ctx.lineJoin='round';ctx.lineWidth=lw||3;ctx.strokeStyle='rgba(0,0,0,.8)';ctx.strokeText(text,x,y);ctx.fillStyle=fill;ctx.fillText(text,x,y);}
+function panelS(key,x,y,w,h,fn){const sp=sprite('pn|'+key+'|'+w+'|'+h,w+2,h+2,()=>{ctx.translate(1,1);panel(0,0,w,h);ctx.translate(-x,-y);fn&&fn();});ctx.drawImage(sp.c,x-1,y-1,sp.w,sp.h);}
+function panel(x,y,w,h){rr(x,y,w,h,12);ctx.fillStyle='rgba(11,13,18,.82)';ctx.fill();ctx.lineWidth=1;ctx.strokeStyle='rgba(255,255,255,.14)';ctx.stroke();}
+
+// ======================= 绘制 =======================
+function draw(){
+  const ppm=L.ppm,gy=L.gy,camX=L.camX;
+  const pos=R?R.pos:-20;
+  const sx=x=>camX+(x-pos)*ppm, sy=y=>gy-y*ppm;
+  ctx.save();
+  const shX=G.shake?Math.round(rand(-1,1)*G.shake):0,shY=G.shake?Math.round(rand(-1,1)*G.shake):0;
+  if(shX||shY)ctx.translate(shX,shY);
+  // 天空渐变 + 远山：预渲染成一张图层（全屏渐变每帧光栅化是最大热点）
+  const mh=Math.min(130,(gy-L.annBottom)*0.5);
+  const bk=W+'|'+gy+'|'+mh+'|'+DPR;
+  if(BG.key!==bk){BG.key=bk;const lw=W+500,lh=gy+50;
+    BG.c=sprite('bg|'+bk,lw,lh,()=>{
+      const sk=ctx.createLinearGradient(0,0,0,lh);sk.addColorStop(0,'#3d8bd4');sk.addColorStop(0.55,'#8cc3ee');sk.addColorStop(1,'#d7ecff');
+      ctx.fillStyle=sk;ctx.fillRect(0,0,lw,lh);ctx.fillStyle='#a7c4d8';
+      for(let lx=50-400;lx<lw;lx+=400){const y0=lh;ctx.beginPath();ctx.moveTo(lx,y0);ctx.quadraticCurveTo(lx+100,y0-mh*1.3,lx+200,y0-mh*0.4);ctx.quadraticCurveTo(lx+300,y0-mh,lx+400,y0);ctx.fill();}
+    });}
+  // 1:1 整像素拷贝（带缩放/亚像素偏移的 drawImage 会逐像素插值，软件渲染下与全屏渐变一样慢）
+  {const off=((-pos*ppm*0.08)%400+400)%400;ctx.save();ctx.setTransform(1,0,0,1,0,0);
+   ctx.drawImage(BG.c.c,Math.round((off-450+shX)*DPR),Math.round((-50+shY)*DPR));ctx.restore();}
+  // 广告牌：严格画在公告车道下方
+  const BB=['不懂车帝 · 极限测试场','断界V八百 · 尊贵无界','后排萃浓缩 · 前排踩空气','江湖汽车 · 安全第一(?)','本场地已投保'];
+  const bbTop=Math.max(L.annBottom+12,gy-ppm*6.2), bbH=Math.min(ppm*1.7,gy-bbTop-ppm*3.2);
+  if(bbH>=16){
+    const bw=Math.max(bbH*4.6,ppm*7);
+    const spacing=bw+ppm*16;
+    const par=pos*ppm*0.6;
+    for(let k=Math.floor((par-W)/spacing)-1;k<=Math.floor((par+W*2)/spacing)+1;k++){
+      const X=k*spacing-par+camX;
+      if(X+bw<-20||X>W+20)continue;
+      ctx.fillStyle='#4b5563';ctx.fillRect(X+bw*0.15,bbTop+bbH,4,gy-bbTop-bbH);ctx.fillRect(X+bw*0.85-4,bbTop+bbH,4,gy-bbTop-bbH);
+      const txt=BB[((k%BB.length)+BB.length)%BB.length],col=k%2?'#1d3557':'#b5101b';
+      const sp=sprite('bb|'+txt+col+bw+'|'+bbH,bw+4,bbH+4,()=>{ctx.translate(2,2);
+        ctx.fillStyle=col;rr(0,0,bw,bbH,4);ctx.fill();ctx.strokeStyle='#ffffff40';ctx.lineWidth=2;ctx.stroke();
+        fitFont(txt,Math.round(bbH*0.42),bw-14,800);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(txt,bw/2,bbH/2+1);});
+      ctx.drawImage(sp.c,X-2,bbTop-2,sp.w,sp.h);
+    }
+  }
+  ctx.fillStyle='#3a3d42';ctx.fillRect(-50,gy,W+100,H-gy+50);
+  ctx.fillStyle='#4caf50';ctx.fillRect(-50,gy-5,W+100,5);
+  ctx.fillStyle='#ffffff18';ctx.fillRect(-50,gy,W+100,3);
+  ctx.fillStyle='#ddd';
+  for(let m=Math.floor((pos-80)/6)*6;m<pos+80;m+=6){ctx.fillRect(sx(m),gy+ppm*1.5,ppm*3,Math.max(2,ppm*0.16));}
+  ctx.font=`600 ${Math.round(clamp(ppm*0.5,10,15))}px ${FONT}`;ctx.textAlign='center';ctx.textBaseline='middle';
+  for(let m=Math.floor((pos-60)/10)*10;m<pos+60;m+=10){if(m<0)continue;const X=sx(m);ctx.fillStyle='#ffffff70';ctx.fillRect(X-1,gy,2,ppm*0.55);ctx.fillText(m+'m',X,gy+ppm*0.95);}
+  for(let m=-100;m<=0;m+=10){const X=sx(m);if(X<-30||X>W+30)continue;ctx.fillStyle='#ff7b00';ctx.beginPath();ctx.moveTo(X-ppm*0.3,gy);ctx.lineTo(X,gy-ppm*0.8);ctx.lineTo(X+ppm*0.3,gy);ctx.fill();ctx.fillStyle='#fff';ctx.fillRect(X-ppm*0.15,gy-ppm*0.45,ppm*0.3,ppm*0.1);}
+  {const X=sx(LINE);for(let i=0;i<5;i++){ctx.fillStyle=i%2?'#111':'#fff';ctx.fillRect(X-4,gy+i*ppm*0.45,8,ppm*0.45);}
+   ctx.fillStyle='#fff';ctx.fillRect(X-1.5,gy-ppm*2.9,3,ppm*2.9);
+   const fs=Math.round(clamp(ppm*0.5,11,16));otext('制动线',`800 ${fs}px ${FONT}`,fs,X,gy-ppm*3.2,'#ffd23f',3);}
+  if(R&&R.startPos!==null){
+    [[BENCH,'#4ade80','标准 38m'],[140,'#ff6b6b','140米俱乐部']].forEach(([d,c,t])=>{const X=sx(R.startPos+d);if(X<-60||X>W+60)return;ctx.strokeStyle=c;ctx.lineWidth=3;ctx.setLineDash([8,6]);ctx.beginPath();ctx.moveTo(X,gy-ppm*3);ctx.lineTo(X,gy+ppm*2.3);ctx.stroke();ctx.setLineDash([]);const fs=Math.round(clamp(ppm*0.5,11,16));otext(t,`800 ${fs}px ${FONT}`,fs,X,gy-ppm*3.3,c,3);});
+  }
+  {const X=sx(WALL);if(X<W+200){
+    const cr=!!(R&&R.crashed),ww=ppm*3.2,wh=ppm*4.85;
+    const sp=sprite('wall|'+ppm+cr,ww,wh,()=>{ctx.textAlign='center';ctx.textBaseline='middle';
+      for(let r=0;r<4;r++)for(let c=0;c<2;c++){if(cr&&r>1)continue;const bx=c*ppm*1.6,by=wh-(r+1)*ppm*1.2;ctx.fillStyle='#c68b59';ctx.fillRect(bx,by,ppm*1.5,ppm*1.15);ctx.strokeStyle='#8b5a2b';ctx.lineWidth=1;ctx.strokeRect(bx,by,ppm*1.5,ppm*1.15);ctx.fillStyle='#5a3214';ctx.font=`700 ${Math.round(ppm*0.3)}px ${FONT}`;ctx.fillText('免费升级',bx+ppm*0.75,by+ppm*0.58);}});
+    ctx.drawImage(sp.c,X,gy-wh,sp.w,sp.h);
+    const fs=Math.round(clamp(ppm*0.5,11,16));otext('免费升级墙',`800 ${fs}px ${FONT}`,fs,X+ppm*1.6,gy-ppm*5.4,'#fff',3);}}
+  if(R)drawCar(sx(R.pos),gy,ppm);
+  for(const p of particles){const X=sx(p.x),Y=sy(p.y);if(X<-20||X>W+20)continue;ctx.globalAlpha=clamp(p.life/p.max,0,1);ctx.fillStyle=p.c;
+    if(p.can)ctx.fillRect(X-p.s*0.5,Y-p.s,p.s,p.s*1.7);else if(p.box)ctx.fillRect(X,Y,p.s,p.s);else{ctx.beginPath();ctx.arc(X,Y,p.s,0,7);ctx.fill();}}
+  ctx.globalAlpha=1;
+  ctx.restore();
+  // 叠加层（不随震屏，保持可读）
+  drawDanmaku();
+  drawBanners();
+  drawFloats();
+  drawResultPop();
+  drawTicker();
+  if(R&&G.phase!=='title'&&G.phase!=='end')drawHUD();
+  if(G.phase!=='title'&&G.phase!=='end'){
+    const fs=W<600?10:11;ctx.globalAlpha=0.75;
+    const dy=L.mode==='side'?H-L.sa.b-6:L.ctrlTop-8;
+    otext('纯属虚构恶搞，如有雷同，请检查你的刹车',`500 ${fs}px ${FONT}`,fs,W/2,dy-fs*0.35,'#fff',2.5);ctx.globalAlpha=1;
+  }
+  if(G.flash>0){ctx.fillStyle=`rgba(255,255,255,${G.flash*1.8})`;ctx.fillRect(0,0,W,H);}
+  if(G.hold>0&&G.phase==='drive'){ctx.fillStyle=`rgba(0,0,0,${clamp(G.hold-0.85,0,0.45)})`;ctx.fillRect(0,0,W,H);}
+}
+function drawDanmaku(){
+  ctx.globalAlpha=0.85;const fs=L.dmFont,font=`700 ${fs}px ${FONT}`;
+  for(let i=0;i<danmaku.length;i++){const d=danmaku[i];if(d.lane>=L.dmLanes||d.x>W+10||d.x+d.w<-10)continue;const y=L.dmTop+d.lane*L.laneH+L.laneH/2;otext(d.t,font,fs,d.x,y,d.c,3,'left');}
+  ctx.globalAlpha=1;
+}
+function drawBanners(){
+  banners.forEach((b,i)=>{
+    const a=clamp(Math.min(b.t*7,(b.dur-b.t)*4),0,1);
+    const s=easeBack(b.t*4.5);
+    const fs=b.big?L.annFont:Math.round(L.annFont*0.8);
+    const maxW=Math.min(W-L.left*2,760);
+    const key='bn|'+b.text+'|'+b.color+'|'+fs+'|'+maxW+'|'+L.annLaneH;
+    let sp=SPR.get(key);
+    if(!sp){const f=fitFont(b.text,fs,maxW-36);const tw=ctx.measureText(b.text).width+36;const h=Math.min(f*1.5,L.annLaneH-6);
+      sp=sprite(key,tw+6,h+6,()=>{ctx.translate((tw+6)/2,(h+6)/2);
+        rr(-tw/2,-h/2,tw,h,h/2);ctx.fillStyle='rgba(11,13,18,.88)';ctx.fill();
+        ctx.lineWidth=2;ctx.strokeStyle=b.color;ctx.globalAlpha=0.7;ctx.stroke();ctx.globalAlpha=1;
+        ctx.fillStyle=b.color;ctx.font=`900 ${f}px ${FONT}`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(b.text,0,1);},1.15);}
+    const cy=L.annTop+i*L.annLaneH+L.annLaneH/2;
+    ctx.save();ctx.globalAlpha=a;ctx.translate(W/2,cy);const sc=0.85+0.15*s;ctx.scale(sc,sc);
+    ctx.drawImage(sp.c,-sp.w/2,-sp.h/2,sp.w,sp.h);
+    ctx.restore();
+  });
+}
+function drawFloats(){
+  let si=0;
+  floats.forEach(f=>{
+    if(f.big){
+      const k=f.t/1.1;const s=f.t<0.18?easeBack(f.t/0.18):1;
+      const size=Math.round(clamp(Math.min(W*0.16,(L.gy-L.annBottom)*0.55),44,f.size*1.1));
+      const midY=Math.min(L.annBottom+size*0.62+6,(L.annBottom+L.gy)/2);
+      const out=clamp((f.t-0.8)/0.3,0,1);ctx.save();ctx.globalAlpha=1-out;ctx.translate(W/2,midY-out*12);ctx.rotate(-0.08);ctx.scale(s*(1+out*0.15),s*(1+out*0.15));
+      const key='bf|'+f.text+'|'+f.color+'|'+size+'|'+W;let sp=SPR.get(key);
+      if(!sp){const fs=fitFont(f.text,size,W-40);const tw=ctx.measureText(f.text).width,pw=tw+fs*0.5,ph=fs*1.6;
+        sp=sprite(key,pw,ph,()=>display(f.text,pw/2,ph/2,size,f.color,W-40),1.3);}
+      ctx.drawImage(sp.c,-sp.w/2,-sp.h/2,sp.w,sp.h);ctx.restore();
+    }else{
+      const k=f.t/1.6;ctx.globalAlpha=clamp((1-k)*2,0,1);
+      const y=L.gy-L.ppm*2.9-18-si*26-k*20;si++;
+      const fs=Math.round(clamp(f.size*(W<600?0.8:1),14,30));
+      otext(f.text,`900 ${fs}px ${FONT}`,fs,W/2,y,f.color,4);ctx.globalAlpha=1;
+    }
+  });
+  ctx.globalAlpha=1;
+}
+function drawResultPop(){
+  if(!resultPop)return;const p=resultPop;
+  const k=easeOut(p.t/0.9),s=easeBack(p.t*3);
+  const bh=clamp((L.gy-L.annBottom)*0.72,104,190);
+  const cy=Math.max(L.annTop+bh/2,(L.annTop+L.gy-L.ppm*2.4)/2);
+  const bw=Math.min(W-L.left*2,520);
+  ctx.save();ctx.globalAlpha=clamp(p.t*5,0,1)*clamp((2.9-p.t)*3,0,1);ctx.translate(W/2,cy);const sc=0.7+0.3*s;ctx.scale(sc,sc);
+  rr(-bw/2,-bh/2,bw,bh,18);ctx.fillStyle='rgba(11,13,18,.9)';ctx.fill();ctx.lineWidth=3;ctx.strokeStyle=p.vc;ctx.stroke();
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.font=`700 ${Math.round(clamp(bh*0.11,12,18))}px ${FONT}`;ctx.fillStyle='#aab';ctx.fillText(p.crashed?'撞墙距离':`第${G.round+1}台 · 刹停距离`,0,-bh*0.33);
+  display(`${(p.dist*k).toFixed(1)} 米`,0,-bh*0.04,Math.round(bh*0.3),p.vc,bw-30);
+  const line=`标准 38 米的 ${(p.ratio).toFixed(1)} 倍 · ${p.verdict}`;
+  fitFont(line,Math.round(clamp(bh*0.11,13,19)),bw-30,800);ctx.fillStyle='#fff';ctx.fillText(line,0,bh*0.31);
+  ctx.restore();
+}
+function drawCar(fx,gy,ppm){
+  const L5=CAR_L*ppm,Hh=1.95*ppm,x0=fx-L5,wr=0.38*ppm;
+  ctx.save();
+  ctx.translate(fx-L5*0.4,gy-wr);ctx.rotate(R.pitch);ctx.translate(-(fx-L5*0.4),-(gy-wr));
+  const by=gy-wr*1.25;
+  const T=R.tools;
+  if(T.fr.u){
+    const k=Math.min(1,T.fr.t*2),px=x0-ppm*(2+3.5*k),py=by-Hh*0.9,rad=ppm*(0.6+1.4*k);
+    ctx.strokeStyle='#ddd';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x0+2,by-Hh*0.5);ctx.lineTo(px+rad*0.3,py-rad);ctx.moveTo(x0+2,by-Hh*0.5);ctx.lineTo(px+rad*0.3,py+rad);ctx.stroke();
+    ctx.fillStyle='#e9f5ff';ctx.beginPath();ctx.ellipse(px,py,rad*0.45,rad,0,Math.PI/2,Math.PI*1.5);ctx.fill();ctx.strokeStyle='#9be7ff';ctx.lineWidth=3;ctx.stroke();
+    ctx.fillStyle='#1d3557';ctx.font=`800 ${Math.round(ppm*0.35)}px ${FONT}`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('冰箱',px-rad*0.2,py);
+  }
+  {const ox=x0-L5*0.1,oy=by-Hh-2,cw=L5*1.2,ch=gy+ppm*0.2-oy;
+   const sp=sprite('car|'+ppm,cw,ch,()=>{ctx.translate(-ox,-oy);carBody(x0,by,L5,Hh,ppm,fx,gy);});
+   ctx.drawImage(sp.c,ox,oy,sp.w,sp.h);}
+  if(R.snapped||R.pedalOff){const es=Math.round(ppm*0.6);const sp=sprite('emo|'+es,es*1.4,es*1.4,()=>{ctx.font=`${es}px ${EMOJI}`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('😱',es*0.7,es*0.7);});ctx.drawImage(sp.c,x0+L5*0.86-sp.w/2,by-Hh*1.15-sp.h/2,sp.w,sp.h);}
+  if(T.cf.a){ctx.fillStyle='#6f4e37';ctx.beginPath();ctx.moveTo(fx,by-Hh*0.5);ctx.lineTo(fx+ppm*(2+Math.random()*1.5),by-Hh*0.7);ctx.lineTo(fx+ppm*(2+Math.random()*1.5),by-Hh*0.2);ctx.fill();}
+  if(R.foot>0.2){[0.22,0.35,0.5,0.62].forEach((k,i)=>{const X=x0+L5*k+Math.sin(G.t*30+i)*ppm*0.1;ctx.fillStyle='#f1c27d';ctx.fillRect(X,by-ppm*0.1,ppm*0.16,wr*1.3);ctx.fillStyle='#e63946';ctx.fillRect(X-ppm*0.08,gy-ppm*0.16,ppm*0.32,ppm*0.16);});}
+  [x0+L5*0.18,x0+L5*0.8].forEach(wx=>{ctx.fillStyle='#111';ctx.beginPath();ctx.arc(wx,gy-wr,wr,0,7);ctx.fill();ctx.fillStyle='#bbb';ctx.beginPath();ctx.arc(wx,gy-wr,wr*0.55,0,7);ctx.fill();
+    ctx.strokeStyle='#555';ctx.lineWidth=2;ctx.beginPath();for(let i=0;i<5;i++){const a=R.wheel+i*1.2566;ctx.moveTo(wx,gy-wr);ctx.lineTo(wx+Math.cos(a)*wr*0.55,gy-wr+Math.sin(a)*wr*0.55);}ctx.stroke();});
+  ctx.restore();
+}
+function carBody(x0,by,L5,Hh,ppm,fx,gy){
+  ctx.fillStyle='rgba(0,0,0,.25)';ctx.beginPath();ctx.ellipse(x0+L5/2,gy,L5*0.55,ppm*0.18,0,0,7);ctx.fill();
+  const g=ctx.createLinearGradient(0,by-Hh,0,by);g.addColorStop(0,'#2b2d42');g.addColorStop(0.5,'#14151f');g.addColorStop(1,'#0a0a10');
+  ctx.fillStyle=g;rr(x0,by-Hh,L5,Hh,ppm*0.35);ctx.fill();
+  ctx.fillStyle='#c9b37e';ctx.fillRect(x0+ppm*0.2,by-Hh*0.45,L5-ppm*0.4,Math.max(1.5,ppm*0.08));
+  ctx.fillStyle='#1b263b';rr(x0+ppm*0.4,by-Hh*0.92,L5*0.78,Hh*0.36,ppm*0.15);ctx.fill();
+  ctx.fillStyle='#5c7fa3';rr(x0+L5*0.83,by-Hh*0.92,L5*0.12,Hh*0.36,ppm*0.12);ctx.fill();
+  ctx.strokeStyle='#000';ctx.lineWidth=2;[0.3,0.55].forEach(k=>{ctx.beginPath();ctx.moveTo(x0+L5*k,by-Hh*0.92);ctx.lineTo(x0+L5*k,by-Hh*0.2);ctx.stroke();});
+  ctx.fillStyle='#f1c27d';[0.2,0.42,0.68,0.86].forEach(k=>{ctx.beginPath();ctx.arc(x0+L5*k,by-Hh*0.68,ppm*0.2,0,7);ctx.fill();});
+  ctx.fillStyle='#fff';ctx.fillRect(x0+L5*0.3,by-Hh*0.5,ppm*0.18,ppm*0.2);
+  ctx.fillStyle='#c0c0c0';rr(fx-ppm*0.28,by-Hh*0.55,ppm*0.24,Hh*0.42,ppm*0.06);ctx.fill();
+  ctx.fillStyle='#fffbe0';ctx.fillRect(fx-ppm*0.2,by-Hh*0.62,ppm*0.18,ppm*0.12);
+  ctx.fillStyle='#e63946';ctx.fillRect(x0,by-Hh*0.6,ppm*0.12,ppm*0.4);
+  ctx.fillStyle='#c9b37e';ctx.beginPath();ctx.arc(x0+L5*0.92,by-Hh*0.32,ppm*0.22,0,7);ctx.fill();ctx.fillStyle='#14151f';ctx.font=`900 ${Math.round(ppm*0.28)}px ${FONT}`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('断',x0+L5*0.92,by-Hh*0.31);
+  ctx.fillStyle='#c9b37e';ctx.font=`700 ${Math.round(ppm*0.3)}px ${FONT}`;ctx.fillText('V八百',x0+L5*0.15,by-Hh*0.28);
+}
+function drawTicker(){
+  const h=L.tickH,cy=L.sa.t+(h-L.sa.t)/2;
+  ctx.fillStyle='rgba(8,9,12,.94)';ctx.fillRect(0,0,W,h);
+  ctx.fillStyle='#ffffff14';ctx.fillRect(0,h-1,W,1);
+  const p=G.stockPct,price=STOCK0*(1+p/100),dn=p<0;
+  const small=W<600;
+  // A 股配色：红涨绿跌
+  const s=`${small?'江湖汽车':'江湖汽车 JH888'}(虚构) ¥${price.toFixed(2)} ${dn?'▼':p>0?'▲':'■'}${Math.abs(p).toFixed(2)}%${p<=-10?' 跌停':''}`;
+  const sf=`800 ${small?12:13}px ${FONT}`,scol=dn?'#15803d':p>0?'#b91c1c':'#3f3f46';
+  const ssp=SPR.get('stk|'+s+scol)||(()=>{ctx.font=sf;const sw=ctx.measureText(s).width+16;return sprite('stk|'+s+scol,sw,20,()=>{rr(0,0,sw,20,6);ctx.fillStyle=scol;ctx.fill();ctx.font=sf;ctx.textBaseline='middle';ctx.textAlign='left';ctx.fillStyle='#fff';ctx.fillText(s,8,10.5);});})();
+  const sw=ssp.w;ctx.drawImage(ssp.c,L.left-4,cy-10,ssp.w,ssp.h);ctx.textBaseline='middle';ctx.textAlign='left';
+  const news='★ 突发：断界V八百 刹车踏板支架三连断　★ 官方：测试太极端　★ 网友：一台是断界，一台是断界，还有一台也是断界　★ 冰箱、咖啡机工作正常　★ 本台消息随时可能被下架　';
+  let nx=L.left-4+sw+10;
+  if(G.tickNote){const n=G.tickNote,a=clamp(Math.min(n.t*8,(2.6-n.t)*4),0,1);ctx.font=`900 ${small?12:13}px ${FONT}`;const nw2=ctx.measureText(n.text).width+16;
+    ctx.globalAlpha=a;const bump=n.t<0.25?(1-n.t/0.25)*4:0;rr(nx-2,cy-10-bump,nw2,20,6);ctx.fillStyle=n.up?'#b91c1c':'#15803d';ctx.fill();ctx.fillStyle='#fff';ctx.fillText(n.text,nx+6,cy+0.5-bump);ctx.globalAlpha=1;nx+=nw2+8;}
+  const nf=`500 ${small?12:13}px ${FONT}`;
+  const sp=sprite('news|'+nf,(()=>{ctx.font=nf;return Math.ceil(ctx.measureText(news).width);})(),22,()=>{ctx.font=nf;ctx.fillStyle='#ffd23f';ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(news,0,11.5);});
+  ctx.save();ctx.beginPath();ctx.rect(nx,L.sa.t,L.right-nx,h-L.sa.t);ctx.clip();
+  const nw=sp.w;const off=(G.t*55)%nw;for(let x=nx-off;x<L.right;x+=nw)ctx.drawImage(sp.c,x,cy-11,sp.w,sp.h);ctx.restore();
+}
+function drawHUD(){
+  const y=L.hudY,h=L.hudH,gap=8,avail=L.right-L.left;
+  const pw=Math.min(W>1500?340:260,(avail-2*gap)/3);
+  const xs=[L.left,W/2-pw/2,L.right-pw];
+  const labF=Math.round(clamp(h*0.15,10,15)),valF=Math.round(clamp(h*0.44,22,48));
+  const ly=y+labF+7,vy=y+h-12;
+  ctx.textBaseline='alphabetic';
+  // 1 车速
+  {const x=xs[0];
+   panelS('v'+G.round+labF,x,y,pw,h,()=>{ctx.textBaseline='alphabetic';ctx.textAlign='left';
+   ctx.font=`700 ${labF}px ${FONT}`;ctx.fillStyle='#9aa3b2';ctx.fillText('车速 km/h',x+10,ly);
+   ctx.textAlign='right';ctx.fillStyle='#ffd23f';ctx.fillText(`${G.round+1}/3台`,x+pw-10,ly);});
+   const kmh=R.v*3.6;
+   ctx.textAlign='left';ctx.font=`900 ${valF}px ${FONT}`;ctx.fillStyle=kmh>60?'#ff6b6b':kmh>20?'#ffe66d':'#4ade80';
+   ctx.fillText(kmh.toFixed(0),x+10,vy);
+   if(R.decel>0.5&&!R.stopped&&R.startPos!==null&&pw>130){ctx.textAlign='right';ctx.font=`700 ${labF}px ${FONT}`;ctx.fillStyle='#ccc';ctx.fillText(`-${(R.decel/9.8).toFixed(2)}g`,x+pw-10,vy);}
+   rr(x+10,y+h-7,pw-20,3,1.5);ctx.fillStyle='#ffffff20';ctx.fill();rr(x+10,y+h-7,(pw-20)*clamp(kmh/100,0,1),3,1.5);ctx.fillStyle='#fff';ctx.fill();}
+  // 2 踏板力 + 支架状态
+  {const x=xs[1];
+   const ratio=R.pedalOff?0:R.force/R.limit0;
+   let st='正常',sc='#4ade80';
+   if(R.pedalOff){st='已收回';sc='#ffb3c1';}else if(R.snapped){st='已断';sc='#ff4d4d';}else if(ratio>0.78){st='咯吱…';sc='#ff6b6b';}else if(ratio>0.5){st='吃力';sc='#ffd23f';}
+   panelS('f'+st+labF,x,y,pw,h,()=>{ctx.textBaseline='alphabetic';
+   ctx.textAlign='left';ctx.font=`700 ${labF}px ${FONT}`;ctx.fillStyle='#9aa3b2';ctx.fillText(pw>140?'踏板力 N':'踏板力',x+10,ly);
+   ctx.textAlign='right';ctx.fillStyle=sc;ctx.fillText((pw>140?'支架 ':'')+st,x+pw-10,ly);});
+   ctx.textAlign='left';ctx.font=`900 ${valF}px ${FONT}`;
+   const shown=R.snapped?'咯嚓':R.pedalOff?'—':Math.round(R.force)+'';
+   ctx.fillStyle=R.snapped?'#ff4d4d':ratio>0.78?'#ff6b6b':ratio>0.5?'#ffd23f':'#fff';ctx.fillText(shown,x+10,vy);
+   if(pw>150){const iw=Math.min(h*0.4,38),ix=x+pw-10-iw,iy=vy-iw*0.62;
+     ctx.fillStyle=R.snapped?'#555':`rgb(${170+85*Math.min(1,ratio)},${170-110*Math.min(1,ratio)},${170-110*Math.min(1,ratio)})`;
+     if(R.snapped){ctx.save();ctx.translate(ix+iw*0.3,iy+iw*0.3);ctx.rotate(-0.3);ctx.fillRect(-iw*0.3,-iw*0.2,iw*0.45,iw*0.45);ctx.restore();ctx.save();ctx.translate(ix+iw*0.78,iy+iw*0.35);ctx.rotate(0.35);ctx.fillRect(-iw*0.2,-iw*0.2,iw*0.42,iw*0.45);ctx.restore();}
+     else{rr(ix,iy,iw,iw*0.55,4);ctx.fill();if(ratio>0.5){ctx.strokeStyle='#000';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(ix+iw*0.4,iy);ctx.lineTo(ix+iw*0.5,iy+iw*0.25);ctx.lineTo(ix+iw*0.38,iy+iw*0.55);if(ratio>0.78){ctx.moveTo(ix+iw*0.75,iy);ctx.lineTo(ix+iw*0.68,iy+iw*0.3);}ctx.stroke();}}}
+   const bx=x+10,bw=pw-20,byy=y+h-7;
+   rr(bx,byy,bw,3,1.5);ctx.fillStyle='#ffffff20';ctx.fill();
+   rr(bx,byy,bw*clamp(R.force/2000,0,1),3,1.5);ctx.fillStyle=ratio>0.78?'#ff4d4d':ratio>0.5?'#ffd23f':'#4ade80';ctx.fill();}
+  // 3 制动距离
+  {const x=xs[2];
+   panelS('d'+labF,x,y,pw,h,()=>{ctx.textBaseline='alphabetic';
+   ctx.textAlign='left';ctx.font=`700 ${labF}px ${FONT}`;ctx.fillStyle='#9aa3b2';ctx.fillText(pw>140?'制动距离':'距离',x+10,ly);
+   ctx.textAlign='right';ctx.fillStyle='#4ade80';ctx.fillText('标准38m',x+pw-10,ly);});
+   const d=R.startPos===null?0:R.pos-R.startPos;
+   const ds=d.toFixed(1)+'m';ctx.textAlign='right';ctx.font=`900 ${valF}px ${FONT}`;if(ds.length>5||pw<150)fitFont(ds,valF,pw-20);ctx.fillStyle=d>140?'#ff4d4d':d>BENCH?'#ffe66d':'#fff';ctx.fillText(ds,x+pw-10,vy);
+   const bx=x+10,bw=pw-20,byy=y+h-7;rr(bx,byy,bw,3,1.5);ctx.fillStyle='#ffffff20';ctx.fill();
+   rr(bx,byy,bw*clamp(d/160,0,1),3,1.5);ctx.fillStyle=d>140?'#ff4d4d':d>BENCH?'#ffd23f':'#4ade80';ctx.fill();
+   ctx.fillStyle='#4ade80';ctx.fillRect(bx+bw*38/160-1,byy-3,2,9);ctx.fillStyle='#ff4d4d';ctx.fillRect(bx+bw*140/160-1,byy-3,2,9);}
+}
+
+// ======================= 主循环 =======================
+// 固定步长物理（1/120s）：掉帧时多步追上，手感不随帧率变；单帧最多追 0.1s，切后台回来不会瞬移
+let last=performance.now(),acc=0,lastPhase='';const STEP=1/120;
+const ADAPT=!QS.has('noadapt');
+function loop(now){
+  const raw=(now-last)/1000;last=now;
+  acc+=Math.min(raw,0.1);let n=0;
+  while(acc>=STEP&&n<12){update(STEP);acc-=STEP;n++;}
+  if(n===12)acc=0;
+  if(R&&G.phase==='drive'){updatePedal();refreshTools();}
+  // 弹窗（会议/下架/结算）全屏遮挡时画面静止：只画一帧，不再每帧重绘整张画布
+  const covered=G.phase==='pr'||G.phase==='gag'||G.phase==='end';
+  if(G.phase!==lastPhase){lastPhase=G.phase;needDraw=true;}
+  if(!covered||needDraw){draw();needDraw=false;}
+  // 自适应画质：持续掉帧（中位帧间隔 >22ms）就降低渲染分辨率，最多降两档
+  if(ADAPT&&!covered&&!document.hidden&&raw>0&&raw<0.25){Q.win.push(raw);Q.t+=raw;
+    if(Q.t>=1.2&&Q.win.length>=20){const a=Q.win.sort((x,y)=>x-y)[Q.win.length>>1];Q.win.length=0;Q.t=0;
+      if(a>0.022&&Q.k>0.3){Q.k*=0.6;if(Q.k<0.3)Q.floor=0.8;layout();}}}
+  requestAnimationFrame(loop);
+}
+R=blankRound(1500);R.pos=-40;R.v=8;
+if(QS.get('test')==='1')window.__brake={get floats(){return floats},get G(){return G},get R(){return R},get L(){return L},get DPR(){return DPR},get Q(){return Q},startGame,useTool,setBrake};
+requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

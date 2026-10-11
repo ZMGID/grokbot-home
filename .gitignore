@@ -92,3 +92,17 @@ feishu-cli/survey/
 **/feishu-cli/survey/
 **/feishu-cli/**/survey/
 services/feishu-cli/survey/
+
+# --- box 私密文件（只以 secrets/box-secrets.tgz.enc / feishu-cli.tgz.enc 加密形式备份）---
+.ssh/
+servers/
+.config/gh/
+.grokbot-home/
+secrets.env
+.mcp-auth/
+**/feishu-cli/approvals/
+**/feishu-cli/chats/
+*_id_ed25519*
+*_id_rsa*
+master.key
+appsecret_*

@@ -34,7 +34,18 @@ if [[ -f "$MAP" ]]; then
   for slug in $(jq -r 'keys[]' "$MAP"); do
     id=$(jq -r --arg s "$slug" '.[$s]' "$MAP")
     src="$AGENTS/$id"; dst="bots/$slug/raw"
-    [[ -d "$src" ]] || { echo "   跳过 $slug（$src 不存在）"; continue; }
+    if [[ ! -d "$src" ]]; then
+      # 映射里的 id 不在本 box（例如旧号/新号混用）：按 bots/index.json 里的名字找当前 agent
+      nm=$(jq -r --arg s "$slug" '.bots[]? | select(.slug==$s) | .name' bots/index.json 2>/dev/null)
+      alt=""
+      if [[ -n "$nm" ]]; then
+        for pj in "$AGENTS"/*/profile.json; do
+          [[ "$(jq -r '.name // empty' "$pj" 2>/dev/null)" == "$nm" ]] && { [[ -z "$alt" ]] && alt=$(dirname "$pj") || alt="MULTI"; }
+        done
+      fi
+      if [[ -n "$alt" && "$alt" != "MULTI" ]]; then echo "   $slug：映射 id 不在本 box，按名字「$nm」用 $(basename "$alt")"; src="$alt"
+      else echo "   跳过 $slug（$src 不存在，按名字也没找到唯一匹配）"; continue; fi
+    fi
     mkdir -p "$dst"
     for f in profile.json settings.json; do
       [[ -f "$src/$f" ]] && jq 'del(.serverId)' "$src/$f" > "$dst/$f" 2>/dev/null
@@ -72,25 +83,24 @@ else
   echo "   没有 $MAP，跳过原始设定快照"
 fi
 
-# 1b) 账本加密备份：重新打包 /workspace/finance/ → secrets/finance.tgz.enc
-#     明文永不进入工作树；临时 tar 只在 /tmp，结束后 shred。
-if [[ -d /workspace/finance ]] && [[ -n "$(ls -A /workspace/finance 2>/dev/null)" ]]; then
-  if [[ -z "${GROKBOT_HOME_PASSPHRASE:-}" ]]; then
-    echo "!! GROKBOT_HOME_PASSPHRASE 未设置，无法更新 secrets/finance.tgz.enc"
-  else
-    _ftmp=$(mktemp /tmp/finance-sync.XXXXXX.tgz)
-    tar -C /workspace -czf "$_ftmp" finance
-    if [[ -s "$_ftmp" ]]; then
-      python3 scripts/secret-crypt.py enc-bin "$_ftmp" secrets/finance.tgz.enc \
-        && echo "   已更新 secrets/finance.tgz.enc" \
-        || { echo "!! 加密 finance 失败"; shred -u "$_ftmp" 2>/dev/null || rm -f "$_ftmp"; exit 6; }
-    else
-      echo "   finance tarball 为空，跳过"
-    fi
-    shred -u "$_ftmp" 2>/dev/null || rm -f "$_ftmp"
+# 1b) 加密包：box-secrets / daily / feishu-cli / finance（见 scripts/pack-bundles.sh）
+#     只在设置了 GROKBOT_HOME_PASSPHRASE 时打包；内容没变不会重新加密。明文只在 /tmp，结束后 shred。
+bash scripts/pack-bundles.sh || { echo "!! 加密包更新失败，中止"; exit 6; }
+
+# 1c) 明文（无密钥）的 box 文件：服务脚本、连接器启动器、assistant 笔记、小项目
+copy_if() { [[ -f "$1" ]] && { mkdir -p "$(dirname "$2")"; cmp -s "$1" "$2" || cp "$1" "$2"; }; }
+for f in listener.py run_loop.sh start.sh stop.sh; do copy_if "/workspace/gmail-listener/$f" "services/gmail-listener/$f"; done
+for c in composio-pg composio-zhimeng; do for f in launch.py launch.sh; do copy_if "/workspace/$c/$f" "connectors/$c/$f"; done; done
+if [[ -d /workspace/assistant ]]; then
+  for f in README.md big-picture.md routines.md; do copy_if "/workspace/assistant/$f" "workspace/assistant/$f"; done
+  if [[ -d /workspace/assistant/ideas ]]; then
+    rm -rf workspace/assistant/ideas; mkdir -p workspace/assistant; cp -r /workspace/assistant/ideas workspace/assistant/ideas
   fi
-else
-  echo "   /workspace/finance/ 不存在或为空，跳过 finance.tgz.enc 更新"
+fi
+# daily/ 只以 secrets/daily.tgz.enc 形式备份（明文由 .gitignore 和 secret-scan 拦截）
+if [[ -d /workspace/brake-game ]]; then
+  mkdir -p projects/brake-game
+  (cd /workspace/brake-game && find . -type f -print0) | while IFS= read -r -d '' f; do copy_if "/workspace/brake-game/$f" "projects/brake-game/$f"; done
 fi
 
 # 2) 用户自建技能

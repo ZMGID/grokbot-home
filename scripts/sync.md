@@ -42,6 +42,7 @@ bash scripts/secret-scan.sh      # 只做密钥扫描
 ## 注意
 - 别的 bot 在新号上的 agent id 和旧号不同：BOOTSTRAP 第 6 步建完 bot 后要把新 id 写进 `bots/agent-map.json` 并提交，否则 raw 快照会跳过。
 - 不要把 `/home/box/agent-data/` 下的 `box-secrets.json`、`host-secrets.json`、`gateway.json`、`store.db`、`conversation-blobs.db` 复制进仓库。
+- (2026-10-12) `sync.sh` 第 1b 步调用 `scripts/pack-bundles.sh` 重新打包 `secrets/{box-secrets,daily,feishu-cli,finance}.tgz.enc`（需 `GROKBOT_HOME_PASSPHRASE`；内容没变不改文件）；第 1c 步明文同步 gmail-listener 脚本、connectors 启动器、`workspace/assistant/`（不含 daily）、`projects/brake-game/`。`agent-map.json` 里的 id 在本 box 找不到时按 `bots/index.json` 的名字匹配当前 agent。
 - 不要把明文 `/workspace/finance/` 或 `/workspace/assistant/daily/` 复制进仓库；账本只以 `secrets/finance.tgz.enc` 形式备份；`.gitignore` 已忽略明文路径；扫描脚本会拦。
 - 不要把 `/workspace/gmail-listener/` 的 `venv/`、`*.log`、`seen.txt`、`forwarded_ids.txt`、`failed.jsonl`、`webhook_url.local` 或 `~/.lark-cli/`、`~/.local/share/lark-cli/`、`feishu-cli/survey/` 复制进仓库。`listener.py`/`run_loop.sh` 可同步（无内嵌密钥）；`webhook_url.local` 永不进仓库。
 - 环境变量 `GMAIL_WEBHOOK_KEY` / Composio API key / `GROKBOT_HOME_PASSPHRASE` 的**值**永不进仓库（变量名可以写在文档里）。
