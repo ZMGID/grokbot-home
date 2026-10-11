@@ -1,4 +1,4 @@
-# 工具环境快照（自动生成，2026-10-12 01:44:50 CST）
+# 工具环境快照（自动生成，2026-10-12 02:06:45 CST）
 - kicad-cli: /usr/bin/kicad-cli
 - pio: /home/box/.local/bin/pio
 - node: /usr/bin/node
