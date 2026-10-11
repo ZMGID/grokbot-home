@@ -24,3 +24,4 @@
 - (2026-10-11) 新号起不用 gh / git push：推送改走 composio-pg 的 Composio GitHub（ZMGID）。原因：本 Composio 项目会把 GitHub access token 打码，gh 登录用不了。做法见 `scripts/sync.md`。
 - (2026-10-11) 账本改为每次 sync 重打包加密进 `secrets/finance.tgz.enc`（`enc-bin`）；明文 `/workspace/finance/` 仍不进工作树。财务管家 memory 有内容时另写 `secrets/财务管家-memory.tgz.enc`。BOOTSTRAP 换号时用 `dec-bin` 恢复。
 - (2026-10-12) 用户确认规矩「明文不进、加密包必进」。每日同步与周日演练提示词已更新：sync 必跑 `pack-bundles.sh`；演练对每个 `secrets/*.enc` 做 decrypt-check（只看文件名/格式，不落明文到仓库）。
+- (2026-10-12) 用户明确表示口令**不换**，且不想再被提醒：以后同步、演练、汇报里都不要再建议换口令（只在用户主动提起时再谈）。
