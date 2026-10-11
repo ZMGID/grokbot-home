@@ -2,4 +2,4 @@
 
 暂无（none）
 
-本账号 `/home/box/agent-data/agents/30f7829c-e287-44d7-bfdc-7c409b7da1c4/` 下没有 `automations/` 目录，对话里也尚未创建定时任务。
+本账号 `/home/box/agent-data/agents/a65c590b-9f0d-4e36-9b95-a2495ac38a8d/` 下没有 `automations/` 目录，对话里也尚未创建定时任务。
