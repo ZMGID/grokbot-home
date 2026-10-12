@@ -70,6 +70,7 @@
   - (2026-10-09) 经用户同意，已从 composio-pg 删除旧的 zhimeng63 连接 **`ca_2rJjmKh8j1q0`**。新号/重建时**不要**再在 composio-pg（pg-test 用户）下给 zhimeng63 授权；只通过 composio-zhimeng 授权。
 - (2026-10-08) **应用连接只走 Composio**：不要再装官方 GitHub（`cursor-github`）、Origin、Finance、Composio 插件（32661537）。
 - **飞书例外（2026-10-10）**：Composio 无飞书 toolkit → 用官方 **lark-cli** 1.0.97（`npm i -g @larksuite/cli --prefix ~/.local`，brand `feishu`，app `cli_aa430b6809f85d0c`）。配置/token 在 `~/.lark-cli/` 与 `~/.local/share/lark-cli/`（明文不进仓库，加密在 `secrets/box-secrets.tgz.enc`）。换号后先解包试 `lark-cli auth status`，用户 token 约 7 天不用会过期；不行再 `lark-cli config init --new --brand feishu` 与 `lark-cli auth login`（用户扫码）。常用群见 `services/feishu-cli/chats.md`（全员群 / bot 通知群）。
+- (2026-10-12) 晚上起 lark-cli 报「应用未启用」（错误 20069），bot 和用户身份都不通、用户 token 已被清：需要用户在飞书开发者后台重新启用应用并重新 `lark-cli auth login` 扫码。修好前早晚报的飞书部分会缺。
 - **Gmail 来信监听（2026-10-10）**：盒子 `/workspace/gmail-listener/`（脚本备份在 `services/gmail-listener/`）经 Composio 触发器推送到小萌 webhook 例程 `gmail-new-mail`。密钥环境变量名 `GMAIL_WEBHOOK_KEY`（**值不进仓库**）。盒子无 systemd，**重启或换号后须手动** `/workspace/gmail-listener/start.sh`。另有 cloudpotato@mail.grokbot.com 邮箱触发例程。
 - 同步方式：由专门 bot **仓库管家**每天约 03:14（北京时间）跑定时任务，把各 bot 的新记忆和设定同步进仓库，有变化才推送，推送前做密钥扫描。（2026-10-08 用户改口：原先「不单独建同步 bot、由主 bot 跑」已作废，移交给仓库管家。）
 - 新号流程：匿名克隆 → 密码框填一次仓库口令 → 解密 Composio key、装 `composio-pg` + `composio-zhimeng` → 重建各 bot。`gh` 登录只在推送时需要。

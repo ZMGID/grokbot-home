@@ -70,3 +70,4 @@
 - (2026-10-11) 两个空白 “New Bot”（`1dbfda76-…`、`52d1b935-…`）已不在本账号的 agent 目录中（应已删除，从未登记，无需清理）。又出现一个默认设定的空白 “Grok Bot”（id `04d9635a-…`，10-10 17:22 创建，只有自我介绍和一问一答，无分工），同样暂不登记，等用户或小萌确认用途。
 - (2026-10-11) 新账号 bootstrap：所有 bot 已重建，新 agent id 写在 `bots/agent-map.json`；小萌新 id `70869d39-bdf3-4146-823b-db0bd0d3da2c`。不用 gh（Composio 项目把 GitHub token 打码），推送一律走 composio-pg 的 Composio GitHub（ZMGID）。
 - (2026-10-12) 大局更新（见 `notes/big-picture.md`）：Dsivio 发布 v1.1.1、kivio 发布 v3.1.2，但两边 main CI 都在 windows-rust 的 Rust 测试上失败，待修绿；kivio 新 issue #62（上下文超限后永久 400）；官网仍是 v1.1.0 待更新；新号已注册电脑里没有 Mac mini（只有 ZMair）。
+- (2026-10-12) 旧号盒子上的小萌 18:40 写了换号迁移清单 `workspace/assistant/ideas/grokbot-home-migration-checklist-2026-10-12.md`；旧号盒子上 lark-cli 晚上报「应用未启用」（20069），需要用户在飞书开发者后台重新启用应用并重新扫码。

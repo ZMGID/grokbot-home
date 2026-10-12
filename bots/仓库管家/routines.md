@@ -22,7 +22,7 @@
 ## 2. 换号演练与安全审计
 
 - **触发**：每周日 15:12（北京时间）。cron：`CRON_TZ=Asia/Shanghai 12 15 * * 0`
-- **状态**：本账号在用（2026-10-12 提示词更新：演练须逐包 decrypt-check 全部 secrets/*.enc）。
+- **状态**：本账号在用（2026-10-12 提示词更新：演练须逐包 decrypt-check 全部 secrets/*.enc；10-12 03:22 再改：去掉口令偏短的提醒，只提醒旧私有仓库。下方原文按该改动补齐）。
 - **保存的提示词（重建时用 UpdateRoutine 创建）**：
 
 ```text
@@ -30,7 +30,7 @@
 1) 换号演练：在 /tmp 下新建临时目录，不带任何登录凭证匿名克隆公开仓库，假装自己是新号上的 bot，按 BOOTSTRAP.md 从头空跑一遍（含 Step 0 各子步骤），逐步检查每一步引用的文件、脚本、命令和参数是否存在、是否和现状一致（不新建 bot、不建定时任务、不装连接器、不往盒子真实目录解包）。
 2) 加密包逐个核对：对 secrets/ 下每一个 *.enc（至少 COMPOSIO_API_KEY.enc、COMPOSIO_API_KEY.box-current.enc、box-secrets.tgz.enc、feishu-cli.tgz.enc、daily.tgz.enc、finance.tgz.enc，以及新出现的），用环境变量 GROKBOT_HOME_PASSPHRASE 和 scripts/secret-crypt.py 解密（文本用 dec，tgz 用 dec-bin）：确认能解开、文本格式对、tgz 能列出文件清单且清单里有 BOOTSTRAP 恢复步骤需要的文件；再和盒子上的现状对比，确认包没有过期（例如缺了新加的凭据或目录）。解出的内容只放权限 600 的临时目录，只看文件名和格式，绝不打印内容、不记录、不写进任何文件或消息，核对完立刻删除。逐包记下结果（通过/解不开/缺文件/过期）。
 3) 完整性：bots/agent-map.json 和 bots/index.json 里的每个 bot 都有完整的 profile.md、CONTEXT.md、routines.md，每条定时任务都有 cron 和提示词原文；setup.sh、scripts/pack-bundles.sh、scripts/sync.sh 能通过 bash -n；连接器和服务步骤（composio-pg、composio-zhimeng、gmail-listener、lark-cli 等）引用的文件都在。
-4) 安全审计：对公开仓库的全部 git 历史和工作区跑 scripts/secret-scan.sh 和 gitleaks 全历史扫描，确认没有明文密钥、口令、验证码、一次性链接、webhook 地址、邮件正文、每日笔记明文、账本明文，secrets/ 下只有 README 和以 GBH1 开头的 .enc。检查遗留风险：旧私有仓库 ZMGID/grokbot-home-private-old 是否仍存在；口令是否仍然偏短（现在所有密钥包都在公开仓库里，短口令可被离线暴力破解，需要明确提醒）。只提醒，不替用户删仓库或改口令。
+4) 安全审计：对公开仓库的全部 git 历史和工作区跑 scripts/secret-scan.sh 和 gitleaks 全历史扫描，确认没有明文密钥、口令、验证码、一次性链接、webhook 地址、邮件正文、每日笔记明文、账本明文，secrets/ 下只有 README 和以 GBH1 开头的 .enc。检查遗留风险：旧私有仓库 ZMGID/grokbot-home-private-old 是否仍存在（只提醒，不替用户删仓库）。口令用户 2026-10-12 决定不换：不检查、不提醒口令长度，也不建议换口令。
 5) 发现断点就在 /workspace/grokbot-home 里修好（包过期就通过 bash scripts/sync.sh 重打包），推送前一律运行 bash scripts/sync.sh（密钥扫描不干净就中止，绝不放宽扫描或加白名单）；修不了的记下来。演练结束删除 /tmp 下所有临时目录和解密内容。
 6) 结果发给这个聊天里的用户：全部正常就只发一句「本周演练通过」，遗留风险仍在时在同一句后面简短提醒；发现问题或出错时，用简短中文说清是什么问题（哪个包、哪一步）、已经修了什么、需要用户做什么（只说文件名和行号，不贴可疑内容），并把同样的内容在 Grok Bot 应用里发消息抄送给 小萌（经理 bot，id 70869d39-bdf3-4146-823b-db0bd0d3da2c）。
 ```
