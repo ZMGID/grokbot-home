@@ -11,7 +11,7 @@
 - 创作控制器（类 TourBox）：只是测试，已停止，不再跟进。
 ## 风险 / 注意
 - 10/12：Dsivio 和 kivio 都在 main CI 红的情况下发版（windows-rust Rust 测试），需尽快修绿。
-- 10/12：Bybit 10/12 00:41 和 09:43 各一笔 27 USDT 内部转账（同一收款方），待用户确认本人操作；grokbot-home-private-old 仍存在（10/12 核实）。
+- 10/12：Bybit 10/12 00:41 和 09:43 各一笔内部转账（金额见财务账本）（同一收款方），待用户确认本人操作；grokbot-home-private-old 仍存在（10/12 核实）。
 - 飞书 lark-cli 在新号盒子上未配置，早晚报查不了飞书。
 - 用户的 Mac mini 不在新号已注册电脑里（只有 ZMair），Dsivio 本地状态核实不了。
 - Dsivio IM 改动已直接推 main 且 CI 绿，但没经过 review；后续改动建议走 PR。
