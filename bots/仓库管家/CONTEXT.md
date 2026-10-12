@@ -25,3 +25,4 @@
 - (2026-10-11) 账本改为每次 sync 重打包加密进 `secrets/finance.tgz.enc`（`enc-bin`）；明文 `/workspace/finance/` 仍不进工作树。财务管家 memory 有内容时另写 `secrets/财务管家-memory.tgz.enc`。BOOTSTRAP 换号时用 `dec-bin` 恢复。
 - (2026-10-12) 用户确认规矩「明文不进、加密包必进」。每日同步与周日演练提示词已更新：sync 必跑 `pack-bundles.sh`；演练对每个 `secrets/*.enc` 做 decrypt-check（只看文件名/格式，不落明文到仓库）。
 - (2026-10-12) 用户明确表示口令**不换**，且不想再被提醒：以后同步、演练、汇报里都不要再建议换口令（只在用户主动提起时再谈）。
+- (2026-10-13) 新号盒子上 `/workspace/assistant/daily/` 只剩 10-12，lark-cli 用户登录文件也不在，重新打包的 `daily`、`box-secrets` 包会比仓库里的旧包少文件，所以这两个包没覆盖仓库里的完整版。`pack-bundles.sh` 修了一处：会话里没有 COMPOSIO_API_KEY 等环境变量时沿用 box 上的 `~/.grokbot-home/secrets.env`，不再把它从包里丢掉。各 bot 的 raw/profile.json 快照仍不提交（新号头像被重置，描述多了一句 bootstrap 提示）。
