@@ -20,6 +20,8 @@
 | 6 | **Composio 插件**（`user-Composio`，plugin id `32661537`） | 插件市场 OAuth 版 | — | — | ❌ 不需要（它看到的是另一个 Composio user） |
 | 7 | **Finance**（`user-Finance-xai`，plugin id `63408931`） | 插件市场 | — | — | ❌ 不需要 |
 
+> **当前账号实际状态（2026-10-13 GetMcpServerStatus）**：composio-pg、composio-zhimeng 已连接；Origin 已连接（平台自带，不用）；GitHub（cursor-github）、Finance 为 needsAuth，不用管；Composio 插件（`user-Composio`）在本账号未安装。
+
 另外两样不是「应用连接器」但要记得：
 
 - **pstack 插件**（plugin id **`9717366`**，cursor-public）：写代码类 bot 用的工作流技能包（architect、tdd、swarm、arena……）。**可选**（原为 dr eggbot 安装；该 bot 已于 2026-10-08 删除）。这是技能插件，不是应用连接；需要时再 `InstallPlugin 9717366`。

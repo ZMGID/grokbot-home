@@ -1,4 +1,4 @@
-# 工具环境快照（自动生成，2026-10-12 03:19:47 CST）
+# 工具环境快照（自动生成，2026-10-13 03:30:15 CST）
 - kicad-cli: /usr/bin/kicad-cli
 - pio: /home/box/.local/bin/pio
 - node: /usr/bin/node
@@ -8,17 +8,17 @@
 - bun: /usr/local/bin/bun
 - gh: /usr/bin/gh
 - git: /usr/bin/git
-- git-lfs: MISSING
+- git-lfs: /usr/bin/git-lfs
 - java: /usr/bin/java
 - uv: /usr/local/bin/uv
-- cargo: /home/box/.cargo/bin/cargo
+- cargo: /usr/bin/cargo
 - go: /usr/bin/go
 - prusa-slicer: /usr/bin/prusa-slicer
 - gitleaks: /home/box/.local/bin/gitleaks
 
 ## pip --user
 - aiohappyeyeballs==2.7.1
-- aiohttp==3.14.4
+- aiohttp==3.14.5
 - aiosignal==1.4.0
 - ajsonrpc==1.2.0
 - anyio==4.15.1
@@ -40,7 +40,7 @@
 - matplotlib==3.11.2
 - more-itertools==11.1.0
 - msgpack==1.2.3
-- multidict==6.9.1
+- multidict==7.1.0
 - multimethod==1.12
 - networkx==3.7
 - nlopt==2.11.0
@@ -59,14 +59,14 @@
 - tabulate==0.10.0
 - trame==4.0.0
 - trame-client==4.1.4
-- trame-common==1.2.7
+- trame-common==1.2.9
 - trame-components==2.5.0
-- trame-server==4.0.0
+- trame-server==4.1.0
 - trame-vtk==2.11.17
 - trame-vuetify==3.3.0
 - trimesh==5.1.1
 - uvicorn==0.54.0
 - vtk==9.6.2
-- wslink==2.5.7
+- wslink==2.6.0
 - wsproto==1.3.2
 - yarl==1.25.1

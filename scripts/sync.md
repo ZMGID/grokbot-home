@@ -46,3 +46,4 @@ bash scripts/secret-scan.sh      # 只做密钥扫描
 - 不要把明文 `/workspace/finance/` 或 `/workspace/assistant/daily/` 复制进仓库；账本只以 `secrets/finance.tgz.enc` 形式备份；`.gitignore` 已忽略明文路径；扫描脚本会拦。
 - 不要把 `/workspace/gmail-listener/` 的 `venv/`、`*.log`、`seen.txt`、`forwarded_ids.txt`、`failed.jsonl`、`webhook_url.local` 或 `~/.lark-cli/`、`~/.local/share/lark-cli/`、`feishu-cli/survey/` 复制进仓库。`listener.py`/`run_loop.sh` 可同步（无内嵌密钥）；`webhook_url.local` 永不进仓库。
 - 环境变量 `GMAIL_WEBHOOK_KEY` / Composio API key / `GROKBOT_HOME_PASSPHRASE` 的**值**永不进仓库（变量名可以写在文档里）。
+- (2026-10-13) 重新打包后若 `daily`、`box-secrets` 等包比仓库里的旧包**少了文件**（例如新号盒子没恢复全），不要提交这个变小的包，保留仓库里的完整版并在汇报里说明；`pack-bundles.sh` 在没有 COMPOSIO_API_KEY 等环境变量时会沿用 box 上已有的 `~/.grokbot-home/secrets.env`。

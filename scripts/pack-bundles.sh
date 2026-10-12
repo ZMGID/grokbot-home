@@ -61,9 +61,14 @@ done
 # 新增 ssh 私钥（若以后放进 ~/.ssh）也一起带上
 for k in "$HOME"/.ssh/id_*; do [[ -f "$k" ]] && { mkdir -p "$ROOT/$H/.ssh"; cp -a "$k" "$ROOT/$H/.ssh/"; }; done
 ENVF="$ROOT/$H/.grokbot-home/secrets.env"
-for v in COMPOSIO_API_KEY GMAIL_WEBHOOK_KEY GMAIL_WEBHOOK_URL; do
-  if [[ -n "${!v:-}" ]]; then mkdir -p "$(dirname "$ENVF")"; printf 'export %s=%q\n' "$v" "${!v}" >> "$ENVF"; fi
-done
+if [[ -z "${COMPOSIO_API_KEY:-}${GMAIL_WEBHOOK_KEY:-}${GMAIL_WEBHOOK_URL:-}" && -f "$HOME/.grokbot-home/secrets.env" ]]; then
+  # 本次运行没有这些环境变量（例如定时任务的新会话）：沿用 box 上已恢复的 secrets.env，避免新包把它丢掉
+  mkdir -p "$(dirname "$ENVF")"; cp -a "$HOME/.grokbot-home/secrets.env" "$ENVF"
+else
+  for v in COMPOSIO_API_KEY GMAIL_WEBHOOK_KEY GMAIL_WEBHOOK_URL; do
+    if [[ -n "${!v:-}" ]]; then mkdir -p "$(dirname "$ENVF")"; printf 'export %s=%q\n' "$v" "${!v}" >> "$ENVF"; fi
+  done
+fi
 [[ -f "$ENVF" ]] && chmod 600 "$ENVF"
 mapfile -t BOXPATHS < <(cd "$ROOT" && find . -mindepth 1 \( -type f -o -type l \) -printf '%P\n' | sort)
 pack_enc secrets/box-secrets.tgz.enc "$ROOT" "${BOXPATHS[@]}"
