@@ -30,3 +30,4 @@
 - (2026-10-13) 发现新旧两个账号的仓库管家都在 03:14 跑每日同步、都往本仓库推（新号 03:35 先推，旧号随后 rebase）。两边各有一个小萌在改 big-picture，会互相覆盖；旧号这次保留了新号推上来的 big-picture 与 box-secrets 包，只补进旧号独有的内容（10-12 每日笔记加密包、迁移清单、飞书 20069 故障、本 bot 设定）。哪个账号为准、旧号的定时任务要不要停，等用户或小萌定。
 
 - (2026-10-14) 每日同步 03:26：刷新 big-picture（10-13 晚报版，去掉公开仓不宜出现的具体金额）、补 10-13 每日笔记加密包；agent-map 仍用新号 id（本旧号盒子按名字匹配 raw 快照）；空白默认 Grok Bot `04d9635a-…` 仍不在账号、不登记；连接器核对：composio-pg / composio-zhimeng / Origin / x 可用，cursor-github 与 Finance 为 needsAuth（不用），本账号另有 user-Composio ready。
+- (2026-10-14，新号) 每日同步 03:33：旧号已在 03:26–03:30 先推过一次（含 box-secrets 包先缩小后恢复）；新号补登记新 bot「商品调研」（agent-map、index.json、bots/README、BOOTSTRAP），新号空白默认「Grok Bot」`79d40bdd-…` 不登记；连接器清单补 Monid（新号已连接），并把状态行改为新旧两号分开写。

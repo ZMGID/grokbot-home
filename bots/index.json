@@ -134,6 +134,25 @@
       "role": "记账 / 订阅与固定支出 / 预算 / 报销对账 / 财务材料（只记录，从不付款）",
       "raw_memory_excluded": true,
       "notes": "明文账本 /workspace/finance/；加密备份 secrets/finance.tgz.enc；raw memory 不进仓"
+    },
+    {
+      "slug": "商品调研",
+      "name": "商品调研",
+      "title": "",
+      "primary": false,
+      "avatar": {
+        "shape": "",
+        "color": "",
+        "image": null
+      },
+      "old_agent_id": null,
+      "description_reconstructed": false,
+      "routines": [],
+      "plugins_needed": [
+        "Monid"
+      ],
+      "role": "商品调研：单品调研、1688 成本、侵权禁售风险、做不做建议（虾皮日常选品仍归小枳）",
+      "notes": "2026-10-13 在新号上新建；GeckoAPI key 只在环境变量 GECKOAPI_KEY"
     }
   ]
 }

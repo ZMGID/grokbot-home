@@ -19,8 +19,9 @@
 | 5 | **Origin**（`cursor-origin`） | 官方连接器 | — | — | ❌ 不需要 |
 | 6 | **Composio 插件**（`user-Composio`，plugin id `32661537`） | 插件市场 OAuth 版 | — | — | ❌ 不需要（它看到的是另一个 Composio user） |
 | 7 | **Finance**（`user-Finance-xai`，plugin id `63408931`） | 插件市场 | — | — | ❌ 不需要 |
+| 8 | **Monid**（`user-Monid`，plugin id `63373743`） | 插件市场（http） | 2026-10-13 新号上装好；商品调研用它查数据，预付余额在 Monid 钱包 | 换号后在插件市场装 Monid 并登录用户的 Monid 账号 | ✅ 商品调研需要（查不了 TikTok Shop 巴西站，巴西站改用 GeckoAPI，key 只在环境变量 `GECKOAPI_KEY`） |
 
-> **当前账号实际状态（2026-10-14 GetDynamicTools）**：composio-pg、composio-zhimeng 已连接（ready）；Origin、x 已连接（平台自带）；GitHub（cursor-github）、Finance 为 needsAuth，不用管；本旧号账号上 Composio 插件（`user-Composio`）为 ready（新号侧以当时记录为准）。
+> **当前账号实际状态**：新号（2026-10-14 GetMcpServerStatus）：composio-pg、composio-zhimeng、Monid 已连接；Origin 已连接（平台自带，不用）；GitHub（cursor-github）、Finance 为 needsAuth，不用管；Composio 插件（`user-Composio`）未安装。旧号（2026-10-14 旧号同步记录）：composio-pg、composio-zhimeng、Origin、x 可用，cursor-github、Finance 为 needsAuth，另有 `user-Composio` ready。
 
 另外两样不是「应用连接器」但要记得：
 

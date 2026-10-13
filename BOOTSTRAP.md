@@ -222,11 +222,11 @@ Primary = `bots/index.json` → `"primary": "grok-bot"`. Read `bots/grok-bot/pro
 
 ## Step 6 — Recreate every other bot / 用 CreateAgent 重建其他 bot
 
-For **each** folder in `bots/` except the primary — driven by `bots/index.json`. Current set (2026-10-09): `xiaozhi`（小枳）, `仓库管家`, `代码工程师`, `搭建运维`, `事务秘书`, `硬件工程师`, `财务管家`. **Do not** recreate deleted `dr-eggbot`.
+For **each** folder in `bots/` except the primary — driven by `bots/index.json`. Current set (2026-10-14): `xiaozhi`（小枳）, `仓库管家`, `代码工程师`, `搭建运维`, `事务秘书`, `硬件工程师`, `财务管家`, `商品调研`. **Do not** recreate deleted `dr-eggbot`.
 
 1. Read `bots/<slug>/profile.md`.
 2. Call **CreateAgent** with:
-   - **name**: exactly as in profile.md (`小枳`, `仓库管家`, `代码工程师`, `搭建运维`, `事务秘书`, `硬件工程师`, `财务管家`)
+   - **name**: exactly as in profile.md (`小枳`, `仓库管家`, `代码工程师`, `搭建运维`, `事务秘书`, `硬件工程师`, `财务管家`, `商品调研`)
    - **title**: as in profile.md (currently empty)
    - **description / instructions**: the text block in profile.md (keep verbatim; xiaozhi's is reconstructed), **plus** this line appended:
      `On your first turn, read /workspace/grokbot-home/CONTEXT.md and /workspace/grokbot-home/bots/<slug>/CONTEXT.md, save the key facts to your memory, then recreate your routines from bots/<slug>/routines.md.`
@@ -249,7 +249,7 @@ Routines belong to the bot that creates them, so:
 - **Other bots**: each recreates its own from `bots/<slug>/routines.md` on its first turn. Match that file:
   - `仓库管家`: daily sync / weekly drill — see `bots/仓库管家/routines.md` (may still use `CRON_TZ=Asia/Shanghai`, same UTC+8).
   - `事务秘书`: morning `53 8 * * 1-5`, evening `47 17 * * 1-5` (plain cron; Asia/Hong_Kong).
-  - `xiaozhi` / `代码工程师` / `搭建运维` / `硬件工程师` / `财务管家`: none（暂无）.
+  - `xiaozhi` / `代码工程师` / `搭建运维` / `硬件工程师` / `财务管家` / `商品调研`: none（暂无）.
 - After a few minutes, check each bot did it (ReadTranscript, or ask the user). If a bot can't create routines, create them yourself only if the user agrees.
 
 ## Step 8 — Self-check / 自检
@@ -291,7 +291,7 @@ Send one short Chinese message: what's done, what failed, what the user still ne
 - [ ] Step 3: pstack (9717366) optional（可选，原为 dr eggbot 安装）; official GitHub/Origin/Finance/Composio-plugin **not** installed
 - [ ] Step 4: skills imported (currently none) 
 - [ ] Step 5: own profile = **小萌** (slug `grok-bot`), primary, memory seeded from CONTEXT.md
-- [ ] Step 6: 小枳 / 仓库管家 / 代码工程师 / 搭建运维 / 事务秘书 / 硬件工程师 / 财务管家 created; `bots/agent-map.json` updated & pushed (no dr eggbot)
+- [ ] Step 6: 小枳 / 仓库管家 / 代码工程师 / 搭建运维 / 事务秘书 / 硬件工程师 / 财务管家 / 商品调研 created; `bots/agent-map.json` updated & pushed (no dr eggbot)
 - [ ] Step 7: daily sync on **仓库管家**; 事务秘书 08:53/17:47; 小萌 巡检 11:17/15:17 only; others per `routines.md`
 - [ ] Step 8: composio-pg GitHub+ohulercxm8 + composio-zhimeng zhimeng63 Gmail active; secret scan clean
 - [ ] Step 9: write-back rule saved in memory
