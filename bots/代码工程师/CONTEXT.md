@@ -15,3 +15,7 @@
 - (2026-10-08) 用户次日重点：手工继续优化环境配置（PR #2/#3/#4 基础上）；并启动 IM Gateway（调研归小枳）。
 
 - (2026-10-09) 用户说不需要内置 WebView2，Dsivio **PR #2 已关闭未合并**（分支保留）。随后 #1、#5（15:21）和 #3、#4（16:00/16:01）都已合入 main，Dsivio 无开着的 PR；main CI 15:21 首次转绿，合 #3/#4 后最新提交的 CI 被取消、待核实。kivio #60 仍为草稿。
+
+- (2026-10-12) Dsivio 发布 v1.1.1（Release CI 绿），但 main windows-rust 连续红；干净 Windows 验收与 IM 真机联调仍未做。
+- (2026-10-12) kivio 发布 v3.1.2；main windows-rust 红；新 issue #62（上下文超限后永久 400）。
+- (2026-10-13) kivio 合并 PR #58、#59；下午修 Windows CI（quality 绿、windows-rust 仍红）；bot 模式分支 `codex/bot-development` 无新提交且落后 main。Dsivio 当天无提交，main 仍红。

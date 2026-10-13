@@ -28,3 +28,5 @@
 - (2026-10-13) 新号盒子上 `/workspace/assistant/daily/` 只剩 10-12，lark-cli 用户登录文件也不在，重新打包的 `daily`、`box-secrets` 包会比仓库里的旧包少文件，所以这两个包没覆盖仓库里的完整版。`pack-bundles.sh` 修了一处：会话里没有 COMPOSIO_API_KEY 等环境变量时沿用 box 上的 `~/.grokbot-home/secrets.env`，不再把它从包里丢掉。各 bot 的 raw/profile.json 快照仍不提交（新号头像被重置，描述多了一句 bootstrap 提示）。
 - (2026-10-12) 旧号上本 bot 的 description 03:22 改版（重打包加密包、演练逐包解密、口令不换不再提醒），profile.md 与周日演练原文 10-13 补齐。
 - (2026-10-13) 发现新旧两个账号的仓库管家都在 03:14 跑每日同步、都往本仓库推（新号 03:35 先推，旧号随后 rebase）。两边各有一个小萌在改 big-picture，会互相覆盖；旧号这次保留了新号推上来的 big-picture 与 box-secrets 包，只补进旧号独有的内容（10-12 每日笔记加密包、迁移清单、飞书 20069 故障、本 bot 设定）。哪个账号为准、旧号的定时任务要不要停，等用户或小萌定。
+
+- (2026-10-14) 每日同步 03:26：刷新 big-picture（10-13 晚报版，去掉公开仓不宜出现的具体金额）、补 10-13 每日笔记加密包；agent-map 仍用新号 id（本旧号盒子按名字匹配 raw 快照）；空白默认 Grok Bot `04d9635a-…` 仍不在账号、不登记；连接器核对：composio-pg / composio-zhimeng / Origin / x 可用，cursor-github 与 Finance 为 needsAuth（不用），本账号另有 user-Composio ready。

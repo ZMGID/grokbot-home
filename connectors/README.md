@@ -20,7 +20,7 @@
 | 6 | **Composio 插件**（`user-Composio`，plugin id `32661537`） | 插件市场 OAuth 版 | — | — | ❌ 不需要（它看到的是另一个 Composio user） |
 | 7 | **Finance**（`user-Finance-xai`，plugin id `63408931`） | 插件市场 | — | — | ❌ 不需要 |
 
-> **当前账号实际状态（2026-10-13 GetMcpServerStatus）**：composio-pg、composio-zhimeng 已连接；Origin 已连接（平台自带，不用）；GitHub（cursor-github）、Finance 为 needsAuth，不用管；Composio 插件（`user-Composio`）在本账号未安装。
+> **当前账号实际状态（2026-10-14 GetDynamicTools）**：composio-pg、composio-zhimeng 已连接（ready）；Origin、x 已连接（平台自带）；GitHub（cursor-github）、Finance 为 needsAuth，不用管；本旧号账号上 Composio 插件（`user-Composio`）为 ready（新号侧以当时记录为准）。
 
 另外两样不是「应用连接器」但要记得：
 
