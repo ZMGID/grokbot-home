@@ -81,6 +81,13 @@
 - (2026-10-13，新号) 14:24 按用户要求新建商品调研 bot（`19702f19-…`，见 `bots/商品调研/`）；盒子上新装 Monid 插件（已连接）。
 
 ## 2026-10-14
+<<<<<<< Updated upstream
 - (2026-10-14，新号) 11:21 巡检推代码工程师修 kivio CI（`23cddd2` 红）；15:27 巡检确认 kivio main `5b0c96f` 已绿，转去盯 Dsivio windows-rust，并提醒本机 `/workspace/kivio` 是脏树要先回到 main。
 - (2026-10-14，新号) 12:07 发现 composio-pg 当天 10:14 新授权了另一个 Gmail（非 ohulercxm8），读信默认会落到新邮箱，问用户；16:45 用户决定两个都保留，并说这件事小萌不用管。
 - (2026-10-14) 大局 `notes/big-picture.md` 由事务秘书晚报更新到 10-14 17:55 版（kivio CI 绿；Dsivio 冲 v1.1.2、Release 未完成、官网仍 v1.1.0；账号安全与飞书扫码仍拖）。
+=======
+- (2026-10-14) 大局更新（见 `notes/big-picture.md`）：Dsivio 白天约 12 个提交并准备 v1.1.2（main 跳过 CI）；kivio 合 #64 后 main 转绿，bot 模式/Rust SDK 仍零进展；官网仍 v1.1.0；飞书第 3 天不通。
+- (2026-10-14) 巡检：gmail-listener 实时连接假死，11:27 重启后恢复；漏掉的邮件不会补发。
+- (2026-10-14) composio-pg Gmail 连接变为 qq290657442@gmail.com，ohulercxm8 不再被读，待用户确认。
+- (2026-10-14) 本周方向明显偏离原定 kivio 两条主线，晚报建议用户明确继续 kivio 还是转向 Dsivio。
+>>>>>>> Stashed changes

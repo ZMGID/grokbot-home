@@ -6,7 +6,11 @@
 >
 > **规矩**：应用连接默认只走 Composio 自定义 stdio MCP。**不要**再装官方 GitHub / Origin / Finance / Composio 插件。
 > **例外**：飞书用官方 **lark-cli**（见下文「飞书 lark-cli」；Composio 无飞书）。
+<<<<<<< Updated upstream
 > - **`composio-pg`**：用户 `pg-test-…` → GitHub ZMGID（`ca_1g4u93YydZsp`）+ Gmail ohulercxm8（`ca_ZnzYtlTeic0s`）——原则是一个连接器一个 Gmail；**2026-10-14 起另有第二个 Gmail `ca_JwThbeIld_Jw`（用户决定两个都保留），读 ohulercxm8 时要指定连接**
+=======
+> - **`composio-pg`**：用户 `pg-test-…` → GitHub ZMGID（`ca_1g4u93YydZsp`）+ Gmail（**约定** ohulercxm8 / `ca_ZnzYtlTeic0s`；**2026-10-15 实测 ACTIVE 为** qq290657442 / `ca_JwThbeIld_Jw`，待确认）——**一个连接器一个 Gmail**
+>>>>>>> Stashed changes
 > - **`composio-zhimeng`**：用户 `zhimeng63` → Gmail zhimeng63（`ca_5jGHEthCoWuD`）only（共用 `/home/box/.composio_pg_key`）
 > - 旧 composio-pg 上的 zhimeng63 连接 **`ca_2rJjmKh8j1q0` 已删除**（2026-10-09，用户同意）；新号勿在 pg-test 下重建 zhimeng63
 
@@ -21,7 +25,11 @@
 | 7 | **Finance**（`user-Finance-xai`，plugin id `63408931`） | 插件市场 | — | — | ❌ 不需要 |
 | 8 | **Monid**（`user-Monid`，plugin id `63373743`） | 插件市场（http） | 2026-10-13 新号上装好；商品调研用它查数据，预付余额在 Monid 钱包 | 换号后在插件市场装 Monid 并登录用户的 Monid 账号 | ✅ 商品调研需要（查不了 TikTok Shop 巴西站，巴西站改用 GeckoAPI，key 只在环境变量 `GECKOAPI_KEY`） |
 
+<<<<<<< Updated upstream
 > **当前账号实际状态**：新号（2026-10-15 核对）：composio-pg、composio-zhimeng、Monid、x 可用；Origin 已连接（平台自带，不用）；GitHub（cursor-github）、Finance 为 needsAuth，不用管；Composio 插件（`user-Composio`）未安装。composio-pg 自检：GitHub 仍是 ZMGID（`ca_1g4u93YydZsp`），但 Gmail 默认连接已变成 2026-10-14 新授权的另一个邮箱（`ca_JwThbeIld_Jw`，非 ohulercxm8），用户 10-14 决定两个都保留。旧号（2026-10-14 旧号同步记录）：composio-pg、composio-zhimeng、Origin、x 可用，cursor-github、Finance 为 needsAuth，另有 `user-Composio` ready。
+=======
+> **当前账号实际状态**：新号（2026-10-14）：composio-pg、composio-zhimeng、Monid 已连接；Origin 已连接（平台自带，不用）；GitHub（cursor-github）、Finance 为 needsAuth，不用管；Composio 插件（`user-Composio`）未安装。旧号（2026-10-15 COMPOSIO_MANAGE_CONNECTIONS）：composio-pg（GitHub ZMGID `ca_1g4u93YydZsp` ACTIVE；**Gmail 现为 `qq290657442@gmail.com` / `ca_JwThbeIld_Jw`，不再是 ohulercxm8，待用户确认**）、composio-zhimeng、Origin、x 可用，cursor-github needsAuth，另有 `user-Composio` ready；本旧号无 Monid。
+>>>>>>> Stashed changes
 
 另外两样不是「应用连接器」但要记得：
 
@@ -39,10 +47,16 @@
 | 应用 | 账号 | connected account |
 |---|---|---|
 | GitHub | ZMGID（ZhiMeng） | `ca_1g4u93YydZsp` |
+<<<<<<< Updated upstream
 | Gmail | ohulercxm8@gmail.com | `ca_ZnzYtlTeic0s` |
 | Gmail（第二个，2026-10-14 新授权） | 另一个 Gmail（非 ohulercxm8；用户决定保留） | `ca_JwThbeIld_Jw`（现在 COMPOSIO_MANAGE_CONNECTIONS 默认返回它） |
+=======
+| Gmail | **现** qq290657442@gmail.com（2026-10-14 起，待用户确认是否有意） | `ca_JwThbeIld_Jw` |
+| Gmail | ~~原~~ ohulercxm8@gmail.com（文档约定；2026-10-15 核实已不在 ACTIVE） | `ca_ZnzYtlTeic0s` |
+>>>>>>> Stashed changes
 
 ~~旧~~：曾有 Gmail zhimeng63@gmail.com / `ca_2rJjmKh8j1q0`，已于 2026-10-09 经用户同意从 composio-pg 删除。新号重建时**不要**在 pg-test 用户下再授权 zhimeng63——只走 composio-zhimeng。
+**(2026-10-15)** composio-pg 的 ACTIVE Gmail 变成了 qq290657442；若非用户有意，应在 Composio 控制台把 ohulercxm8 接回 pg-test，并停用/删除 qq290657442 连接。
 
 Composio 项目 ID：`pr_lh5-8poHU4QB`（只有这一个项目）。
 

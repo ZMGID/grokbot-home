@@ -9,7 +9,7 @@
 - 时区 Asia/Shanghai（UTC+8）。
 - 有好几个 Grok Bot 账号，轮换着用，希望换号的成本尽量低（这个仓库就是为此建的）。
 - GitHub 账号：`ZMGID`（显示名 ZhiMeng）。个人仓库约 16 公开 + 5 私有，主项目 kivio；还是组织 `dsh-external` 的成员（约 184 个 DSH 相关私有仓库）。
-- 邮箱：`ohulercxm8@gmail.com`（仅 **`composio-pg`** / `ca_ZnzYtlTeic0s`）、`zhimeng63@gmail.com`（仅 **`composio-zhimeng`** / `ca_5jGHEthCoWuD`）。
+- 邮箱：`ohulercxm8@gmail.com`（约定仅 **`composio-pg`** / `ca_ZnzYtlTeic0s`；**2026-10-15 核实 ACTIVE 已变成** `qq290657442@gmail.com` / `ca_JwThbeIld_Jw`，待确认）、`zhimeng63@gmail.com`（仅 **`composio-zhimeng`** / `ca_5jGHEthCoWuD`）。
 - 常用本地 CLI：Claude Code、Codex、Pi、OpenCode、DSH。
 - 评估别人的仓库时更看重 git 时间线和 AI 痕迹，不看功能清单。
 - 在做虾皮（Shopee）巴西站选品调研，打算用 agent + Playwright + Shopdora（虾多拉）插件做自动化，而不是紫鸟浏览器（详见 `bots/xiaozhi/CONTEXT.md`）。
@@ -100,3 +100,11 @@
 ## 近期重点（2026-10-10 晚）
 - (2026-10-10) 用户定下这几天的三条主线：① kivio（ZMGID/kivio）做 **bot 模式**，并加**版本检查**；② 给 kivio 的 AI 框架定一套 **Rust SDK 标准**；③ 推进 Dsivio：按运营同事日常高频工作写**插件**（先摸清运营日常、列插件候选清单再排序）。前两件用户自评都比较难。
 - (2026-10-10) 用户发现 **Monid**（monid.ai）：把各类工具/数据接口集中到一个平台、一个预付余额统一付费（不含大模型；开源的只有 MIT 协议的接口定义和本地引擎）。用户觉得会很有用，待议两个想法：小额试用跑选品数据；借鉴思路给 Dsivio 做「一个 key 通吃」代理。均未决定，笔记在 box 的 `/workspace/assistant/ideas/monid-unified-api.md`。
+
+## 近期重点（2026-10-14 晚）
+- (2026-10-14) Dsivio：白天一次推上 main 约 12 个提交（Monid + GeckoAPI 工具网关、平台竞品调研插件、agent 重试统一与 Windows 稳定、markdown 货币显示修复、去掉 macOS Vision OCR、Impeccable 设计工具）；准备 v1.1.2（草稿，Release 构建当晚在跑）。main 这批提交带 `[skip ci]` 未跑 CI；另开 PR #6 修 windows-rust（多次尝试中）。干净 Windows 实测与 IM 真机联调仍未做。
+- (2026-10-14) kivio：合并 PR #64 后 main CI 全绿；bot 模式分支 `codex/bot-development` 仍停在 10/12、落后 main 约 31；Rust SDK 标准仍无动静；issue #61/#62/#63/#65 仍待处理（#65：技能商店 CSP 未放行 clawhub.ai）。
+- (2026-10-14) 官网产品页仍写 v1.1.0，落后已发的 v1.1.1（v1.1.2 在打）。飞书 lark-cli 仍报「应用未启用」（20069），连续第 3 天。
+- (2026-10-14) **composio-pg 的 Gmail 连接已变成 `qq290657442@gmail.com`**（connected account `ca_JwThbeIld_Jw`，2026-10-14 新建），不再是 `ohulercxm8@gmail.com`（原 `ca_ZnzYtlTeic0s`）。待用户确认是否有意；未确认前监听/早报读信可能读到错误邮箱。
+- (2026-10-14) 本周原定 kivio bot 模式 + Rust SDK 标准仍零提交，白天时间主要花在 Dsivio；需用户明确本周是继续追 kivio 还是转向 Dsivio。
+- (2026-10-14) 账号安全待确认（zhimeng63）：Meta/Facebook 新账号与找回码、Reason Machines OAuth、GitHub App Cursor 权限申请、Bybit 相关通知等（细节在每日笔记加密包，不进明文）。
