@@ -15,14 +15,14 @@
 - grokbot-home-private-old 仍存在（10/10 核实，含明文 Composio 密钥），密钥轮换未核实。
 - 10/10 凌晨有 Devin 获得 ChatGPT 套餐额度授权、X 账号验证码和密码重置邮件，待用户确认是否本人操作。
 - 小米 MiMo V2.5 系列 10/21 10:00 下线，如有使用需迁到 V2.6。
-- vm-01 号池为空、请求 503（搭建运维汇报）；工作经费余额约 769 元，11/8 续费不足（财务管家汇报）。
+- vm-01 号池为空、请求 503（搭建运维汇报）；工作经费余额不足、11/8 续费可能不够（金额见财务账本；财务管家汇报）。
 - grokbot-home 加密口令只有 6 位数字（用户已知情并选择保留）。
 - 两个仓库 main 的 windows-rust 都红（10/12），release 分支绿，main 信号失效。
 - zhimeng63 的 Bybit 10/12 00:41、09:43 两笔内部转账（金额见财务账本）（iOS），待用户确认。
 - 10/13 zhimeng63：Bybit 受限地区登录通知、Bybit Pay 收到一笔 USDT（金额见财务账本）、GitHub 第三方 OAuth 应用 sub2api 获授权、Google Pay 新增卡片，待用户确认是否本人。
 - kivio bot 模式分支落后 main 越来越多，合并成本在涨。（10/13 18:40 核实：codex/bot-development 领先 10、落后 26，分支改了 269 个文件，main 那 26 个提交改了 229 个，两边重叠 109 个文件，集中在 chat/agent、chat/model、chat/commands、external_agents/session、settings。rebase 不是小活，建议改成把 main 合进分支一次解决冲突，或交给云端 agent 先做。另：kivio main cb94497 CI 仍红，quality 绿、windows-rust 红。）
 - Dsivio main 自 10/12 无绿 CI，10/14 的 12 个提交跳过 CI 直接推 main，v1.1.2 在未验证的 main 上打包。
-- 10/14 起 composio-pg 的 Gmail 连接变成 qq290657442@gmail.com（QQ 290657442@qq.com 转发进来，含 Shopee 巴西店 valebaibai 订单和赵远洪的 12306 通知），ohulercxm8 不再被读，待用户确认是否有意。
+- 10/14 起 composio-pg 新增第二个 Gmail 连接（`ca_JwThbeIld_Jw`，非 ohulercxm8）；用户决定两个都保留，读 ohulercxm8 时要指定连接。
 - 10/13 晚 zhimeng63 出现 Facebook 新账号、Meta 登录码和找回码，Reason Machines OAuth 授权，GitHub App Cursor 第 3 次申请权限，待用户确认。
 
 ## 本周方向

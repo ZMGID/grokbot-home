@@ -24,9 +24,6 @@
 - (2026-10-13) 晚报照常写入 `/workspace/assistant/daily/2026-10-13.md` 并更新 big-picture；飞书部分仍缺（应用未启用）。新旧两账号早晚报仍可能同时跑。
 - (2026-10-13，新号) 早报 09:14–09:18 发出并抄送小萌（抄送发了多次）；晚报 18:00 发出。晚报列出待用户确认的账号安全邮件（交易所收款与登录提醒、GitHub 上 Cursor / Devin.ai 申请更多权限和第三方 OAuth「sub2api」、Monid 新设备登录、GeckoAPI 订阅与 Google 授权），飞书仍查不了。
 
-<<<<<<< Updated upstream
 - (2026-10-14，新号) 早报 09:05、晚报 18:00 照常写入 daily 并抄送小萌，晚报同时更新 big-picture。飞书：应用已不再报「未启用」、机器人身份通了，只差用户本人扫码登录（用户 OAuth 缺失）。
-- (2026-10-14) 晚报指出：composio-pg 的 Gmail 默认连接已变成另一个邮箱，当晚 ohulercxm8 的邮件没读到（用户 16:45 已对小萌表示两个都保留、不用管）；Mac mini 不在已登记电脑里，已登记的两台当天离线。待用户确认的账号安全邮件延续：交易所收款与异地登录、GitHub 第三方授权（Cursor 加权限、Reason Machines、sub2api）、Meta/Facebook 登录注册、Monid 新设备、X 关联 Grok。早上计划里的清账号安全、关 kivio #62、定新旧 bot 主号等均未做。
-=======
-- (2026-10-14) 早报/晚报写入 `/workspace/assistant/daily/2026-10-14.md` 并更新 big-picture；飞书仍查不了（20069 第 3 天）。晚报发现 composio-pg 读到的 Gmail 已不是 ohulercxm8，而是 qq290657442@gmail.com，待用户确认。
->>>>>>> Stashed changes
+- (2026-10-14，旧号) 早报/晚报也写入 `/workspace/assistant/daily/2026-10-14.md`；本旧号盒子上飞书仍报 20069「应用未启用」。
+- (2026-10-14) 晚报指出：composio-pg 的 Gmail 默认连接已变成另一个邮箱（`ca_JwThbeIld_Jw`），当晚 ohulercxm8 的邮件没读到；用户 16:45 已对小萌表示两个都保留、不用管。Mac mini 不在已登记电脑里。账号安全邮件仍待确认（交易所、GitHub 第三方授权、Meta/Facebook、Monid 新设备、X 关联 Grok 等）。
