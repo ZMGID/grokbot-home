@@ -1,4 +1,4 @@
-# 工具环境快照（自动生成，2026-10-14 03:36:13 CST）
+# 工具环境快照（自动生成，2026-10-15 03:21:06 CST）
 - kicad-cli: /usr/bin/kicad-cli
 - pio: /home/box/.local/bin/pio
 - node: /usr/bin/node
@@ -11,7 +11,7 @@
 - git-lfs: /usr/bin/git-lfs
 - java: /usr/bin/java
 - uv: /usr/local/bin/uv
-- cargo: /usr/bin/cargo
+- cargo: /home/box/.cargo/bin/cargo
 - go: /usr/bin/go
 - prusa-slicer: /usr/bin/prusa-slicer
 - gitleaks: /home/box/.local/bin/gitleaks

@@ -31,3 +31,5 @@
 
 - (2026-10-14) 每日同步 03:26：刷新 big-picture（10-13 晚报版，去掉公开仓不宜出现的具体金额）、补 10-13 每日笔记加密包；agent-map 仍用新号 id（本旧号盒子按名字匹配 raw 快照）；空白默认 Grok Bot `04d9635a-…` 仍不在账号、不登记；连接器核对：composio-pg / composio-zhimeng / Origin / x 可用，cursor-github 与 Finance 为 needsAuth（不用），本账号另有 user-Composio ready。
 - (2026-10-14，新号) 每日同步 03:33：旧号已在 03:26–03:30 先推过一次（含 box-secrets 包先缩小后恢复）；新号补登记新 bot「商品调研」（agent-map、index.json、bots/README、BOOTSTRAP），新号空白默认「Grok Bot」`79d40bdd-…` 不登记；连接器清单补 Monid（新号已连接），并把状态行改为新旧两号分开写。
+- (2026-10-14，新号) 03:40 同步后问用户以新号还是旧号为准、另一边的同步停不停，截至 10-15 凌晨未回复。新号线上本 bot 的 description 当天改版（推送改写成走 composio-pg 的 GitHub；去掉口令偏短的提醒；去掉首轮 bootstrap 提示），`profile.md` 已补。
+- (2026-10-15，新号) 每日同步：远端最新仍是 10-14 03:40 的提交（旧号当天还没推）；补各 bot 10-14 进展、新技能 `skills/tiktok/`、composio-pg 新增的第二个 Gmail 连接；big-picture 刷新到 10-14 晚版（去掉金额、第三方邮箱地址和口令位数）。

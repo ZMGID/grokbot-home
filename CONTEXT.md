@@ -81,6 +81,14 @@
 - 用途只限可丢弃的事：注册测试账号、收验证码、不重要的往来邮件。重要账号、账单一律留在用户自己的 Gmail。
 - 小萌有一个只读的「cloudpotato 来信提醒」自动任务（来信即提醒用户，不回复、不删信），见 `bots/grok-bot/routines.md`。换号后该任务需按新号上的邮箱重建或删除。
 
+## 近期重点（2026-10-14 晚）
+- (2026-10-14) kivio：PR #64 修好 CI 并合入 main（`5b0c96f`），quality + windows-rust 都绿；#62、#63 仍开，新开 #65（技能商店 CSP 没放行）；PR #8/#15/#60/#61 仍挂着。
+- (2026-10-14) Dsivio：当天约 12 笔提交（Windows/重试修复、竞品调研插件、Monid/Gecko 网关等），在 `e665f4c` 准备 v1.1.2（skip ci），Release 当晚未打完；修 windows-rust 的 PR #6 仍未全绿；官网仍 v1.1.0，别对外说已发 1.1.2。
+- (2026-10-14) 飞书：应用已恢复、机器人身份通，只差用户本人扫码登录。
+- (2026-10-14) composio-pg 新增了第二个 Gmail 连接（非 ohulercxm8），读信默认会落到它；用户决定两个都保留。要读 ohulercxm8 时注意指定连接。GitHub 仍是 ZMGID。
+- (2026-10-14) 商品调研跑完收纳、假睫毛、化妆刷几批巴西 TikTok Shop 竞品表，并存成技能 `skills/tiktok/`（TikTok巴西站竞品调研）。
+- (2026-10-14) 新旧两个 Grok Bot 账号以哪个为准、旧号定时任务停不停，用户仍未定；账号安全邮件（交易所、GitHub 第三方授权、Meta、Monid 新设备）仍待用户确认。
+
 ## 近期重点（2026-10-13 晚）
 - (2026-10-13) Dsivio：当天无提交/无 PR/无 CI，main 仍红；干净 Windows 验收与 IM 真机联调已连续多日未做；官网产品页仍停在 v1.1.0，落后于已发的 v1.1.1。
 - (2026-10-13) kivio：合并 PR #58、#59（含上下文超限恢复对应 #62，但 issue 仍 open）；翻译器与 CUA 相关改动进 main；下午修 Windows CI，quality 转绿、windows-rust 仍红。bot 模式分支 `codex/bot-development` 当天无新提交，落后 main 较多，合并成本上升；Rust SDK 标准仍无动静；外部 PR #61 仍等批 CI。

@@ -19,3 +19,7 @@
 - (2026-10-12) Dsivio 发布 v1.1.1（Release CI 绿），但 main windows-rust 连续红；干净 Windows 验收与 IM 真机联调仍未做。
 - (2026-10-12) kivio 发布 v3.1.2；main windows-rust 红；新 issue #62（上下文超限后永久 400）。
 - (2026-10-13) kivio 合并 PR #58、#59；下午修 Windows CI（quality 绿、windows-rust 仍红）；bot 模式分支 `codex/bot-development` 无新提交且落后 main。Dsivio 当天无提交，main 仍红。
+
+- (2026-10-14) kivio：`23cddd2` 的 CI 挂在 3 个 Rust 测试（重试文案断言、thinking 档位、key failover；其中 thinking 档位由 models catalog 引入，另两个是 unify retries 留下的）。开 PR #64 修，CI 全绿后 12:27 squash 合入 main（`5b0c96f`）。#62（长会话压缩死锁）与此无关，仍开。本机 `/workspace/kivio` 旧改动已 stash，快进到 main。
+- (2026-10-14) Dsivio：windows-rust 只挂 `oversized_output_is_rejected`（推断 Windows 上子进程 5 秒超时太短，改 60 秒并打印真实错误），另修 runtime-launchers-windows 改名 EPERM 偶发；开 PR #6，多轮 CI 未全绿。用户当天另推约 12 笔并在 `e665f4c` 准备 v1.1.2（skip ci），Release 打包当晚未完成，官网仍 v1.1.0。
+- (2026-10-14) 临时定时任务：盯 PR #64 的两个例程合并后已删；17:56 设了盯 PR #6 的检查（每 15 分钟、到 10-14 23:56 为止，全绿就 squash 合并并告诉用户和小萌）。另建了 GitHub 事件监听，要 Cursor 账号里的 GitHub 连上才会生效。
