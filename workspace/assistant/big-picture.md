@@ -18,8 +18,8 @@
 - vm-01 号池为空、请求 503（搭建运维汇报）；工作经费余额不足、11/8 续费可能不够（金额见财务账本；财务管家汇报）。
 - grokbot-home 加密口令只有 6 位数字（用户已知情并选择保留）。
 - kivio bot 模式分支落后 main 越来越多（10/15：领先 10、落后 43），合并成本在涨。
-- Shopee 巴西店待发货与退款时效（qq290657442 邮箱；退款申请 2610150N7B09B3C 需 10/16 前答复）。
-- composio-pg 当前 Gmail 为 qq290657442@gmail.com；ohulercxm8 不在连接器上（用户尚未最终确认邮箱策略）。
+- Shopee 巴西店待发货与退款时效（composio-pg 第二个 Gmail 连接；有一笔退款申请需 10/16 前答复）。
+- composio-pg 当前默认读到的是第二个 Gmail 连接（`ca_JwThbeIld_Jw`，非 ohulercxm8）；ohulercxm8 不在连接器上（用户尚未最终确认邮箱策略）。
 - 10/15 zhimeng63：Bybit 异常地区登录通知；GitHub 给 dsivio-marketplace 新增公钥——待用户确认是否本人。
 - 飞书 CLI 连续第 5 天不可用（应用未启用 + 用户 token 缺失）。
 - 10/13–14 起若干账号安全邮件（Meta/Facebook、Reason Machines、sub2api、Cursor App、Bybit）仍待用户确认。
