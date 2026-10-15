@@ -34,3 +34,4 @@
 - (2026-10-14，新号) 03:40 同步后问用户以新号还是旧号为准、另一边的同步停不停，截至 10-15 凌晨未回复。新号线上本 bot 的 description 当天改版（推送改写成走 composio-pg 的 GitHub；去掉口令偏短的提醒；去掉首轮 bootstrap 提示），`profile.md` 已补。
 - (2026-10-15，新号) 每日同步 03:21：补各 bot 10-14 进展、新技能 `skills/tiktok/`、composio-pg 第二个 Gmail 连接；big-picture 刷新到 10-14 晚版（去掉金额、第三方邮箱地址和口令位数）；但把 box-secrets/daily 包压小了。
 - (2026-10-15，旧号) 每日同步 03:24：rebase 到新号 03:21 提交后，恢复完整 box-secrets（16 项）与含 10-14 的 daily 加密包；agent-map 仍保留新号 id（本旧号按名字匹配 raw）；空白默认 Grok Bot 仍不登记；连接器核对见 connectors/README（composio-pg 现有两个 Gmail，用户 10-14 决定都保留）。
+- (2026-10-15) `agent-map.json` 改为 format 2：两号 id 并存（键=各号小萌 id）；本号校正后不再被他号扁平 map 覆盖。商品调研仅他号。

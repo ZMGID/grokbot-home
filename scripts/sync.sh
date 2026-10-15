@@ -26,16 +26,32 @@ echo "== git pull"
 # （2026-10-11 起不用 gh，已移除 gh auth setup-git）
 git pull --rebase --autostash -q "$REMOTE" "$BRANCH" || { echo "!! git pull 失败"; exit 3; }
 
-# 1) 原始设定快照：profile.json / settings.json（不含密钥）。按 index.json 里的 slug ↔ 当前 agent id 映射。
-#    新号上 agent id 会变：BOOTSTRAP 第 6 步建完 bot 后要更新 bots/agent-map.json（不含密钥，可以提交），
-#    格式：{"grok-bot": "<当前 id>", "xiaozhi": "<当前 id>", ...}。没有映射的 bot 跳过快照。
+# 1) 原始设定快照：profile.json / settings.json（不含密钥）。
+#    agent-map.json format 2：{"format":2,"accounts":{<小萌id>:{...}},"bots":{<slug>:{"ids":{<小萌id>:<agentId>,...}}}}
+#    format 1（旧）：{"<slug>":"<agentId>",...} 仍可读。
+#    解析：优先用本 box 上存在的 id；都没有再按 index.json 名字匹配。多账号并存时不要把 map 压回单 id。
 MAP=bots/agent-map.json
 if [[ -f "$MAP" ]]; then
-  for slug in $(jq -r 'keys[]' "$MAP"); do
-    id=$(jq -r --arg s "$slug" '.[$s]' "$MAP")
-    src="$AGENTS/$id"; dst="bots/$slug/raw"
-    if [[ ! -d "$src" ]]; then
-      # 映射里的 id 不在本 box（例如旧号/新号混用）：按 bots/index.json 里的名字找当前 agent
+  MAP_FMT=$(jq -r '.format // 1' "$MAP")
+  if [[ "$MAP_FMT" == "2" ]]; then
+    SLUGS=$(jq -r '.bots | keys[]' "$MAP")
+  else
+    SLUGS=$(jq -r 'keys[]' "$MAP")
+  fi
+  for slug in $SLUGS; do
+    id=""
+    if [[ "$MAP_FMT" == "2" ]]; then
+      # 在本 bot 的 ids 里找第一个本 box 存在的目录
+      while IFS= read -r cand; do
+        [[ -z "$cand" || "$cand" == "null" ]] && continue
+        if [[ -d "$AGENTS/$cand" ]]; then id="$cand"; break; fi
+      done < <(jq -r --arg s "$slug" '.bots[$s].ids // {} | .[]' "$MAP")
+    else
+      id=$(jq -r --arg s "$slug" '.[$s] // empty' "$MAP")
+    fi
+    src="${id:+$AGENTS/$id}"; dst="bots/$slug/raw"
+    if [[ -z "$id" || ! -d "$src" ]]; then
+      # 映射 id 不在本 box（他号专有 bot，或尚未写入本号 id）：按名字找
       nm=$(jq -r --arg s "$slug" '.bots[]? | select(.slug==$s) | .name' bots/index.json 2>/dev/null)
       alt=""
       if [[ -n "$nm" ]]; then
@@ -43,8 +59,14 @@ if [[ -f "$MAP" ]]; then
           [[ "$(jq -r '.name // empty' "$pj" 2>/dev/null)" == "$nm" ]] && { [[ -z "$alt" ]] && alt=$(dirname "$pj") || alt="MULTI"; }
         done
       fi
-      if [[ -n "$alt" && "$alt" != "MULTI" ]]; then echo "   $slug：映射 id 不在本 box，按名字「$nm」用 $(basename "$alt")"; src="$alt"
-      else echo "   跳过 $slug（$src 不存在，按名字也没找到唯一匹配）"; continue; fi
+      if [[ -n "$alt" && "$alt" != "MULTI" ]]; then
+        echo "   $slug：本 box 无映射 id，按名字「$nm」用 $(basename "$alt")"
+        src="$alt"
+      else
+        note=$(jq -r --arg s "$slug" 'if .format==2 then (.bots[$s].note // empty) else empty end' "$MAP" 2>/dev/null)
+        echo "   跳过 $slug（本 box 无此 bot${note:+；$note}）"
+        continue
+      fi
     fi
     mkdir -p "$dst"
     for f in profile.json settings.json; do

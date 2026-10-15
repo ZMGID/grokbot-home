@@ -1,11 +1,78 @@
 {
-  "grok-bot": "70869d39-bdf3-4146-823b-db0bd0d3da2c",
-  "xiaozhi": "47ffbb2e-3079-4b11-b8ad-670897888806",
-  "仓库管家": "70a96747-5c1b-441f-9bc3-9c19d7ace7c4",
-  "代码工程师": "a65c590b-9f0d-4e36-9b95-a2495ac38a8d",
-  "搭建运维": "0fb779d6-7315-4005-abd4-e87cf0fcaf36",
-  "硬件工程师": "84984ac5-acb9-47da-a6b1-62a75f9e401b",
-  "事务秘书": "11f20cc8-ce4c-4f2b-b63c-287aa2aed567",
-  "财务管家": "ae2d4256-621c-48eb-9da6-f61d62cde565",
-  "商品调研": "19702f19-d2c0-4a0c-8a04-db9b4b4df597"
+  "format": 2,
+  "accounts": {
+    "a96070f7-cb92-4f15-bcd4-7b1e700cc676": {
+      "label": "本号",
+      "primary_slug": "grok-bot",
+      "primary_name": "小萌",
+      "git_push_as": "ZMGID",
+      "note": "巡检/旧同步账号；box 上 agent-data 以此为准时用此列 id"
+    },
+    "70869d39-bdf3-4146-823b-db0bd0d3da2c": {
+      "label": "他号",
+      "primary_slug": "grok-bot",
+      "primary_name": "小萌",
+      "git_push_as": "ZhiMeng",
+      "note": "较新账号；曾把扁平 agent-map 改写成其 id。用户尚未决定主账号。"
+    }
+  },
+  "bots": {
+    "grok-bot": {
+      "ids": {
+        "a96070f7-cb92-4f15-bcd4-7b1e700cc676": "a96070f7-cb92-4f15-bcd4-7b1e700cc676",
+        "70869d39-bdf3-4146-823b-db0bd0d3da2c": "70869d39-bdf3-4146-823b-db0bd0d3da2c"
+      }
+    },
+    "xiaozhi": {
+      "ids": {
+        "a96070f7-cb92-4f15-bcd4-7b1e700cc676": "26593ece-aeae-442d-b633-7acda2b53ec2",
+        "70869d39-bdf3-4146-823b-db0bd0d3da2c": "47ffbb2e-3079-4b11-b8ad-670897888806"
+      }
+    },
+    "事务秘书": {
+      "ids": {
+        "a96070f7-cb92-4f15-bcd4-7b1e700cc676": "0c8b0607-f701-499c-a08b-13a601874a68",
+        "70869d39-bdf3-4146-823b-db0bd0d3da2c": "11f20cc8-ce4c-4f2b-b63c-287aa2aed567"
+      }
+    },
+    "仓库管家": {
+      "ids": {
+        "a96070f7-cb92-4f15-bcd4-7b1e700cc676": "5eed9f49-92c0-49b7-8327-2128e99b910b",
+        "70869d39-bdf3-4146-823b-db0bd0d3da2c": "70a96747-5c1b-441f-9bc3-9c19d7ace7c4"
+      }
+    },
+    "代码工程师": {
+      "ids": {
+        "a96070f7-cb92-4f15-bcd4-7b1e700cc676": "30f7829c-e287-44d7-bfdc-7c409b7da1c4",
+        "70869d39-bdf3-4146-823b-db0bd0d3da2c": "a65c590b-9f0d-4e36-9b95-a2495ac38a8d"
+      }
+    },
+    "商品调研": {
+      "ids": {
+        "70869d39-bdf3-4146-823b-db0bd0d3da2c": "19702f19-d2c0-4a0c-8a04-db9b4b4df597"
+      },
+      "only_on": [
+        "70869d39-bdf3-4146-823b-db0bd0d3da2c"
+      ],
+      "note": "本号未建 / 他号有"
+    },
+    "搭建运维": {
+      "ids": {
+        "a96070f7-cb92-4f15-bcd4-7b1e700cc676": "68e94ddd-1800-4ca4-9602-35e5952b2e44",
+        "70869d39-bdf3-4146-823b-db0bd0d3da2c": "0fb779d6-7315-4005-abd4-e87cf0fcaf36"
+      }
+    },
+    "硬件工程师": {
+      "ids": {
+        "a96070f7-cb92-4f15-bcd4-7b1e700cc676": "69390646-03af-4efe-ad66-4d796b384c62",
+        "70869d39-bdf3-4146-823b-db0bd0d3da2c": "84984ac5-acb9-47da-a6b1-62a75f9e401b"
+      }
+    },
+    "财务管家": {
+      "ids": {
+        "a96070f7-cb92-4f15-bcd4-7b1e700cc676": "46700d6c-3bfa-4d52-9b8e-a9aac3285c71",
+        "70869d39-bdf3-4146-823b-db0bd0d3da2c": "ae2d4256-621c-48eb-9da6-f61d62cde565"
+      }
+    }
+  }
 }

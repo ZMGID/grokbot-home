@@ -233,7 +233,7 @@ For **each** folder in `bots/` except the primary — driven by `bots/index.json
      （中文可写成：“第一次启动先读 /workspace/grokbot-home/CONTEXT.md 和 bots/<slug>/CONTEXT.md，把要点存进自己的记忆，再按 bots/<slug>/routines.md 重建定时任务。”）
    - avatar: default shape/color from profile.md if CreateAgent accepts it; set an image only if `bots/<slug>/avatar.*` exists.
    - If CreateAgent accepts a first message / task, pass the same “read your CONTEXT.md” instruction there too.
-3. Record the new agent id: update `bots/agent-map.json` (`{"<slug>": "<new id>"}`) — needed by the daily sync.
+3. Record the new agent id in `bots/agent-map.json` **format 2**: set `bots.<slug>.ids.<this-account-小萌-id> = "<new id>"` (do **not** flatten to a single string — another Grok Bot account may share this repo). Account keys are each account's 小萌 agent id; see top-level `accounts`. Needed by the daily sync.
 4. Send the user one line per bot created (“已重建 小枳 ✓”).
 
 Do not create the empty “New Bot” from the old account (it was never used). Do not create **dr eggbot** (deleted 2026-10-08); **you (小萌 / primary)** create any new bots going forward.
@@ -271,7 +271,7 @@ Run and record each result:
 - New durable knowledge goes back into the right file: about the user → `/CONTEXT.md`; about one bot's work → `bots/<slug>/CONTEXT.md`; profile changes → `profile.md`; routine changes → `routines.md`; connector changes → `connectors/README.md`; new tools → `setup.sh`.
 - Then `bash scripts/secret-scan.sh`, and commit the changed files to `main` through Composio GitHub on `user-composio-pg` (Step 1; no `gh` / `git push` since 2026-10-11), then sync the local copy (`git fetch` + verify `git diff origin/main` + `git reset --hard origin/main`). The daily sync does this automatically for all bots, but write back immediately after anything important.
 - Never commit: keys, tokens, the passphrase, `.env`, one-time codes, passwords, auth links, mcp-remote logs, `/home/box/agent-data/*secrets*.json`, databases. **The repo is public** — only `secrets/*.enc` may hold a secret, and only encrypted with `scripts/secret-crypt.py`.
-- New bot created later (by **小萌** / primary)? Add `bots/<slug>/` (profile.md, CONTEXT.md, routines.md) + `index.json` + `agent-map.json` + `bots/README.md` table.
+- New bot created later (by **小萌** / primary)? Add `bots/<slug>/` (profile.md, CONTEXT.md, routines.md) + `index.json` + `agent-map.json` (format 2: merge into `bots.<slug>.ids.<本号小萌id>`) + `bots/README.md` table.
 - **Finance restore / 账本**：明文 `/workspace/finance/` **永不**进 git（`.gitignore` 已忽略）。迁移备份是加密包 `secrets/finance.tgz.enc`。口令就绪后（Step 0 (b)），按 Step 0 (b+) 与 `secrets/README.md` 解密恢复到 `/workspace/finance/`。每日同步会重新打包并 `enc-bin` 覆盖该文件。`/workspace/assistant/daily/` 明文仍绝不进仓库，只以 `secrets/daily.tgz.enc` 加密备份（2026-10-12 起）；其他 box 密钥见 Step 0 (b++)。`财务管家` 的 plaintext `memory/` 不拷进 `raw/`；有内容时 sync 另加密为 `secrets/财务管家-memory.tgz.enc`。
 
 ## Step 10 — Report to the user / 最后汇报

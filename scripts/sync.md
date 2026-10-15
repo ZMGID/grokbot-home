@@ -47,3 +47,4 @@ bash scripts/secret-scan.sh      # 只做密钥扫描
 - 不要把 `/workspace/gmail-listener/` 的 `venv/`、`*.log`、`seen.txt`、`forwarded_ids.txt`、`failed.jsonl`、`webhook_url.local` 或 `~/.lark-cli/`、`~/.local/share/lark-cli/`、`feishu-cli/survey/` 复制进仓库。`listener.py`/`run_loop.sh` 可同步（无内嵌密钥）；`webhook_url.local` 永不进仓库。
 - 环境变量 `GMAIL_WEBHOOK_KEY` / Composio API key / `GROKBOT_HOME_PASSPHRASE` 的**值**永不进仓库（变量名可以写在文档里）。
 - (2026-10-13) 重新打包后若 `daily`、`box-secrets` 等包比仓库里的旧包**少了文件**（例如新号盒子没恢复全），不要提交这个变小的包，保留仓库里的完整版并在汇报里说明；`pack-bundles.sh` 在没有 COMPOSIO_API_KEY 等环境变量时会沿用 box 上已有的 `~/.grokbot-home/secrets.env`。
+- (2026-10-15) `bots/agent-map.json` **format 2**：每 slug 下 `ids` 按账号（键=该号小萌 id）保存 agent id，避免两号 nightly sync 互相覆盖。`sync.sh` 优先用本 box 上存在的 id，否则按名字匹配；他号专有 bot（如「商品调研」）在本号会跳过。漂移修正时**合并**进 `ids[<本号小萌id>]`，不要改回扁平单字符串。
