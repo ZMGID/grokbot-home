@@ -151,19 +151,15 @@ fi
 # 5) 有变化才提交
 if git diff --cached --quiet; then
   echo "== 没有变化"
-  # 仍可能有之前没推上去的提交
+  # 仍可能有之前没推上去的提交（2026-10-16 起不 git push，交给 Composio）
   if [[ $DRY -eq 0 ]] && [[ -n "$(git log "$REMOTE/$BRANCH..HEAD" --oneline 2>/dev/null)" ]]; then
-    git push -q "$REMOTE" "HEAD:$BRANCH" && echo "== 已推送之前未推送的提交" || { echo "!! 推送失败"; exit 5; }
+    echo "!! 有未推送的本地提交：请按 scripts/sync.md 用 Composio GitHub（composio-pg）推送"; exit 5
   fi
   exit 0
 fi
 git diff --cached --stat
 if [[ $DRY -eq 1 ]]; then echo "== dry-run：不提交"; git reset -q; exit 0; fi
 git commit -q -m "sync: $(date '+%F %H:%M') Asia/Shanghai" || { echo "!! commit 失败"; exit 5; }
-for try in 1 2; do
-  if git push -q "$REMOTE" "HEAD:$BRANCH"; then echo "== 已推送 $(git rev-parse --short HEAD) → $REMOTE/$BRANCH"; exit 0; fi
-  echo "   推送被拒，pull --rebase 后重试"
-  git pull --rebase -q "$REMOTE" "$BRANCH" || break
-  bash scripts/secret-scan.sh "$REPO" >/dev/null || { echo "!! 合并后的密钥扫描未通过，不推送"; exit 4; }
-done
-echo "!! git push 失败：本地已 commit，请按 scripts/sync.md 用 Composio GitHub（composio-pg）推送"; exit 5
+# 2026-10-16 起不 git push：box 上的 gh 凭据助手一旦可用，git push 会绕过「推送一律走 composio-pg」的规矩。
+# 本地 commit 后固定退出码 5，由仓库管家按 scripts/sync.md 用 Composio GitHub（composio-pg, ZMGID）推送。
+echo "== 本地已 commit $(git rev-parse --short HEAD)：请按 scripts/sync.md 用 Composio GitHub（composio-pg）推送"; exit 5
