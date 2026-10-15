@@ -27,3 +27,5 @@
 - (2026-10-14，新号) 早报 09:05、晚报 18:00 照常写入 daily 并抄送小萌，晚报同时更新 big-picture。飞书：应用已不再报「未启用」、机器人身份通了，只差用户本人扫码登录（用户 OAuth 缺失）。
 - (2026-10-14，旧号) 早报/晚报也写入 `/workspace/assistant/daily/2026-10-14.md`；本旧号盒子上飞书仍报 20069「应用未启用」。
 - (2026-10-14) 晚报指出：composio-pg 的 Gmail 默认连接已变成另一个邮箱（`ca_JwThbeIld_Jw`），当晚 ohulercxm8 的邮件没读到；用户 16:45 已对小萌表示两个都保留、不用管。Mac mini 不在已登记电脑里。账号安全邮件仍待确认（交易所、GitHub 第三方授权、Meta/Facebook、Monid 新设备、X 关联 Grok 等）。
+
+- (2026-10-15，新号) 早报 08:58、晚报 17:54 照常发出并抄送小萌，写入 daily 与 big-picture。晚报要点：Dsivio main 转绿但 PR #6 已 dirty；早计划里合 PR #6、清账号安全、盯 Shopee 发货基本没做；Shopee 巴西店有一笔退款须在 10-16 结束前回应；飞书仍不可用（应用未启用 + 用户未登录）；composio-pg 的 Gmail 读到的是另一个连接（非 ohulercxm8）。

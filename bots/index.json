@@ -153,6 +153,47 @@
       ],
       "role": "商品调研：单品调研、1688 成本、侵权禁售风险、做不做建议（虾皮日常选品仍归小枳）",
       "notes": "2026-10-13 在新号上新建；GeckoAPI key 只在环境变量 GECKOAPI_KEY"
+    },
+    {
+      "slug": "测试工程师",
+      "name": "测试工程师",
+      "title": "",
+      "primary": false,
+      "avatar": {
+        "shape": "",
+        "color": "",
+        "image": null
+      },
+      "old_agent_id": null,
+      "description_reconstructed": false,
+      "routines": [],
+      "plugins_needed": [],
+      "role": "AI 编程键盘 / AI 脚踏板等硬件项目的测试：测试计划与用例、方案评审、样机缺陷跟踪与回归、出货验收",
+      "notes": "2026-10-15 在新号上新建；在「AI编程键盘」「AI脚踏板」两个群里"
+    }
+  ],
+  "groups": [
+    {
+      "name": "AI编程键盘",
+      "created": "2026-10-15",
+      "members": [
+        "grok-bot",
+        "硬件工程师",
+        "代码工程师",
+        "商品调研",
+        "测试工程师"
+      ]
+    },
+    {
+      "name": "AI脚踏板",
+      "created": "2026-10-16",
+      "members": [
+        "grok-bot",
+        "硬件工程师",
+        "代码工程师",
+        "商品调研",
+        "测试工程师"
+      ]
     }
   ]
 }

@@ -222,11 +222,11 @@ Primary = `bots/index.json` → `"primary": "grok-bot"`. Read `bots/grok-bot/pro
 
 ## Step 6 — Recreate every other bot / 用 CreateAgent 重建其他 bot
 
-For **each** folder in `bots/` except the primary — driven by `bots/index.json`. Current set (2026-10-14): `xiaozhi`（小枳）, `仓库管家`, `代码工程师`, `搭建运维`, `事务秘书`, `硬件工程师`, `财务管家`, `商品调研`. **Do not** recreate deleted `dr-eggbot`.
+For **each** folder in `bots/` except the primary — driven by `bots/index.json`. Current set (2026-10-16): `xiaozhi`（小枳）, `仓库管家`, `代码工程师`, `搭建运维`, `事务秘书`, `硬件工程师`, `财务管家`, `商品调研`, `测试工程师`. **Do not** recreate deleted `dr-eggbot`.
 
 1. Read `bots/<slug>/profile.md`.
 2. Call **CreateAgent** with:
-   - **name**: exactly as in profile.md (`小枳`, `仓库管家`, `代码工程师`, `搭建运维`, `事务秘书`, `硬件工程师`, `财务管家`, `商品调研`)
+   - **name**: exactly as in profile.md (`小枳`, `仓库管家`, `代码工程师`, `搭建运维`, `事务秘书`, `硬件工程师`, `财务管家`, `商品调研`, `测试工程师`)
    - **title**: as in profile.md (currently empty)
    - **description / instructions**: the text block in profile.md (keep verbatim; xiaozhi's is reconstructed), **plus** this line appended:
      `On your first turn, read /workspace/grokbot-home/CONTEXT.md and /workspace/grokbot-home/bots/<slug>/CONTEXT.md, save the key facts to your memory, then recreate your routines from bots/<slug>/routines.md.`
@@ -235,6 +235,7 @@ For **each** folder in `bots/` except the primary — driven by `bots/index.json
    - If CreateAgent accepts a first message / task, pass the same “read your CONTEXT.md” instruction there too.
 3. Record the new agent id in `bots/agent-map.json` **format 2**: set `bots.<slug>.ids.<this-account-小萌-id> = "<new id>"` (do **not** flatten to a single string — another Grok Bot account may share this repo). Account keys are each account's 小萌 agent id; see top-level `accounts`. Needed by the daily sync.
 4. Send the user one line per bot created (“已重建 小枳 ✓”).
+5. Group chats (2026-10-15 起): after all bots exist, recreate the project groups listed in `bots/README.md`「群聊」 (「AI编程键盘」「AI脚踏板」, members = 小萌 + 硬件工程师 + 代码工程师 + 商品调研 + 测试工程师) only if the user still wants them; group ids are per-account, record nothing secret.
 
 Do not create the empty “New Bot” from the old account (it was never used). Do not create **dr eggbot** (deleted 2026-10-08); **you (小萌 / primary)** create any new bots going forward.
 
@@ -249,7 +250,7 @@ Routines belong to the bot that creates them, so:
 - **Other bots**: each recreates its own from `bots/<slug>/routines.md` on its first turn. Match that file:
   - `仓库管家`: daily sync / weekly drill — see `bots/仓库管家/routines.md` (may still use `CRON_TZ=Asia/Shanghai`, same UTC+8).
   - `事务秘书`: morning `53 8 * * 1-5`, evening `47 17 * * 1-5` (plain cron; Asia/Hong_Kong).
-  - `xiaozhi` / `代码工程师` / `搭建运维` / `硬件工程师` / `财务管家` / `商品调研`: none（暂无）.
+  - `xiaozhi` / `代码工程师` / `搭建运维` / `硬件工程师` / `财务管家` / `商品调研` / `测试工程师`: none（暂无；只有过一次性/临时任务，不用重建）.
 - After a few minutes, check each bot did it (ReadTranscript, or ask the user). If a bot can't create routines, create them yourself only if the user agrees.
 
 ## Step 8 — Self-check / 自检
@@ -291,7 +292,7 @@ Send one short Chinese message: what's done, what failed, what the user still ne
 - [ ] Step 3: pstack (9717366) optional（可选，原为 dr eggbot 安装）; official GitHub/Origin/Finance/Composio-plugin **not** installed
 - [ ] Step 4: skills imported (currently none) 
 - [ ] Step 5: own profile = **小萌** (slug `grok-bot`), primary, memory seeded from CONTEXT.md
-- [ ] Step 6: 小枳 / 仓库管家 / 代码工程师 / 搭建运维 / 事务秘书 / 硬件工程师 / 财务管家 / 商品调研 created; `bots/agent-map.json` updated & pushed (no dr eggbot)
+- [ ] Step 6: 小枳 / 仓库管家 / 代码工程师 / 搭建运维 / 事务秘书 / 硬件工程师 / 财务管家 / 商品调研 / 测试工程师 created; `bots/agent-map.json` updated & pushed (no dr eggbot)
 - [ ] Step 7: daily sync on **仓库管家**; 事务秘书 08:53/17:47; 小萌 巡检 11:17/15:17 only; others per `routines.md`
 - [ ] Step 8: composio-pg GitHub+ohulercxm8 + composio-zhimeng zhimeng63 Gmail active; secret scan clean
 - [ ] Step 9: write-back rule saved in memory

@@ -12,3 +12,5 @@
 - (2026-10-08) 官网 Dsivio 产品页已上线 v1.1.0：`https://eastforceglobal.com/dsivio/`（自有服务器 nginx；安装包在服务器 `/dsivio/downloads/v1.1.0/`）。飞书仍未接入、权限仍未授予。
 
 - (2026-10-10) 飞书接入例外：官方 **lark-cli**（非 Composio）。日常发消息/查群可用 CLI；应用与搭建配置仍归本 bot。群：全员群 / bot 通知群（chat_id 见 `services/feishu-cli/chats.md`）。`~/.lark-cli/` 不进仓库。
+
+- (2026-10-15 08:40) 按小萌派单把官网 Dsivio 升到 v1.1.2 并部署：3 个安装包放在服务器 `/dsivio/downloads/v1.1.2/`，线上都返回 200、大小与 GitHub 一致；v1.1.0 文件保留。页面「新版本」区块只改了版本号，功能介绍仍是 1.1.0 版，要重写等用户说。

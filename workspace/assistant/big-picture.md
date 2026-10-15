@@ -1,42 +1,34 @@
-# 大局（2026-10-08 初始化，2026-10-15 17:58 更新）
+# 大局（2026-10-08 初始化，2026-10-15 17:55 更新）
 ## 身份
 跨境电商小公司唯一的 AI 经理兼 agent 开发。主项目 Dsivio（ZMGID/Dsivio），另管 kivio、官网、各种搭建、飞书等杂事。
+
+（截至 2026-10-15 17:55 晚报核实）Dsivio 官网仍 v1.1.2；main tip `4cbd8439` CI **成功**；PR #6 仍开且 **dirty**。kivio tip `ac721f46` CI **in_progress**；#66 已合。飞书应用未启用 + 用户 OAuth 仍缺。Mac mini 不在已注册电脑。
 ## 进行中
-- Dsivio：10/15 main 推 5 个提交（吉祥物/composer、市场 catalog、CI 可移植断言与 Windows 主线程栈）；最新 main CI（`4cbd843`）全绿（quality / windows-rust / runtime-launchers-windows，已核实）——自 10/12 以来首次转绿。PR #6 仍 OPEN，相对 main 冲突（领先 12、落后 5），未合。官网已显示 v1.1.2（10/15 核实）。干净 Windows 实测、IM 真机联调第 10 天未做。以下为 10/14 状态：10/14 一次推上 main 12 个提交（Monid+GeckoAPI 工具网关、平台竞品调研插件、agent 重试统一+Windows 稳定、markdown 货币修复、去掉 macOS Vision OCR、Impeccable 设计工具），带 [skip ci]；v1.1.2 于 10/14 18:26 正式发布。
-- kivio：10/15 main 约 11 个提交（CSP 放行 ClawHub、备份保留用户文件、侧栏更新图标、去掉旧 connectors、skills 缓存/重载、rustls #66、运行时扫描性能）；#62/#63/#65/#67 已关；#66 已合。最新 `ac721f4` CI 仍在跑（未核实最终）；上一轮完整绿是 `19b71b6`。bot 分支 codex/bot-development 领先 10、落后 43，bot 模式/Rust SDK 仍无新提交。开着的 PR #61/#60/#15/#8 均与 main 冲突。Release 仍停在 v3.1.2（10/12）。
-- 官网（10/15 17:58 核实：页面显示 v1.1.2）（https://eastforceglobal.com/dsivio/，自己服务器上的 nginx 静态站）：由搭建运维负责。
-- 飞书：10/15 用户 token 缺失 + bot API 仍 20069「应用未启用」，第 5 天。运营选品群、公司手册知识库、审批精简、多维表格未做。
-- grokbot-home 迁移仓库：已公开，密钥加密，仓库管家负责同步、演练和审计。
-- bot 体系：10/8 搭好（代码工程师、搭建运维、事务秘书、硬件工程师（备用）、小枳、仓库管家）。
-- 创作控制器（类 TourBox）：只是测试，已停止，不再跟进。
+- Dsivio：main tip `4cbd8439`（fix Windows 集成测试栈），CI quality/windows-rust/runtime-launchers-windows **成功**（核实）。今日此前 tip 三轮 CI 失败后转绿。open PR #6（`679237aa`）**未合**，`mergeable_state=dirty`（main 已离开 base `e665f4c`）。官网 https://eastforceglobal.com/dsivio/ 仍 **v1.1.2**。干净 Windows 验收、IM 真机联调仍未做。
+- kivio：PR #66 已合（`19b71b69`）；之后多笔 skills/runtime/perf，tip `ac721f46` CI 截至 17:52 仍 in_progress。#62/#63/#65 今晨已关（巡检旁证）。open PR #8/#15/#60/#61。
+- 官网：v1.1.2（2026-10-15 WebFetch 核实）。由搭建运维负责。
+- 飞书：bot 应用未启用；用户身份（王枳萌）OAuth missing；早晚报仍查不了未读/审批。
+- 商品调研：自 10/14 15:44 起无新表产出（巡检旁证）。
+- grokbot-home：10/15 下午 agent-map 同时记录两账号 id（`a70974fc`），互相覆盖风险仍在，等用户定以谁为准。
+- bot 体系：商品调研已登记；硬件工程师项目暂停。
+- 创作控制器（类 TourBox）：已停止，不再跟进。
 ## 风险 / 注意
-- Dsivio IM 改动曾直接推 main；后续改动建议走 PR。PR #6 分叉悬挂，需 rebase 或关闭。
-- 环境配置未在干净 Windows 上验收；IM 真机联调未做（第 10 天）。
-- grokbot-home-private-old 仍存在（10/10 核实，含明文 Composio 密钥），密钥轮换未核实。
-- 10/10 凌晨有 Devin 获得 ChatGPT 套餐额度授权、X 账号验证码和密码重置邮件，待用户确认是否本人操作。
-- 小米 MiMo V2.5 系列 10/21 10:00 下线，如有使用需迁到 V2.6。
-- vm-01 号池为空、请求 503（搭建运维汇报）；工作经费余额不足、11/8 续费可能不够（金额见财务账本；财务管家汇报）。
-- grokbot-home 加密口令只有 6 位数字（用户已知情并选择保留）。
-- kivio bot 模式分支落后 main 越来越多（10/15：领先 10、落后 43），合并成本在涨。
-- Shopee 巴西店待发货与退款时效（composio-pg 第二个 Gmail 连接；有一笔退款申请需 10/16 前答复）。
-- composio-pg 当前默认读到的是第二个 Gmail 连接（`ca_JwThbeIld_Jw`，非 ohulercxm8）；ohulercxm8 不在连接器上（用户尚未最终确认邮箱策略）。
-- 10/15 zhimeng63：Bybit 异常地区登录通知；GitHub 给 dsivio-marketplace 新增公钥——待用户确认是否本人。
-- 飞书 CLI 连续第 5 天不可用（应用未启用 + 用户 token 缺失）。
-- 10/13–14 起若干账号安全邮件（Meta/Facebook、Reason Machines、sub2api、Cursor App、Bybit）仍待用户确认。
-
+- 10/15：PR #6 从可合变为 dirty，与 tip 分叉，合前必须 rebase/重开或确认 tip 已覆盖。
+- 10/15：kivio tip CI 未结完就别假定绿。
+- 账号安全仍待确认：Bybit / GitHub OAuth / Meta / Monid / X↔Grok。
+- 飞书用户 OAuth 缺失 + 应用未启用。
+- Mac mini 不在已注册电脑；BF/ZMair 在线但未按 Mac mini 路径读取。
+- composio-pg Gmail 当前连的是 qq290657442@gmail.com，不是记忆里的 ohulercxm8。
+- Shopee 巴西店发货积压 + 退款申请须在 16 out 2026 前回应。
+- 小米 MiMo V2.5 系列 10/21 10:00 下线。
+- vm-01 号池为空、工作经费约 769 元（此前财务管家汇报，今晚未重核）。
 ## 本周方向
-- 10/8 约一半时间投入 bot 和迁移基础设施；之后应回到 Dsivio 质量（CI 变绿）。
+- 10/15：发版已上官网 v1.1.2；白天 Dsivio tip 功能+CI 收口、kivio 合 #66 并继续修。下个工作日：PR #6 分叉处理 → Shopee 发货/退款 → 账号安全或飞书恢复。干净 Windows 验收与 IM 联调仍欠。
 
-- 10/8 记录：Dsivio 新方向：① 环境配置优化（同事电脑装环境太费时间，已开 PR #2/#3/#4，10/9 用户手工继续优化，当天最重要）；② IM Gateway（接入消息平台），参考 Hermes。
+- 10/14 记录：kivio CI 已绿；Dsivio 功能+发版冲刺中。
 
-- 10/9 记录：环境配置 PR 全部合入，IM 网关本地第一版完成（未推送）。下周初：推送 + main CI 转绿 → 干净 Windows 验收 → IM 真机联调。
+- 10/13 记录：白天偏 kivio（#62 修复合入 + 修 CI），Dsivio 质量线几乎未动。
 
-- 10/10 记录：IM 网关推上 main 并转绿。下个工作日：干净 Windows 验收 → IM 真机联调 → 安全收尾。
+- 10/12 记录：两个发版（kivio v3.1.2、Dsivio v1.1.1），CI 都红；Windows 验收、IM 联调、安全收尾未动。
 
-- 10/12 记录：本周主攻 kivio bot 模式+版本检查、Rust SDK 标准；周一实际全花在两个项目的修复发版上，主目标未起步。
-
-- 10/13 记录：上午 kivio 质量提升有效，下午又花在 Windows CI；周二过完 bot 模式和 Rust SDK 标准都没新提交，本周方向开始偏。
-
-- 10/14 记录：白天主要在 Dsivio（12 个提交、v1.1.2 发版准备、Windows CI），kivio 只修绿了 CI；周三过完 bot 模式和 Rust SDK 仍零提交，本周方向明显偏离，需要用户明确是继续追 kivio 还是转向 Dsivio。
-
-- 10/15 记录：Dsivio main CI 终于转绿，kivio 质量/issue 推进明显，但 bot 模式和 Rust SDK 周四仍零提交、分支落后 43；工程时间花得值，本周主目标仍未落地。周五需二选一：硬推 bot 分支，或正式挪到下周。
+- 10/10 记录：IM 网关推上 main 并转绿。

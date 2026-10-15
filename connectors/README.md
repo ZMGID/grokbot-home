@@ -21,7 +21,7 @@
 | 7 | **Finance**（`user-Finance-xai`，plugin id `63408931`） | 插件市场 | — | — | ❌ 不需要 |
 | 8 | **Monid**（`user-Monid`，plugin id `63373743`） | 插件市场（http） | 2026-10-13 新号上装好；商品调研用它查数据，预付余额在 Monid 钱包 | 换号后在插件市场装 Monid 并登录用户的 Monid 账号 | ✅ 商品调研需要（查不了 TikTok Shop 巴西站，巴西站改用 GeckoAPI，key 只在环境变量 `GECKOAPI_KEY`） |
 
-> **当前账号实际状态**：新号（2026-10-15 核对）：composio-pg、composio-zhimeng、Monid、x 可用；Origin 已连接（平台自带，不用）；GitHub（cursor-github）、Finance 为 needsAuth，不用管；Composio 插件（`user-Composio`）未安装。composio-pg：GitHub ZMGID（`ca_1g4u93YydZsp`），Gmail 默认多为第二个连接 `ca_JwThbeIld_Jw`（非 ohulercxm8；用户 10-14 决定两个都保留）。旧号（2026-10-15）：composio-pg、composio-zhimeng、Origin、x 可用，cursor-github needsAuth，另有 `user-Composio` ready；本旧号无 Monid。
+> **当前账号实际状态**：新号（2026-10-16 核对，无变化）：composio-pg、composio-zhimeng、Monid、x 可用；Origin 已连接（平台自带，不用）；GitHub（cursor-github）、Finance 为 needsAuth，不用管；Composio 插件（`user-Composio`）未安装。composio-pg：GitHub ZMGID（`ca_1g4u93YydZsp`），Gmail 默认多为第二个连接 `ca_JwThbeIld_Jw`（非 ohulercxm8；用户 10-14 决定两个都保留）。旧号（2026-10-15）：composio-pg、composio-zhimeng、Origin、x 可用，cursor-github needsAuth，另有 `user-Composio` ready；本旧号无 Monid。
 
 另外两样不是「应用连接器」但要记得：
 
