@@ -35,3 +35,4 @@
 - (2026-10-15，新号) 每日同步 03:21：补各 bot 10-14 进展、新技能 `skills/tiktok/`、composio-pg 第二个 Gmail 连接；big-picture 刷新到 10-14 晚版（去掉金额、第三方邮箱地址和口令位数）；但把 box-secrets/daily 包压小了。
 - (2026-10-15，旧号) 每日同步 03:24：rebase 到新号 03:21 提交后，恢复完整 box-secrets（16 项）与含 10-14 的 daily 加密包；agent-map 仍保留新号 id（本旧号按名字匹配 raw）；空白默认 Grok Bot 仍不登记；连接器核对见 connectors/README（composio-pg 现有两个 Gmail，用户 10-14 决定都保留）。
 - (2026-10-15) `agent-map.json` 改为 format 2：两号 id 并存（键=各号小萌 id）；本号校正后不再被他号扁平 map 覆盖。商品调研仅他号。
+- (2026-10-16，旧号) 每日同步 03:14：big-picture 刷新到 10-15 晚版（公开副本去掉第三方邮箱地址与退款单号）；补小萌 10-15 要点与根 CONTEXT「近期重点（10-15 晚）」；本号 8 个 bot 与 agent-map format 2 一致，无新 bot、无技能、连接器状态无变化。本号 search-index 自 10-12 起未再更新，对话改以 memory 与小萌笔记为准。
