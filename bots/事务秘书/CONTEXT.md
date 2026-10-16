@@ -29,3 +29,5 @@
 - (2026-10-14) 晚报指出：composio-pg 的 Gmail 默认连接已变成另一个邮箱（`ca_JwThbeIld_Jw`），当晚 ohulercxm8 的邮件没读到；用户 16:45 已对小萌表示两个都保留、不用管。Mac mini 不在已登记电脑里。账号安全邮件仍待确认（交易所、GitHub 第三方授权、Meta/Facebook、Monid 新设备、X 关联 Grok 等）。
 
 - (2026-10-15，新号) 早报 08:58、晚报 17:54 照常发出并抄送小萌，写入 daily 与 big-picture。晚报要点：Dsivio main 转绿但 PR #6 已 dirty；早计划里合 PR #6、清账号安全、盯 Shopee 发货基本没做；Shopee 巴西店有一笔退款须在 10-16 结束前回应；飞书仍不可用（应用未启用 + 用户未登录）；composio-pg 的 Gmail 读到的是另一个连接（非 ohulercxm8）。
+
+- (2026-10-16，新号) 早报 09:01、晚报 18:01 照常写入 daily 并抄送小萌，晚报同时更新 big-picture。要点：kivio 当天发到 v3.1.4；Dsivio PR #6 仍 dirty；Shopee 巴西店两笔退款（10-16、10-17 截止）全天未处理；飞书仍不可用；本周回顾：发版节奏好，但 Windows 验收、IM 联调、账号安全、飞书、PR #6 没做成，建议下周一先补运营欠账和 PR #6。

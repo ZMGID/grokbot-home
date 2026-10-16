@@ -49,3 +49,5 @@ bash scripts/secret-scan.sh      # 只做密钥扫描
 - (2026-10-13) 重新打包后若 `daily`、`box-secrets` 等包比仓库里的旧包**少了文件**（例如新号盒子没恢复全），不要提交这个变小的包，保留仓库里的完整版并在汇报里说明；`pack-bundles.sh` 在没有 COMPOSIO_API_KEY 等环境变量时会沿用 box 上已有的 `~/.grokbot-home/secrets.env`。
 - (2026-10-15) `bots/agent-map.json` **format 2**：每 slug 下 `ids` 按账号（键=该号小萌 id）保存 agent id，避免两号 nightly sync 互相覆盖。`sync.sh` 优先用本 box 上存在的 id，否则按名字匹配；他号专有 bot（如「商品调研」）在本号会跳过。漂移修正时**合并**进 `ids[<本号小萌id>]`，不要改回扁平单字符串。
 - (2026-10-16) `sync.sh` 不再执行 `git push`（本 box 的 gh 凭据助手可用时 git push 会直接成功，绕过 Composio 规矩，10-16 03:33 发生过一次）：本地 commit 后固定退出码 5，再用 composio-pg 推送。
+- (2026-10-17) 两个账号的每日笔记不同：`pack-bundles.sh` 在本 box 打出的 `daily` 包若比仓库旧包少了日期，就**合并**而不是二选一：保留旧包全部文件，本 box 独有的日期直接加进去，同一天两边内容不同时把本 box 的版本存成 `<日期>.新号.md`。
+- big-picture 公开副本（`workspace/assistant/` 与 `bots/grok-bot/notes/`）每次都要去敏：去掉退款 / 订单号、邮箱地址、金额，改成「见每日笔记 / 账本」。

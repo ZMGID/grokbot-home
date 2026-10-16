@@ -67,3 +67,6 @@
 ## 2026-10-10 晚
 - (2026-10-10) 调研 Rust AI 框架：agent/模型调用有 rig（最成熟，未到 1.0）、genai（轻量多模型客户端）、async-openai；MCP 用官方 rmcp；本地推理 mistral.rs / llama-cpp-2 / candle；langchain-rust、llm-chain 已停更勿用；codex-rs 只作参考。对 Dsivio 建议 genai + rmcp 3 自写 agent 循环。
 - (2026-10-10) 评估 kivio 自研 AI 内核：判断已达产品级（协议适配、agent 循环、网络层都比通用库完整），**不建议换框架**；可把 kivio 的模型调用层抽成独立 crate 给 Dsivio 用。随后做了一轮细查：严重 3 个、中等 9 个、小问题 5 个，建议修复顺序：Windows 写文件可能丢数据 → Anthropic thinking 回放 → 默认审批改为需确认 → 升级依赖并补齐 CI（clippy/fmt/audit/Windows 构建）→ 密钥迁到 keyring。完整报告在 box 的 `/workspace/kivio-review-report.md`（不进本仓库）；clippy 需用户在 Mac 上跑一次。等用户决定先改哪几条。
+
+## 2026-10-16
+- 回商品调研的虾皮巴西选品经验：别用紫鸟，用 Shopdora（虾多拉）插件；竞品按 Total Sales / GMV / Price 各挑一条（销量最高、居中、价格最低且有销量）；巴西标题可用豆包按图生成；带图的表用 xlsx（openpyxl）或飞书表，别用 CSV；Playwright 自动化方案骨架还没搭。

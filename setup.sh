@@ -107,7 +107,7 @@ fi
 # 4. Python 用户级包（PlatformIO、cadquery 等；上一个号是 pip --user 装的）
 # ---------------------------------------------------------------------------
 log "python user packages"
-PY_LIGHT=(platformio pyserial trimesh ezdxf shapely matplotlib scipy networkx PyYAML tabulate)
+PY_LIGHT=(platformio pyserial trimesh ezdxf shapely matplotlib scipy networkx PyYAML tabulate opencv-python-headless)
 PY_HEAVY=(cadquery)        # cadquery 2.8 + OCP 7.9，约 1GB，较慢
 PY_WANT=("${PY_LIGHT[@]}")
 [[ $LIGHT -eq 0 ]] && PY_WANT+=("${PY_HEAVY[@]}")
