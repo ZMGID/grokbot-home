@@ -32,7 +32,7 @@
 | `CONTEXT.md` | 关于我的共享记忆：习惯、账号、项目进度、换号决定 |
 | `bots/<名字>/` | 每个 bot 一个文件夹：`profile.md`（设定）、`CONTEXT.md`（它自己的记忆）、`routines.md`（定时任务） |
 | `connectors/` | 连接器清单 + `composio-pg` 启动脚本（不含密钥） |
-| `skills/` | 我自己创建的技能（目前没有） |
+| `skills/` | 用户自建技能（目前有 `tiktok`：TikTok巴西站竞品调研） |
 | `setup.sh` | 工具环境安装脚本（可重复运行） |
 | `scripts/` | 每日同步任务说明和脚本、密钥扫描 `secret-scan.sh`、加解密 `secret-crypt.py` |
 | `secrets/` | 只放加密后的密钥（`*.enc`），见 `secrets/README.md` |
