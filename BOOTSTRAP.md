@@ -106,7 +106,7 @@ chmod 600 /workspace/gmail-listener/webhook_url.local 2>/dev/null
 
 ```bash
 export PATH="$HOME/.local/bin:$PATH"
-gh auth status 2>&1 | grep -E 'Logged in|Token scopes|X '      # token 可能已过期/被撤销 → 让用户重新 gh auth login
+gh auth status 2>&1 | grep -E 'Logged in|Token scopes|X '      # 可选：推送不靠 gh（Step 1），过期/被撤销就不用管，不要让用户重新 gh auth login
 lark-cli auth status 2>&1 | sed -E 's/[A-Za-z0-9_-]{24,}/<redacted>/g'   # 用户 token 约 7 天不用就过期 → lark-cli auth login（扫码）
 ssh -o BatchMode=yes -o ConnectTimeout=8 eastforce true && echo "eastforce ssh ok"
 ```
@@ -206,7 +206,7 @@ If zhimeng63 Gmail is missing: re-auth via `COMPOSIO_MANAGE_CONNECTIONS` for Com
 
 ## Step 4 — Skills / 技能
 
-- `skills/` currently has **no user skills** (see `skills/README.md`). For any `skills/<slug>/` that appears later: copy it to `/home/box/agent-data/workflows/<slug>/` (or create it with the `skill-authoring` skill using the same name and body), then confirm it is listed.
+- `skills/` currently has **one user skill**: `skills/tiktok/`（TikTok巴西站竞品调研，商品调研 用；needs env `GECKOAPI_KEY`, value never in the repo — see `skills/README.md`). For every `skills/<slug>/` (now and later): copy the whole folder (incl. `scripts/`) to `/home/box/agent-data/workflows/<slug>/` (or create it with the `skill-authoring` skill using the same name and body), then confirm it is listed.
 - **pstack** plugin (`InstallPlugin 9717366`) is **optional**（可选，原为 dr eggbot 安装）. Install only if a coding bot needs those skills.
 - Managed skills (add-connector, routines, …) come with the platform — nothing to do.
 
@@ -263,7 +263,7 @@ Run and record each result:
 4. Push access: Composio GitHub on `user-composio-pg` is ZMGID (item 2) — `gh` is not used (Step 1, 2026-10-11).
 5. Skills: every `skills/<slug>` present in `/home/box/agent-data/workflows/`; pstack optional (only if installed).
 6. Bots: every slug in `bots/index.json` exists with the right name; `bots/agent-map.json` updated.
-7. Routines: daily sync on **仓库管家**; 事务秘书 morning/evening; 小萌「巡检各 bot」only。
+7. Routines: daily sync + weekly drill on **仓库管家**; 事务秘书 morning/evening; 小萌「巡检各 bot」+「cloudpotato 来信提醒」+「gmail-new-mail」（no daily sync / morning / evening on 小萌）。
 8. Tools: `tail -20 /tmp/setup.log` summary; spot-check `kicad-cli --version` (9.x), `~/.local/bin/pio --version`, `python3 -c "import cadquery"`, `gitleaks version`.
 9. Secret scan: `bash scripts/secret-scan.sh` → “干净”.
 
@@ -285,15 +285,15 @@ Send one short Chinese message: what's done, what failed, what the user still ne
 
 - [ ] Step 0: repo cloned anonymously at `/workspace/grokbot-home`, git identity set
 - [ ] Step 0: passphrase received via secret-request; `/home/box/.composio_pg_key` decrypted from `.enc` (or `.box-current.enc`), mode 600 (values never shown); `/workspace/finance/` restored from `secrets/finance.tgz.enc` if needed
-- [ ] Step 0 (b++): `box-secrets` / `daily` / `feishu-cli` 加密包已解到原路径并 chmod；`gh auth status`、`lark-cli auth status`、`ssh eastforce` 已检查
+- [ ] Step 0 (b++): `box-secrets` / `daily` / `feishu-cli` 加密包已解到原路径并 chmod；`lark-cli auth status`、`ssh eastforce` 已检查（`gh auth status` 可选，推送不靠 gh）
 - [ ] Step 0/3: `composio-pg` + `composio-zhimeng` installed & connected; gmail-listener started; lark-cli auth’d (user QR); `GMAIL_WEBHOOK_KEY` in env only
 - [ ] Step 1: push access via Composio GitHub (composio-pg, ZMGID); no `gh`
 - [ ] Step 2: `setup.sh` finished (summary checked; failures listed)
 - [ ] Step 3: pstack (9717366) optional（可选，原为 dr eggbot 安装）; official GitHub/Origin/Finance/Composio-plugin **not** installed
-- [ ] Step 4: skills imported (currently none) 
+- [ ] Step 4: skills imported (currently `tiktok`)
 - [ ] Step 5: own profile = **小萌** (slug `grok-bot`), primary, memory seeded from CONTEXT.md
 - [ ] Step 6: 小枳 / 仓库管家 / 代码工程师 / 搭建运维 / 事务秘书 / 硬件工程师 / 财务管家 / 商品调研 / 测试工程师 created; `bots/agent-map.json` updated & pushed (no dr eggbot)
-- [ ] Step 7: daily sync on **仓库管家**; 事务秘书 08:53/17:47; 小萌 巡检 11:17/15:17 only; others per `routines.md`
+- [ ] Step 7: daily sync + weekly drill on **仓库管家**; 事务秘书 08:53/17:47; 小萌 巡检 11:17/15:17 + cloudpotato 邮件 + gmail-new-mail webhook; others per `routines.md`
 - [ ] Step 8: composio-pg GitHub+ohulercxm8 + composio-zhimeng zhimeng63 Gmail active; secret scan clean
 - [ ] Step 9: write-back rule saved in memory
 - [ ] Step 10: user got the summary

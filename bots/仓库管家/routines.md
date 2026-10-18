@@ -22,8 +22,18 @@
 ## 2. 换号演练与安全审计
 
 - **触发**：每周日 15:12（北京时间）。cron：`CRON_TZ=Asia/Shanghai 12 15 * * 0`
-- **状态**：本账号在用（2026-10-12 提示词更新：演练须逐包 decrypt-check 全部 secrets/*.enc；10-12 03:22 再改：去掉口令偏短的提醒，只提醒旧私有仓库。下方原文按该改动补齐）。
+- **状态**：新号（小萌 70869d39…）在用。2026-10-18 演练时按新号线上实际保存的原文更新（推送统一走 composio-pg GitHub，不用 gh）。演练时仍按旧号版的做法逐包 decrypt-check 全部 `secrets/*.enc` 并和盒子现状对比。
 - **保存的提示词（重建时用 UpdateRoutine 创建）**：
+
+```text
+每周换号演练与安全审计（公开仓库 ZMGID/grokbot-home，本地副本 /workspace/grokbot-home）。只演练，不真建任何东西。推送不用 gh（用户 2026-10-11 决定），需要提交修复时一律通过 Composio 连接器 composio-pg 里的 GitHub（账号 ZMGID）提交。
+1) 换号演练：在 /tmp 下新建临时目录，不带任何登录凭证匿名克隆公开仓库，假装自己是新号上的 bot，按 BOOTSTRAP.md 从头空跑一遍，逐步检查每一步引用的文件、脚本、命令和参数是否存在、是否和现状一致（不新建 bot、不建定时任务、不装连接器）。用环境变量 GROKBOT_HOME_PASSPHRASE 和 scripts/secret-crypt.py 解密 secrets/*.enc，只校验能解开、格式看起来对；解出的明文只放内存或权限 600 的临时文件，用完立刻删除，绝不打印、记录，也绝不写进任何文件或消息。检查 bots/agent-map.json 和 bots/index.json 里的每个 bot 都有完整的 profile.md、CONTEXT.md、routines.md，每条定时任务都有 cron 和提示词原文；setup.sh 能通过 bash -n 语法检查；连接器步骤（composio-pg 启动脚本等）引用的文件都在；文档里的推送流程是否已统一为 Composio GitHub、没有残留要求 gh 登录的步骤。
+2) 安全审计：对公开仓库的全部 git 历史和工作区跑 scripts/secret-scan.sh 和 gitleaks 全历史扫描，确认没有明文密钥、口令、验证码、一次性链接、邮件正文、/workspace/assistant/daily/ 的内容或其他不该公开的东西。顺便检查旧私有仓库 ZMGID/grokbot-home-private-old 是否仍存在（里面有明文密钥），只提醒，不替用户删。口令长度不要再检查或提醒（用户 2026-10-12 决定不换）。
+3) 发现断点就在 /workspace/grokbot-home 里修好；提交前先匿名 pull 到最新并跑 bash scripts/secret-scan.sh（不干净就中止，绝不放宽扫描或加白名单），通过后用 composio-pg 的 GitHub 工具把改动文件提交到 main；修不了的记下来。演练结束删除 /tmp 下的临时目录。
+4) 结果发给这个聊天里的用户：全部正常就只发一句「本周演练通过」，旧私有仓库仍在时可在同一句后面简短提醒；发现问题或出错时，用简短中文说清是什么问题、已经修了什么、需要用户做什么（只说文件名和行号，不贴可疑内容），并把同样的内容在 Grok Bot 应用里发消息抄送给小萌（经理 bot，id 70869d39-bdf3-4146-823b-db0bd0d3da2c）。
+```
+
+<details><summary>旧号 2026-10-12 版提示词（更细：逐包核对、bash -n 三个脚本、gmail-listener / lark-cli 文件检查；新号线上未用，供参考）</summary>
 
 ```text
 每周换号演练与安全审计（公开仓库 ZMGID/grokbot-home，本地副本 /workspace/grokbot-home）。用户 2026-10-12 确认的规矩：明文不进、加密包必进。按我 profile 第 3、4 条做，只演练，不真建任何东西：
@@ -34,3 +44,5 @@
 5) 发现断点就在 /workspace/grokbot-home 里修好（包过期就通过 bash scripts/sync.sh 重打包），推送前一律运行 bash scripts/sync.sh（密钥扫描不干净就中止，绝不放宽扫描或加白名单）；修不了的记下来。演练结束删除 /tmp 下所有临时目录和解密内容。
 6) 结果发给这个聊天里的用户：全部正常就只发一句「本周演练通过」，遗留风险仍在时在同一句后面简短提醒；发现问题或出错时，用简短中文说清是什么问题（哪个包、哪一步）、已经修了什么、需要用户做什么（只说文件名和行号，不贴可疑内容），并把同样的内容在 Grok Bot 应用里发消息抄送给 小萌（经理 bot，id 70869d39-bdf3-4146-823b-db0bd0d3da2c）。
 ```
+
+</details>
