@@ -3,9 +3,23 @@
 ## 1. 每日同步到 grokbot-home（daily-grokbot-sync）
 
 - **触发**：每天 03:14（北京时间）。cron：`CRON_TZ=Asia/Shanghai 14 3 * * *`
-- **状态**：本账号在用（2026-10-12 提示词按用户确认的「明文不进、加密包必进」更新）。
+- **状态**：新号（小萌 70869d39…）在用。2026-10-19 每日同步时按新号线上实际保存的原文更新（推送统一走 composio-pg GitHub，不用 gh；sync.sh 只本地 commit，退出码 5 后用 Composio 写 main）。
 - **详细步骤**：见 `scripts/sync.md`，脚本 `scripts/sync.sh`（含 `scripts/pack-bundles.sh`）。
 - **保存的提示词（重建时用 UpdateRoutine 创建）**：
+
+```text
+每日同步 grokbot-home：把本账号所有 bot 的新记忆、设定、技能和连接器清单同步到公开仓库 ZMGID/grokbot-home（本地 /workspace/grokbot-home），并做漂移检查。仓库是公开的：密钥只以加密形式存在 secrets/*.enc（用 scripts/secret-crypt.py 加解密，口令在环境变量 GROKBOT_HOME_PASSPHRASE），任何明文密钥、口令、验证码、密码、一次性授权链接都绝不能进仓库。旧的私有仓库 ZMGID/grokbot-home-private-old 不要再往里推。详细做法以仓库里的 scripts/sync.md 为准，先读它。推送不用 gh（用户 2026-10-11 决定），一律通过 Composio 连接器 composio-pg 里的 GitHub（账号 ZMGID）提交。
+1) 让 /workspace/grokbot-home 和远端 main 一致：仓库公开，用匿名 git fetch/pull --rebase（目录不存在就匿名 git clone https://github.com/ZMGID/grokbot-home）。注意别的 bot（如小萌）可能已通过 Composio 直接在远端提交过。
+2) 对 bots/agent-map.json 里的每个 bot（包括我自己 仓库管家，以及本账号新出现、还没登记的 bot）：读它自上次同步以来的对话记录和 /home/box/agent-data/agents/<id>/ 下的 profile.json、settings.json、memory/，把新的持久事实、项目进展、决定、偏好写成带日期的要点合并进 bots/<slug>/CONTEXT.md；设定变化写进 profile.md，定时任务变化写进 routines.md；关于用户本人、所有 bot 都该知道的写进根目录 CONTEXT.md。新 bot 要建 bots/<slug>/ 并登记到 agent-map.json、index.json、bots/README.md。因为仓库公开，写进去的内容要当作谁都能看到。读不到别的 bot 对话记录时，退而读 /home/box/agent-data/agents/<id>/memory/ 和 /home/box/agent-data/search-index.db 的 messages 表（只读，先复制到 /tmp 再打开）。
+3) 小萌（grok-bot）的笔记：把 /workspace/assistant/big-picture.md 复制到仓库 bots/grok-bot/notes/big-picture.md，/workspace/assistant/routines.md 的定时任务内容同步进 bots/grok-bot/routines.md。/workspace/assistant/daily/ 绝不进仓库。
+4) 漂移检查：把线上实际情况和仓库逐项对比并补齐：本账号现有的 bot 名单与 agent-map.json、index.json；每个 bot 的名字、标题、说明与 profile.md；每个 bot 的定时任务与 routines.md（我自己的看当前定时任务状态，别的 bot 读不到原文就在 Grok Bot 应用里发消息问那个 bot 要）；/home/box/agent-data/workflows/ 下的技能与 skills/；当前连接器状态与 connectors/README.md；已删除的 bot 要从仓库和 BOOTSTRAP 里去掉。仓库里旧号的 bot id 要以 agent-map.json 里的新 id 为准更新。
+5) 提交前先跑 bash scripts/secret-scan.sh（以及 sync.md 里要求的其他校验）：不通过就中止、不提交；绝不绕过、放宽或改白名单来让扫描通过。通过且有变化，才用 composio-pg 的 GitHub 工具把改动的文件一次性提交到 ZMGID/grokbot-home 的 main（提交前确认远端没有比本地更新的冲突改动；只提交扫描过的那些文件），提交后再匿名 pull 一次让本地和远端一致。如果 sync.md 已被更新为新的 Composio 提交流程，以它为准。
+6) 结果发给这个聊天里的用户：没有变化就不发任何消息；有变化发一行中文说明（改了哪些 bot / 文件、补齐了哪些漂移）；密钥扫描失败、拉取或 Composio 提交失败等出错时，说清原因和需要用户做什么（只说文件名和行号，不贴可疑内容），并在 Grok Bot 应用里发消息抄送给小萌（经理 bot，id 70869d39-bdf3-4146-823b-db0bd0d3da2c）。
+```
+
+如果每日同步要读别的 bot 的对话记录，需要有 ReadTranscript 工具（cursor 命名空间）。没有的话退而求其次：读 `/home/box/agent-data/agents/<id>/memory/` 和 `/home/box/agent-data/search-index.db` 的 `messages` 表（只读，先复制到 /tmp 再打开）。
+
+<details><summary>旧号 2026-10-12 版提示词（含加密包清单与 big-picture/ideas 明文同步说明；第 5 步「sync.sh commit 并推送」已过时，sync.sh 2026-10-16 起不再 push；新号线上未用，供参考）</summary>
 
 ```text
 每日同步 grokbot-home：把本账号所有 bot 的新记忆、设定、技能、连接器清单和恢复所需材料同步到公开仓库 ZMGID/grokbot-home（本地 /workspace/grokbot-home），并做漂移检查。用户 2026-10-12 确认的规矩：明文不进、加密包必进。所有密钥和敏感数据只以 secrets/*.enc 加密形式入库（scripts/secret-crypt.py，GBH1，口令在环境变量 GROKBOT_HOME_PASSPHRASE），包括 box-secrets.tgz.enc、feishu-cli.tgz.enc、daily.tgz.enc、finance.tgz.enc 和 Composio key；任何明文密钥、口令、验证码、密码、一次性链接、webhook 地址、每日笔记、账本流水都绝不能进仓库。旧的私有仓库 ZMGID/grokbot-home-private-old 不要再往里推。口令现在偏短，用户换口令前不要动它。详细做法以仓库里的 scripts/sync.md 和 BOOTSTRAP.md 为准，先读它们。
@@ -17,7 +31,7 @@
 6) 结果发给这个聊天里的用户：没有变化就不发任何消息；有变化发一行中文说明（改了哪些 bot / 文件、补齐了哪些漂移）；密钥扫描失败、打包失败、拉取或推送失败等出错时，说清原因和需要用户做什么（只说文件名和行号，不贴可疑内容），并在 Grok Bot 应用里发消息抄送给 小萌（id 70869d39-bdf3-4146-823b-db0bd0d3da2c）。
 ```
 
-如果每日同步要读别的 bot 的对话记录，需要有 ReadTranscript 工具（cursor 命名空间）。没有的话退而求其次：读 `/home/box/agent-data/agents/<id>/memory/` 和 `/home/box/agent-data/search-index.db` 的 `messages` 表（只读，先复制到 /tmp 再打开）。
+</details>
 
 ## 2. 换号演练与安全审计
 
