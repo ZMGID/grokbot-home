@@ -3,7 +3,7 @@
 ## 1. 每日同步到 grokbot-home（daily-grokbot-sync）
 
 - **触发**：每天 03:14（北京时间）。cron：`CRON_TZ=Asia/Shanghai 14 3 * * *`
-- **状态**：新号（小萌 70869d39…）在用。2026-10-19 每日同步时按新号线上实际保存的原文更新（推送统一走 composio-pg GitHub，不用 gh；sync.sh 只本地 commit，退出码 5 后用 Composio 写 main）。
+- **状态**：两号都在用、提示词不同：下面第一段是新号（小萌 70869d39…）线上原文，折叠里是本号（小萌 a96070f7…）线上原文。2026-10-19 每日同步时按新号线上实际保存的原文更新（推送统一走 composio-pg GitHub，不用 gh；sync.sh 只本地 commit，退出码 5 后用 Composio 写 main）。
 - **详细步骤**：见 `scripts/sync.md`，脚本 `scripts/sync.sh`（含 `scripts/pack-bundles.sh`）。
 - **保存的提示词（重建时用 UpdateRoutine 创建）**：
 
@@ -19,7 +19,7 @@
 
 如果每日同步要读别的 bot 的对话记录，需要有 ReadTranscript 工具（cursor 命名空间）。没有的话退而求其次：读 `/home/box/agent-data/agents/<id>/memory/` 和 `/home/box/agent-data/search-index.db` 的 `messages` 表（只读，先复制到 /tmp 再打开）。
 
-<details><summary>旧号 2026-10-12 版提示词（含加密包清单与 big-picture/ideas 明文同步说明；第 5 步「sync.sh commit 并推送」已过时，sync.sh 2026-10-16 起不再 push；新号线上未用，供参考）</summary>
+<details><summary>本号（小萌 a96070f7…）线上在用的 2026-10-12 版提示词（2026-10-19 旧号同步核对线上原文一致；含加密包清单与 big-picture/ideas 明文同步说明；第 5 步「sync.sh commit 并推送」中的推送实际按 sync.md 走 composio-pg，sync.sh 2026-10-16 起不再 push）</summary>
 
 ```text
 每日同步 grokbot-home：把本账号所有 bot 的新记忆、设定、技能、连接器清单和恢复所需材料同步到公开仓库 ZMGID/grokbot-home（本地 /workspace/grokbot-home），并做漂移检查。用户 2026-10-12 确认的规矩：明文不进、加密包必进。所有密钥和敏感数据只以 secrets/*.enc 加密形式入库（scripts/secret-crypt.py，GBH1，口令在环境变量 GROKBOT_HOME_PASSPHRASE），包括 box-secrets.tgz.enc、feishu-cli.tgz.enc、daily.tgz.enc、finance.tgz.enc 和 Composio key；任何明文密钥、口令、验证码、密码、一次性链接、webhook 地址、每日笔记、账本流水都绝不能进仓库。旧的私有仓库 ZMGID/grokbot-home-private-old 不要再往里推。口令现在偏短，用户换口令前不要动它。详细做法以仓库里的 scripts/sync.md 和 BOOTSTRAP.md 为准，先读它们。
@@ -28,7 +28,7 @@
 3) 小萌的笔记：/workspace/assistant/ 下的 routines.md、big-picture.md、ideas/ 以明文进 workspace/assistant/（按 sync.sh 的做法），daily/ 只以 secrets/daily.tgz.enc 加密入库；明文 /workspace/finance/ 只以 secrets/finance.tgz.enc 入库。
 4) 漂移检查：把线上实际情况和仓库逐项对比并补齐：本账号现有的 bot 名单与 agent-map.json、index.json（sync.sh 在 id 对不上时按名字匹配，留意 id 变化要写回 agent-map）；每个 bot 的名字、标题、说明与 profile.md；每个 bot 的定时任务与 routines.md（我自己的看当前定时任务状态，别的 bot 读不到原文就在 Grok Bot 应用里发消息问那个 bot 要）；/home/box/agent-data/workflows/ 下的技能与 skills/；当前连接器状态与 connectors/README.md；已删除的 bot 要从仓库和 BOOTSTRAP 里去掉。
 5) 运行 bash scripts/sync.sh：它会校验 remote 和分支，调用 scripts/pack-bundles.sh 用口令重打包所有加密包（缺口令就跳过打包、保留已有 .enc，并在结果里提一句），再做密钥扫描（scripts/secret-scan.sh），不通过就中止、不提交；通过且有变化才 commit 并推送（做法见 scripts/sync.md）。绝不绕过、放宽或改白名单来让扫描通过。
-6) 结果发给这个聊天里的用户：没有变化就不发任何消息；有变化发一行中文说明（改了哪些 bot / 文件、补齐了哪些漂移）；密钥扫描失败、打包失败、拉取或推送失败等出错时，说清原因和需要用户做什么（只说文件名和行号，不贴可疑内容），并在 Grok Bot 应用里发消息抄送给 小萌（id 70869d39-bdf3-4146-823b-db0bd0d3da2c）。
+6) 结果发给这个聊天里的用户：没有变化就不发任何消息；有变化发一行中文说明（改了哪些 bot / 文件、补齐了哪些漂移）；密钥扫描失败、打包失败、拉取或推送失败等出错时，说清原因和需要用户做什么（只说文件名和行号，不贴可疑内容），并在 Grok Bot 应用里发消息抄送给 小萌（id a96070f7-cb92-4f15-bcd4-7b1e700cc676）。
 ```
 
 </details>
