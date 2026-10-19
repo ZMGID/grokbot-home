@@ -67,7 +67,8 @@
       "old_agent_id": "30f7829c-e287-44d7-bfdc-7c409b7da1c4",
       "description_reconstructed": false,
       "routines": [],
-      "plugins_needed": []
+      "plugins_needed": [],
+      "role": "Dsivio / kivio 的 CI 与 PR（10/16 叫停后无明确指令不动这两个仓库）+ AI 编程键盘 / 脚踏板 / 陪伴机器人固件与电脑端软件"
     },
     {
       "slug": "搭建运维",
@@ -115,7 +116,8 @@
       "old_agent_id": "69390646-03af-4efe-ad66-4d796b384c62",
       "description_reconstructed": false,
       "routines": [],
-      "plugins_needed": []
+      "plugins_needed": [],
+      "role": "AI 编程键盘 / AI 脚踏板的结构、外壳、接线与 BOM；不做 AI 陪伴机器人；创作控制器已停"
     },
     {
       "slug": "财务管家",
@@ -168,8 +170,42 @@
       "description_reconstructed": false,
       "routines": [],
       "plugins_needed": [],
-      "role": "AI 编程键盘 / AI 脚踏板等硬件项目的测试：测试计划与用例、方案评审、样机缺陷跟踪与回归、出货验收",
-      "notes": "2026-10-15 在新号上新建；在「AI编程键盘」「AI脚踏板」两个群里"
+      "role": "AI 编程键盘 / AI 脚踏板 / AI 陪伴小机器人的测试：测试计划与用例、方案评审、样机缺陷跟踪与回归、出货验收与认证提醒",
+      "notes": "2026-10-15 在新号上新建；在「AI编程键盘」「AI脚踏板」「AI陪伴机器人」三个群里"
+    },
+    {
+      "slug": "结构工程师",
+      "name": "结构工程师",
+      "title": "",
+      "primary": false,
+      "avatar": {
+        "shape": "",
+        "color": "",
+        "image": null
+      },
+      "old_agent_id": null,
+      "description_reconstructed": false,
+      "routines": [],
+      "plugins_needed": [],
+      "role": "AI 陪伴小机器人（/workspace/ai-robot/，群「AI陪伴机器人」）的外观造型、3D 建模、渲染图、运动机构（舵机安装、转头点头）、装配爆炸图、可 FDM 打印的全套 STL/STEP。",
+      "notes": "2026-10-19 在新号上新建；在「AI陪伴机器人」群里"
+    },
+    {
+      "slug": "电子工程师",
+      "name": "电子工程师",
+      "title": "",
+      "primary": false,
+      "avatar": {
+        "shape": "",
+        "color": "",
+        "image": null
+      },
+      "old_agent_id": null,
+      "description_reconstructed": false,
+      "routines": [],
+      "plugins_needed": [],
+      "role": "AI 陪伴小机器人（/workspace/ai-robot/，群「AI陪伴机器人」）的主控与模块选型（优先现成 ESP32-S3 开发板，不画 PCB）、屏幕/麦克风/喇叭/舵机/触摸、电池充电与电源、引脚表、接线图、带图淘宝 BOM。",
+      "notes": "2026-10-19 在新号上新建；在「AI陪伴机器人」群里"
     }
   ],
   "groups": [
@@ -190,6 +226,18 @@
       "members": [
         "grok-bot",
         "硬件工程师",
+        "代码工程师",
+        "商品调研",
+        "测试工程师"
+      ]
+    },
+    {
+      "name": "AI陪伴机器人",
+      "created": "2026-10-19",
+      "members": [
+        "grok-bot",
+        "结构工程师",
+        "电子工程师",
         "代码工程师",
         "商品调研",
         "测试工程师"
