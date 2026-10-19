@@ -1,19 +1,19 @@
-# 工具环境快照（自动生成，2026-10-17 03:23:52 CST）
-- kicad-cli: /usr/bin/kicad-cli
+# 工具环境快照（自动生成，2026-10-20 03:21:48 CST）
+- kicad-cli: MISSING
 - pio: /home/box/.local/bin/pio
 - node: /usr/bin/node
-- npm: /usr/bin/npm
-- npx: /usr/bin/npx
+- npm: /usr/local/bin/npm
+- npx: /usr/local/bin/npx
 - pnpm: /usr/bin/pnpm
 - bun: /usr/local/bin/bun
-- gh: /usr/bin/gh
+- gh: /usr/local/bin/gh
 - git: /usr/bin/git
-- git-lfs: /usr/bin/git-lfs
-- java: /usr/bin/java
+- git-lfs: MISSING
+- java: MISSING
 - uv: /usr/local/bin/uv
 - cargo: /home/box/.cargo/bin/cargo
-- go: /usr/bin/go
-- prusa-slicer: /usr/bin/prusa-slicer
+- go: /usr/local/bin/go
+- prusa-slicer: MISSING
 - gitleaks: /home/box/.local/bin/gitleaks
 
 ## pip --user
@@ -31,11 +31,13 @@
 - colorama==0.4.6
 - contourpy==1.4.0
 - cycler==0.12.1
+- embreex==4.4.0
 - ezdxf==1.4.4
 - frozenlist==1.8.0
 - h11==0.16.0
 - kiwisolver==1.5.1
 - llvmlite==0.50.0
+- manifold3d==3.5.4
 - marshmallow==4.3.1
 - matplotlib==3.11.2
 - more-itertools==11.1.0
@@ -49,6 +51,7 @@
 - platformio==6.2.0
 - propcache==0.5.4
 - pyelftools==0.33
+- pymupdf==1.28.2
 - pyparsing==3.3.3
 - pyserial==3.5
 - PyYAML==6.0.3
