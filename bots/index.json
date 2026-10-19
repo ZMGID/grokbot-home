@@ -68,7 +68,7 @@
       "description_reconstructed": false,
       "routines": [],
       "plugins_needed": [],
-      "role": "Dsivio / kivio 的 CI 与 PR（10/16 叫停后无明确指令不动这两个仓库）+ AI 编程键盘 / 脚踏板 / 陪伴机器人固件与电脑端软件"
+      "role": "Dsivio / kivio 的 CI 与 PR（10/16 叫停后无明确指令不动这两个仓库）+ AI 编程键盘 / 陪伴机器人固件与电脑端软件（AI 脚踏板 2026-10-19 已废弃）"
     },
     {
       "slug": "搭建运维",
@@ -117,7 +117,7 @@
       "description_reconstructed": false,
       "routines": [],
       "plugins_needed": [],
-      "role": "AI 编程键盘 / AI 脚踏板的结构、外壳、接线与 BOM；不做 AI 陪伴机器人；创作控制器已停"
+      "role": "AI 编程键盘的结构、外壳、接线与 BOM；不做 AI 陪伴机器人；AI 脚踏板（2026-10-19 废弃）与创作控制器已停"
     },
     {
       "slug": "财务管家",
@@ -170,8 +170,8 @@
       "description_reconstructed": false,
       "routines": [],
       "plugins_needed": [],
-      "role": "AI 编程键盘 / AI 脚踏板 / AI 陪伴小机器人的测试：测试计划与用例、方案评审、样机缺陷跟踪与回归、出货验收与认证提醒",
-      "notes": "2026-10-15 在新号上新建；在「AI编程键盘」「AI脚踏板」「AI陪伴机器人」三个群里"
+      "role": "AI 编程键盘 / AI 陪伴小机器人的测试：测试计划与用例、方案评审、样机缺陷跟踪与回归、出货验收与认证提醒（AI 脚踏板 2026-10-19 已废弃）",
+      "notes": "2026-10-15 在新号上新建；在「AI编程键盘」「AI陪伴机器人」群里（「AI脚踏板」群 2026-10-19 已解散）"
     },
     {
       "slug": "结构工程师",
@@ -229,7 +229,9 @@
         "代码工程师",
         "商品调研",
         "测试工程师"
-      ]
+      ],
+      "status": "已废弃（2026-10-19）",
+      "note": "项目被老板废弃，群已解散、成员已移出；/workspace/ai-pedal/ 归档保留；换号时不再重建"
     },
     {
       "name": "AI陪伴机器人",

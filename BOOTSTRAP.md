@@ -235,7 +235,7 @@ For **each** folder in `bots/` except the primary — driven by `bots/index.json
    - If CreateAgent accepts a first message / task, pass the same “read your CONTEXT.md” instruction there too.
 3. Record the new agent id in `bots/agent-map.json` **format 2**: set `bots.<slug>.ids.<this-account-小萌-id> = "<new id>"` (do **not** flatten to a single string — another Grok Bot account may share this repo). Account keys are each account's 小萌 agent id; see top-level `accounts`. Needed by the daily sync.
 4. Send the user one line per bot created (“已重建 小枳 ✓”).
-5. Group chats (2026-10-15 起): after all bots exist, recreate the project groups listed in `bots/README.md`「群聊」 (「AI编程键盘」「AI脚踏板」, members = 小萌 + 硬件工程师 + 代码工程师 + 商品调研 + 测试工程师；「AI陪伴机器人」(2026-10-19), members = 小萌 + 结构工程师 + 电子工程师 + 代码工程师 + 商品调研 + 测试工程师) only if the user still wants them; group ids are per-account, record nothing secret.
+5. Group chats (2026-10-15 起): after all bots exist, recreate the project groups listed in `bots/README.md`「群聊」 (「AI编程键盘」, members = 小萌 + 硬件工程师 + 代码工程师 + 商品调研 + 测试工程师；**「AI脚踏板」已废弃（2026-10-19），不要重建**；「AI陪伴机器人」(2026-10-19), members = 小萌 + 结构工程师 + 电子工程师 + 代码工程师 + 商品调研 + 测试工程师) only if the user still wants them; group ids are per-account, record nothing secret.
 
 Do not create the empty “New Bot” from the old account (it was never used). Do not create **dr eggbot** (deleted 2026-10-08); **you (小萌 / primary)** create any new bots going forward.
 
