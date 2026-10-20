@@ -35,3 +35,7 @@
 ## 2026-10-19
 - AI 陪伴小机器人固件（T7，都只编译通过、未上实物）：v0.3.1 按键改到 IO18；v0.3.2 适配 MT3608（上电先保持 120 ms、两颗舵机错开 150 ms 起步、缓动限速）；v0.3.3 纯电池时只慢速转头、点头不动（`SERVO_ON_BATTERY_MODE` 可改成纯电池全禁用）；v0.3.4 插着 USB 时舵机不受 3.5 V 停机限制（配合 VBUS 切换电路，电路装好前别刷这版）。第一版不新建 XIAO 板型。
 - (10-19 17:00) AI 编程键盘第一版收尾，固件 1.1.0 刷机包（`/workspace/ai-keyboard/firmware/release/`）随整包交给用户，仍未上真板。
+
+## 2026-10-20
+- (10-20 15:03) kivio v3.1.5 未发：main 上版本号仍 3.1.4（tauri.conf.json、package.json、Cargo.toml 等），`release.yml` 会校验 tag 与版本号一致，直接打 v3.1.5 两个平台都会构建失败、只剩空 Release。修复 `905781a8`（#68）、`03c5279d`（ZIP 安全）已在 main、CI 绿。
+- (10-20 15:05) prepare v3.1.5（只改版本号 + release notes）已在盒上本地分支 `chore/release-v3.1.5` 提交 `048ad69`，版本检查通过；release notes 和 #68 回复已起草。小萌要求走 PR、不直推 main；代码工程师认为在公开仓库 ZMGID/kivio 建分支开 PR 需用户本人同意，待用户点头（截至 10-20 晚未推送）。

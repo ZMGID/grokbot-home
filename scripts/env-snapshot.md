@@ -1,4 +1,4 @@
-# 工具环境快照（自动生成，2026-10-20 03:21:48 CST）
+# 工具环境快照（自动生成，2026-10-21 03:24:27 CST）
 - kicad-cli: MISSING
 - pio: /home/box/.local/bin/pio
 - node: /usr/bin/node
