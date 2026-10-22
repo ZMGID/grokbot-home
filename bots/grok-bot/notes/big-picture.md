@@ -54,9 +54,9 @@
 
 - 10/21 记录（周三）：kivio 发 v3.1.5（扩展市场 + Study 拆包等），计划 5 件只做成发版这一件；MiMo 已下线但预设未迁；bot 分支落后拉到 106；Dsivio 仍静；Shopee 邮件继续堆。本周过半，主目标仍零进展，需要尽快定去留。
 
-## 新号补充（新号 10-21 17:55 晚报版的独有内容，已去敏）
-- （10/21 晚报核实）kivio v3.1.5 已发布、#68 已回复；tip CI 显示 cancelled，前序 `f0833304` success。Dsivio tip 仍 `4cbd8439`（GraphQL 核实 CI SUCCESS），连续第 6 天无提交；PR #6 仍 DIRTY/CONFLICTING；官网 v1.1.2（curl 核实）。
-- AI 陪伴小机器人：BE70r3 定版后样件暂停采购（10/20 老板定），10/21 无新活。AI 编程键盘：样机未下单，当天无新核实。商品调研：10/21 无新表（巡检旁证）。
-- 风险：Shopee 售后/待发货第五个工作日未进后台处理（详见每日笔记）；MiMo V2.5 已到下线日，换配置未核实；composio-pg 的 Gmail 当前连的不是记忆里的那个邮箱；Mac mini 不在已注册电脑，ZMair/BF 离线；vm-01 号池与工作经费 10/21 晚未重核（见账本）。
-- 本周方向：10/21（周三）kivio 发版欠账落地，但 MiMo / Shopee / PR #6 / 账号确认四件仍未清。周四建议：Shopee 后台 → 账号确认 → PR #6。
-- 仍待：账号安全确认（Shopee Face ID、GitHub 第三方授权、Notion 新设备登录、Google 登录提醒及更早的 Bybit/Meta/Monid 等）；飞书应用未启用、用户 OAuth 缺；grokbot-home 新旧账号以谁为准仍等用户定。
+## 新号补充（新号 10-22 17:55 晚报版的独有内容，已去敏）
+- （10/22 晚报核实）**kivio v3.1.6 已发布**（10/22 01:09 北京时间，tip `2fb4bb18`，输入法回车、笔记行号配色修复）；open PR #8/#15/#61。Dsivio 10/22 上午 4 个提交（Pi 子代理、媒体工具），tip `103a5ca2` macOS 过、Windows 被取消，前两次 Windows 失败；PR #6 仍 CONFLICTING/DIRTY；官网仍 v1.1.2（curl 核实）。
+- AI 编程键盘：样机未下单，当天无新核实。陪伴机器人：保持暂停采购，无新活。商品调研：无今日新表（巡检旁证）。
+- 风险：Shopee 第六个工作日未处理（新增待发货、一笔钱包调整被拒，详见每日笔记）；Dsivio Windows CI 连续失败；Temu 卖家邮箱验证码邮件需确认是否本人；一个域名 30 天后到期（自动续费）；composio-pg 的 Gmail 当前连的不是记忆里的那个邮箱；Mac mini 不在已注册电脑，ZMair/BF 离线；vm-01 号池与工作经费未重核（见账本）。
+- 本周方向：10/22（周四）kivio 再发 v3.1.6，Dsivio 回到加新功能；Shopee / 账号确认 / PR #6 仍没清。周五建议：Shopee → Dsivio Windows CI + PR #6 → 账号确认。
+- 仍待：账号安全确认（Shopee Face ID、GitHub 第三方授权、Notion 新设备登录、Google 登录提醒、AgentMail 测试及更早的 Bybit/Meta/Monid 等）；飞书应用未启用、用户 OAuth 缺；grokbot-home 新旧账号以谁为准仍等用户定。
